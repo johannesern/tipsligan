@@ -1,0 +1,2 @@
+A function or anything thats returns some kind of html
+that is not registered as a Route in App.js.

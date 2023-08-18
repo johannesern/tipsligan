@@ -1,0 +1,1 @@
+A function or constant that is registered as a Route in App.js

@@ -1,0 +1,11 @@
+.coupon-row {
+  display: flex;
+}
+
+.index {
+  width: 25px;
+}
+
+.coupon {
+  margin: 0 auto;
+}

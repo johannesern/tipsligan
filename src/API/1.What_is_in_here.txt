@@ -1,0 +1,1 @@
+Functions which returns anything from the API.
