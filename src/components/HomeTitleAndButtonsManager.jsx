@@ -49,6 +49,42 @@ export default function HomeTitleAndButtons() {
   //   }
   // }, []);
 
+  const insteadOfUseEffect = () => {
+    try {
+      let breakInfiniteLoop = 0;
+      const siteUpdate = async () => {
+        const data = await GetAllRounds();
+        console.log("Data from api:", data);
+        if (data != null && data !== undefined) {
+          const updatePage = await CheckRound(data);
+          if (updatePage) {
+            breakInfiniteLoop++;
+            if (breakInfiniteLoop === 3) {
+              setErrorMessage("Något gick fel vid uppdatering. Försök igen.");
+            } else {
+              siteUpdate();
+            }
+          } else {
+            console.log("Data here?", data);
+            setRound(data);
+            passRoundToButtons();
+            if (data.isOpen && data.isActive) {
+              setTitle(data.title + " " + openForRegistration);
+            } else if (data.isOpen === false && data.isActive) {
+              setTitle(data.title + " " + ongoingButLocked);
+            }
+          }
+        } else {
+          setTitle(noRoundAvailable);
+        }
+      };
+      siteUpdate();
+    } catch (error) {
+      setTitle(noRoundAvailable);
+      console.error(error);
+    }
+  };
+
   const passRoundToButtons = () => {
     setButtonData(round);
   };
@@ -58,6 +94,8 @@ export default function HomeTitleAndButtons() {
       {errorMessage != null ? <h1>{errorMessage}</h1> : <></>}
       <div>
         {round != null ? <h2>{title}</h2> : <h2>{noRoundAvailable}</h2>}
+        <br />
+        <button onClick={insteadOfUseEffect}>Testa hämta rundor</button>
         <br />
         <HomeButtons passRoundToButtons={round} />
         <p>
