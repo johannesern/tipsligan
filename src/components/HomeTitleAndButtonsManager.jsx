@@ -95,7 +95,7 @@ export default function HomeTitleAndButtons() {
       <div>
         {round != null ? <h2>{title}</h2> : <h2>{noRoundAvailable}</h2>}
         <br />
-        <button onClick={insteadOfUseEffect}>Testa hämta rundor</button>
+        {/* <button onClick={insteadOfUseEffect}>Testa hämta rundor</button> */}
         <br />
         <HomeButtons passRoundToButtons={round} />
         <p>
