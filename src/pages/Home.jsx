@@ -8,7 +8,7 @@ import { Outlet } from "react-router-dom";
 export default function Home() {
   const fetchTester = async () => {
     try {
-      const response = await fetch("https://localhost:5000/users");
+      const response = await fetch("https://tipsligan-api.fly.dev/users");
       console.log("Rounds response:", response);
       if (response.ok) {
         const responseData = await response.json();
