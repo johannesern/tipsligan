@@ -1,6 +1,10 @@
+import { DevURL } from "../constants/Constants";
+import { TipsliganAPIURL } from "../constants/Constants";
+
 export default async function GetSiteInfo() {
+  const baseUrl = DevURL();
   try {
-    const response = await fetch("https://tipsligan-api.fly.dev/siteinfo");
+    const response = await fetch(baseUrl + "/siteinfo");
     // console.log("Rounds response:", response);
     if (response.ok) {
       const responseData = await response.json();
