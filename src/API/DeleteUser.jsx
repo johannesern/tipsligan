@@ -1,11 +1,12 @@
+import { DevURL } from "../constants/Constants";
+import { TipsliganAPIURL } from "../constants/Constants";
+
 export async function DeleteUser(userId) {
+  const baseUrl = DevURL();
   try {
-    const response = await fetch(
-      `https://tipsligan-api.fly.dev/users/${userId}`,
-      {
-        method: "DELETE",
-      }
-    );
+    const response = await fetch(`${baseUrl}/${userId}`, {
+      method: "DELETE",
+    });
 
     if (response.ok) {
       return "Användare borttagen!";

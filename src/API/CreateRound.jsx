@@ -1,6 +1,10 @@
+import { DevURL } from "../constants/Constants";
+import { TipsliganAPIURL } from "../constants/Constants";
+
 export async function CreateRound(data) {
+  const baseUrl = DevURL();
   try {
-    const response = await fetch("https://tipsligan-api.fly.dev/rounds", {
+    const response = await fetch(baseUrl + "/rounds", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

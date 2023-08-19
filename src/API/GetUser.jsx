@@ -1,8 +1,10 @@
+import { DevURL } from "../constants/Constants";
+import { TipsliganAPIURL } from "../constants/Constants";
+
 export async function GetUser(userId) {
+  const baseUrl = DevURL();
   try {
-    const response = await fetch(
-      `https://tipsligan-api.fly.dev/users/${userId}`
-    );
+    const response = await fetch(`${baseUrl}/${userId}`);
 
     if (response.ok) {
       const responseData = await response.json();
