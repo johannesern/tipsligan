@@ -11,14 +11,14 @@ export default function HomeTitleAndButtons() {
   const openForRegistration = " öppen för registrering!";
   const ongoingButLocked = "pågår och är låst för registrering.";
   const noRoundAvailable = "Ingen pågående omgång.";
-  console.log("Round:", round);
+  // console.log("Round:", round);
 
   useEffect(() => {
     try {
       let breakInfiniteLoop = 0;
       const siteUpdate = async () => {
         const data = await GetAllRounds();
-        console.log("Data from api:", data);
+        // console.log("Data from api:", data);
         if (data != null && data !== undefined) {
           const updatePage = await CheckRound(data);
           if (updatePage) {
@@ -29,7 +29,7 @@ export default function HomeTitleAndButtons() {
               siteUpdate();
             }
           } else {
-            console.log("Data here?", data);
+            // console.log("Data here?", data);
             setRound(data);
             passRoundToButtons();
             if (data.isOpen && data.isActive) {
@@ -60,12 +60,6 @@ export default function HomeTitleAndButtons() {
         {round != null ? <h2>{title}</h2> : <h2>{noRoundAvailable}</h2>}
         <br />
         <HomeButtons passRoundToButtons={round} />
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit molestiae
-          dignissimos voluptates vero placeat incidunt unde, sequi, facere atque
-          quam, quos corrupti cum mollitia officia tempora a cupiditate
-          voluptate accusantium.
-        </p>
       </div>
     </>
   );
