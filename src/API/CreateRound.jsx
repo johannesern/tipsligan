@@ -1,6 +1,6 @@
 export async function CreateRound(data) {
   try {
-    const response = await fetch("rounds", {
+    const response = await fetch("https://tipsligan-api.fly.dev/rounds", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

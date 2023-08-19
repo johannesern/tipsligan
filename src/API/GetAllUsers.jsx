@@ -1,6 +1,6 @@
 export default async function GetAllUsers() {
   try {
-    const response = await fetch("users");
+    const response = await fetch("https://tipsligan-api.fly.dev/users");
     console.log("User response:", response);
 
     if (response.ok) {

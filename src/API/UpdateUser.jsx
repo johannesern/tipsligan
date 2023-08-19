@@ -1,7 +1,7 @@
 export async function UpdateUser(user) {
   // console.log("The user to update:", user);
   try {
-    const response = await fetch(`users/${user.Id}`, {
+    const response = await fetch(`https://tipsligan-api.fly.dev/${user.Id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

@@ -1,7 +1,7 @@
 export default async function UpdateRound(round) {
   // console.log("The round to update:", round);
   try {
-    const response = await fetch(`rounds/${round.Id}`, {
+    const response = await fetch(`https://tipsligan-api.fly.dev/${round.Id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

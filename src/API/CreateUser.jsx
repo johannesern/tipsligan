@@ -1,6 +1,6 @@
 export async function CreateUser(data) {
   try {
-    const response = await fetch("users", {
+    const response = await fetch("https://tipsligan-api.fly.dev/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
