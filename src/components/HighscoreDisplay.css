@@ -1,0 +1,12 @@
+.highscore-list {
+  margin-top: 10px;
+}
+
+.column {
+  text-align: left;
+  padding-left: 1rem;
+}
+
+.position-column {
+  text-align: center;
+}

@@ -15,19 +15,16 @@ import "./App.css";
 import Home from "./pages/Home";
 import UserRegistration from "./pages/UserRegistration";
 import Userdisplay from "./pages/Userdisplay";
-import Highscore from "./components/Highscore";
+import HighscoreDisplay from "./components/HighscoreDisplay";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
-import RoundsDisplay from "./components/RoundsDisplay";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route path="/" element={<Home />}>
         <Route path="registrera" element={<UserRegistration />} />
-        <Route path="topplista" element={<Highscore />}>
-          <Route index element={<RoundsDisplay />} />
-        </Route>
+        <Route path="topplista" element={<HighscoreDisplay />}></Route>
       </Route>
       <Route path="kontakta-oss" element={<Contact />} />
       <Route path="admin" element={<Admin />}>
