@@ -20,7 +20,7 @@ export default function HomeTitleAndButtons() {
         const data = await GetAllRounds();
         // console.log("Data from api:", data);
         if (data != null && data !== undefined) {
-          const updatePage = await CheckRound(data);
+          const updatePage = await CheckRound(data.round);
           if (updatePage) {
             breakInfiniteLoop++;
             if (breakInfiniteLoop === 3) {
@@ -30,12 +30,12 @@ export default function HomeTitleAndButtons() {
             }
           } else {
             // console.log("Data here?", data);
-            setRound(data);
+            setRound(data.round);
             passRoundToButtons();
-            if (data.isOpen && data.isActive) {
-              setTitle(data.title + " " + openForRegistration);
-            } else if (data.isOpen === false && data.isActive) {
-              setTitle(data.title + " " + ongoingButLocked);
+            if (data.round.isOpen && data.round.isActive) {
+              setTitle(data.round.title + " " + openForRegistration);
+            } else if (data.round.isOpen === false && data.round.isActive) {
+              setTitle(data.round.title + " " + ongoingButLocked);
             }
           }
         } else {
