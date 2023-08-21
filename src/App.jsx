@@ -30,6 +30,7 @@ const router = createBrowserRouter(
       <Route path="admin" element={<Admin />}>
         <Route path="användare" element={<Userdisplay />} />
         <Route path="registrera" element={<UserRegistration />} />
+        <Route path="skapa-ny-omgång" element={<RoundCreator />} />
       </Route>
     </Route>
   )

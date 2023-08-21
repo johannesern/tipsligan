@@ -9,10 +9,13 @@ export default function Home() {
         <h2>Adminsidan</h2>
         <div className="home-buttons">
           <Link to="användare">
-            <button>Hämta alla spelare</button>
+            <button>Hämta alla användare</button>
           </Link>
           <Link to="registrera">
             <button>Skapa ny användare</button>
+          </Link>
+          <Link to="skapa-ny-omgång">
+            <button>Skapa ny omgång</button>
           </Link>
         </div>
         <p>
