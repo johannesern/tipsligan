@@ -4,7 +4,7 @@ import { TipsliganAPIURL } from "../constants/Constants";
 export async function UpdateUser(user) {
   const baseUrl = DevURL();
   try {
-    const response = await fetch(`${baseUrl}/${user.Id}`, {
+    const response = await fetch(`${baseUrl}/users/${user.Id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

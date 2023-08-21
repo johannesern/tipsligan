@@ -4,7 +4,7 @@ import { TipsliganAPIURL } from "../constants/Constants";
 export async function DeleteUser(userId) {
   const baseUrl = DevURL();
   try {
-    const response = await fetch(`${baseUrl}/${userId}`, {
+    const response = await fetch(`${baseUrl}/users/${userId}`, {
       method: "DELETE",
     });
 

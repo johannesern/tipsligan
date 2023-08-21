@@ -4,7 +4,7 @@ import { TipsliganAPIURL } from "../constants/Constants";
 export async function GetUser(userId) {
   const baseUrl = DevURL();
   try {
-    const response = await fetch(`${baseUrl}/${userId}`);
+    const response = await fetch(`${baseUrl}/users/${userId}`);
 
     if (response.ok) {
       const responseData = await response.json();
