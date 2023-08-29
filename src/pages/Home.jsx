@@ -1,6 +1,6 @@
 import "./Home.css";
 
-import HomeTitleAndButtons from "../components/HomeTitleAndButtonsManager";
+import HomeTopContent from "../components/HomeTopContent";
 import SiteInfo from "../components/SiteInfo";
 
 import { Outlet } from "react-router-dom";
@@ -17,7 +17,7 @@ export default function Home() {
     <section>
       {/* <button onClick={testerButton}>Testa här</button> */}
       <article>
-        <HomeTitleAndButtons />
+        <HomeTopContent />
         <Outlet />
         <SiteInfo />
       </article>
