@@ -3,7 +3,7 @@ import GetAllRounds from "../API/GetAllRounds";
 import CheckRound from "../functions/CheckRound";
 import HomeButtons from "./HomeButtons";
 
-export default function HomeTitleAndButtons() {
+export default function HomeTopContent() {
   const [round, setRound] = useState();
   const [title, setTitle] = useState("");
   const [buttonData, setButtonData] = useState();
