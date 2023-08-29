@@ -18,6 +18,7 @@ import Userdisplay from "./pages/Userdisplay";
 import HighscoreDisplay from "./components/HighscoreDisplay";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
+import RoundCreator from "./pages/RoundCreator";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
