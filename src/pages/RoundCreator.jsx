@@ -1,6 +1,6 @@
 import { useState } from "react";
-import StartDatepicker from "../components/StartDatePicker.jsx";
-import EndDatepicker from "../components/EndDatePicker.jsx";
+import StartDatepicker from "../components/DatePicker/StartDatePicker.jsx";
+import EndDatepicker from "../components/DatePicker/EndDatePicker.jsx";
 
 export default function RoundCreator() {
   const [title, setTitle] = useState("");
