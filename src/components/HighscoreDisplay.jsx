@@ -12,7 +12,7 @@ const HighscoreDisplay = () => {
       const data = await GetAllRounds();
       // console.log("Data:", data);
       setUsers(data.users);
-      // console.log("Roundsdisplay:", data.users);
+      // console.log("Users display:", data.users);
     };
     getAllRounds();
   }, []);
