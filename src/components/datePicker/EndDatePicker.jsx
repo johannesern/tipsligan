@@ -19,7 +19,7 @@ export default function EndDatepicker({ getEndDate }) {
         className="datepicker"
         value={endDate}
         selected={endDate}
-        dateFormat="dd-MM-yyyy"
+        dateFormat="yyyy-MM-dd"
         onChange={(date) => handleChange(date)}
       />
     </>

@@ -19,7 +19,7 @@ export default function StartDatepicker({ getStartDate }) {
         className="datepicker"
         value={startDate}
         selected={startDate}
-        dateFormat="dd-MM-yyyy"
+        dateFormat="yyyy-MM-dd"
         onChange={(date) => handleChange(date)}
       />
     </>
