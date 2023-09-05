@@ -15,6 +15,6 @@ export default async function GetAllUsers() {
       console.error("Failed to get data");
     }
   } catch (error) {
-    console.error(error);
+    console.error("API:GetAllUsers error", error);
   }
 }

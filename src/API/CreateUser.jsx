@@ -20,6 +20,6 @@ export async function CreateUser(data) {
       console.error("Failed to post data");
     }
   } catch (error) {
-    console.error(error);
+    console.error("API:Create user error", error);
   }
 }

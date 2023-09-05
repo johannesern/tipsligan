@@ -14,7 +14,6 @@ export default async function GetSiteInfo() {
       console.error("Failed to get data");
     }
   } catch (error) {
-    console.error("Roundsdisplay error", error);
-    return error;
+    console.error("API:GetSiteInfo error", error);
   }
 }

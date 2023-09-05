@@ -14,6 +14,6 @@ export async function GetUser(userId) {
       console.error("Failed to get one data");
     }
   } catch (error) {
-    console.error(error);
+    console.error("API:GetUser error", error);
   }
 }

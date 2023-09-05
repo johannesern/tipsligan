@@ -12,7 +12,6 @@ export default async function UpdateRound(round) {
       },
       body: JSON.stringify(round),
     });
-    // console.log("Response:", response);
 
     if (response.ok) {
       return response.ok;
@@ -20,6 +19,6 @@ export default async function UpdateRound(round) {
       return response.ok;
     }
   } catch (error) {
-    console.error(error);
+    console.error("API:UpdateRound error", error);
   }
 }

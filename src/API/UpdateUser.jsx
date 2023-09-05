@@ -19,6 +19,6 @@ export async function UpdateUser(user) {
       return response.ok;
     }
   } catch (error) {
-    console.error(error);
+    console.error("API:UpdateUser error", error);
   }
 }

@@ -14,6 +14,6 @@ export async function DeleteUser(userId) {
       console.error("Failed to delete data");
     }
   } catch (error) {
-    console.error(error);
+    console.error("API:Delete user error", error);
   }
 }
