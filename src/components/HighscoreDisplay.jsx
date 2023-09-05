@@ -4,7 +4,8 @@ import "./HighscoreDisplay.css";
 
 const HighscoreDisplay = () => {
   const [users, setUsers] = useState();
-  const noActiveRound = "Ingen aktiv omgång";
+  const [usersLength, setUsersLength] = useState(0);
+  const noPlayers = "Inga spelare";
   // console.log("Users:", users);
 
   useEffect(() => {
@@ -12,6 +13,7 @@ const HighscoreDisplay = () => {
       const data = await GetAllRounds();
       // console.log("Data:", data);
       setUsers(data.users);
+      setUsersLength(data.users.length);
       // console.log("Users display:", data.users);
     };
     getAllRounds();
@@ -19,34 +21,34 @@ const HighscoreDisplay = () => {
 
   return (
     <article className="highscore-list">
-      {users != null ? (
-        <>
-          <div>
-            <h1>Topplista för denna omgång</h1>
-            <table>
-              <thead>
-                <tr>
-                  <th className="position-column">Placering</th>
-                  <th className="column">Poäng</th>
-                  <th className="column">Namn</th>
+      <h1>Topplista för denna omgång</h1>
+      {usersLength != 0 ? (
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th className="position-column">Placering</th>
+                <th className="column">Poäng</th>
+                <th className="column">Namn</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.id}>
+                  <td className="position-column">{user.position}</td>
+                  <td className="column">{user.points}</td>
+                  <td className="column">{user.firstname}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.id}>
-                    <td className="position-column">{user.position}</td>
-                    <td className="column">{user.points}</td>
-                    <td className="column">{user.firstname}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <div>{noActiveRound}</div>
+        <>
+          <br />
+          <div>{noPlayers}</div>
+        </>
       )}
-      <ol></ol>
     </article>
   );
 };
