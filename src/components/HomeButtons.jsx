@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -11,7 +12,7 @@ export default function HomeButtons({ passRoundToButtons }) {
     setTryToRegistrateMessage("Omgång låst för registrering, kontakta admin");
     setTimeout(() => {
       setTryToRegistrateMessage("");
-    }, 2500);
+    }, 5000);
   };
   return (
     <>
