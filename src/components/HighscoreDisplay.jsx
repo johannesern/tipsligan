@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import GetAllRounds from "../API/GetAllRounds";
+import GetActiveRound from "../API/GetActiveRound";
 import "./HighscoreDisplay.css";
 
 const HighscoreDisplay = () => {
@@ -10,10 +10,12 @@ const HighscoreDisplay = () => {
 
   useEffect(() => {
     const getAllRounds = async () => {
-      const data = await GetAllRounds();
-      // console.log("Data:", data);
-      setUsers(data.users);
-      setUsersLength(data.users.length);
+      const round = await GetActiveRound();
+      // console.log("Data:", round);
+      setUsers(round.userDatas);
+      if (round.id != null) {
+        setUsersLength(round.userDatas.length);
+      }
       // console.log("Users display:", data.users);
     };
     getAllRounds();
