@@ -13,7 +13,7 @@ import { FormattedDate } from "../functions/FormattedDate";
 
 const UserRegistration = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState({
+  const [newUser, setNewUser] = useState({
     Firstname: "Test",
     Lastname: "Testsson",
     Email: "test@test.com",
@@ -26,17 +26,17 @@ const UserRegistration = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setData((prevState) => ({ ...prevState, [name]: value }));
+    setNewUser((prevState) => ({ ...prevState, [name]: value }));
   };
 
   useEffect(() => {
-    setData((prevState) => ({ ...prevState, Coupon: coupon }));
+    setNewUser((prevState) => ({ ...prevState, Coupon: coupon }));
   }, [coupon]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await CreateUser(data);
-    navigate("/admin");
+    await CreateUser(newUser);
+    navigate("/");
   };
 
   return (
@@ -48,7 +48,7 @@ const UserRegistration = () => {
             Förnamn:
             <input
               className="inputTextBox"
-              value={data.Firstname}
+              value={newUser.Firstname}
               type="text"
               name="Firstname"
               onChange={handleChange}
@@ -59,7 +59,7 @@ const UserRegistration = () => {
             Efternamn:
             <input
               className="inputTextBox"
-              value={data.Lastname}
+              value={newUser.Lastname}
               type="text"
               name="Lastname"
               onChange={handleChange}
@@ -70,7 +70,7 @@ const UserRegistration = () => {
             Email:
             <input
               className="inputTextBox"
-              value={data.Email}
+              value={newUser.Email}
               type="email"
               name="Email"
               onChange={handleChange}
@@ -81,7 +81,7 @@ const UserRegistration = () => {
             Phone:
             <input
               className="inputTextBox"
-              value={data.Phone}
+              value={newUser.Phone}
               type="text"
               name="Phone"
               onChange={handleChange}

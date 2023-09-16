@@ -14,7 +14,7 @@ export default async function GetAllRounds() {
       console.error("Failed to get data");
     }
   } catch (error) {
-    console.error("API:GetAllRounds error", error);
+    console.error("API:GetActiveRound error", error);
     return error;
   }
 }
