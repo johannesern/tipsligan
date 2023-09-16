@@ -4,7 +4,7 @@ import { TipsliganAPIURL } from "../constants/Constants";
 export default async function GetAllRounds() {
   const baseUrl = DevURL();
   try {
-    const response = await fetch(baseUrl + "/rounds");
+    const response = await fetch(baseUrl + "/rounds/active");
     // console.log("Rounds response:", response);
     if (response.ok) {
       const responseData = await response.json();
