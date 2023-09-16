@@ -19,6 +19,7 @@ import HighscoreDisplay from "./components/HighscoreDisplay";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import RoundCreator from "./pages/RoundCreator";
+import DisplayAllRounds from "./pages/DisplayAllRounds";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +33,7 @@ const router = createBrowserRouter(
         <Route path="användare" element={<Userdisplay />} />
         <Route path="registrera" element={<UserRegistration />} />
         <Route path="skapa-ny-omgång" element={<RoundCreator />} />
+        <Route path="alla-omgångar" element={<DisplayAllRounds />} />
       </Route>
     </Route>
   )

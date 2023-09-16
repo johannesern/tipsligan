@@ -17,6 +17,9 @@ export default function Home() {
           <Link to="skapa-ny-omgång">
             <button>Skapa ny omgång</button>
           </Link>
+          <Link to="alla-omgångar">
+            <button>Hämta alla omgångar</button>
+          </Link>
         </div>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit molestiae
