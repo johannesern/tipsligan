@@ -51,7 +51,7 @@ export function RoundUpdateForm({ updateRound, updateRoundsInList }) {
           <label>
             Titel:
             <input
-              className="inputTextBox"
+              className="input-text-color"
               value={round.title}
               type="text"
               name="title"
@@ -73,7 +73,7 @@ export function RoundUpdateForm({ updateRound, updateRoundsInList }) {
             Öppen för registrering:
             <select
               defaultValue={round.isOpen}
-              className="inputSelect"
+              className="input-text-color"
               name="isOpen"
               onChange={handleChange}
             >
@@ -85,7 +85,7 @@ export function RoundUpdateForm({ updateRound, updateRoundsInList }) {
             Runda aktiv:
             <select
               defaultValue={round.isActive}
-              className="inputSelect"
+              className="input-text-color"
               name="isActive"
               onChange={handleChange}
             >
@@ -93,6 +93,15 @@ export function RoundUpdateForm({ updateRound, updateRoundsInList }) {
               <option value={false}>Nej</option>
             </select>
           </label>
+          <div>
+            <label>Användare</label>
+            <textarea
+              name="usersArea"
+              className="input-text-color"
+              cols="2"
+              rows={round.userDatas ? round.userDatas.length : 0}
+            ></textarea>
+          </div>
         </div>
         <button type="submit">Uppdatera rundan</button>
       </form>
