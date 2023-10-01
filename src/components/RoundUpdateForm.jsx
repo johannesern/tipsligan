@@ -1,12 +1,17 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./RoundUpdateForm.css";
 import UpdateRound from "../API/UpdateRound";
 import { FormattedDate } from "../functions/FormattedDate";
 import StartDatepicker from "./DatePicker/StartDatePicker";
 import EndDatepicker from "./datePicker/EndDatePicker";
+import UserManager from "./UserManager";
 
-export function RoundUpdateForm({ updateRound, updateRoundsInList }) {
+export function RoundUpdateForm({
+  updateRound,
+  updateRoundsInList,
+  allUserDatas,
+}) {
   const [responseFromUpdate, setResponseFromUpdate] = useState();
   const [round, setRound] = useState({
     id: updateRound.id,
@@ -36,6 +41,14 @@ export function RoundUpdateForm({ updateRound, updateRoundsInList }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRound((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleUpdateUserDatas = (updatedUserDatas) => {
+    // Update the updateRound.userDatas prop in the parent component
+    setRound({
+      ...round,
+      userDatas: updatedUserDatas,
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -94,13 +107,11 @@ export function RoundUpdateForm({ updateRound, updateRoundsInList }) {
             </select>
           </label>
           <div>
-            <label>Användare</label>
-            <textarea
-              name="usersArea"
-              className="input-text-color"
-              cols="2"
-              rows={round.userDatas ? round.userDatas.length : 0}
-            ></textarea>
+            <UserManager
+              roundUserDatas={updateRound.userDatas}
+              allUserDatas={allUserDatas}
+              updateUserDatasCallback={handleUpdateUserDatas}
+            />
           </div>
         </div>
         <button type="submit">Uppdatera rundan</button>

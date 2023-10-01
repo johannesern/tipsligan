@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import GetAllRounds from "../API/GetAllRounds";
+import GetAllUsersAsDataModels from "../API/GetAllUsersAsDataModels";
 import { DeleteRound } from "../API/DeleteRound";
 import { RoundUpdateForm } from "../components/RoundUpdateForm";
 import "./DisplayAllRounds.css";
@@ -8,17 +9,24 @@ const DisplayAllRounds = () => {
   const [deleteThisRound, setDeleteThisRound] = useState("");
   const [rounds, setRounds] = useState([]);
   const [round, setRound] = useState("");
+  const [allUserDataModels, setAllUserDataModels] = useState([]);
   const [openFormIds, setOpenFormIds] = useState([]);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
   //First time loading
   useEffect(() => {
     getRounds();
+    getUserDataModels();
   }, []);
 
   const getRounds = async () => {
     const allRounds = await GetAllRounds();
     setRounds(allRounds);
+  };
+
+  const getUserDataModels = async () => {
+    const allUserDataModels = await GetAllUsersAsDataModels();
+    setAllUserDataModels(allUserDataModels);
   };
 
   const updateRound = (round) => {
@@ -76,6 +84,7 @@ const DisplayAllRounds = () => {
                 <RoundUpdateForm
                   updateRound={round}
                   updateRoundsInList={updateRoundsInList}
+                  allUserDatas={allUserDataModels}
                 />
               )}
               <div className="user-buttons">
