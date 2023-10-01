@@ -9,14 +9,9 @@ export default function Home() {
     <section>
       <article>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, a
-          esse amet eaque perferendis repellat? Quae accusantium nostrum
-          voluptatem numquam quod. Explicabo aliquid commodi, est aliquam soluta
-          nemo corporis necessitatibus dolorem quo non veritatis a quia incidunt
-          quos corrupti repudiandae! Porro consequuntur aliquam consectetur
-          numquam iste recusandae dolore. Repellendus, saepe?
+          Här är tanken att man ska kunna uppdatera texten beroende på den
+          omgång som pågår samt kunna lägga in egen text man vill förmedla.
         </p>
-        {/* <HomeTopContent /> */}
         <Outlet />
         <SiteInfo />
       </article>

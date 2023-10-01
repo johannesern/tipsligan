@@ -7,6 +7,10 @@ export default function Home() {
     <section>
       <article>
         <h2>Adminsidan</h2>
+        <p>
+          Här kan man skriva in saker som är bra för admins att veta eller
+          tillvägagångssätt för hur vissa funktioner fungerar.
+        </p>
         <div className="home-buttons">
           <Link to="användare">
             <button>Hämta alla användare</button>
@@ -14,19 +18,13 @@ export default function Home() {
           <Link to="registrera">
             <button>Skapa ny användare</button>
           </Link>
-          <Link to="skapa-ny-omgång">
-            <button>Skapa ny omgång</button>
-          </Link>
           <Link to="alla-omgångar">
             <button>Hämta alla omgångar</button>
           </Link>
+          <Link to="skapa-ny-omgång">
+            <button>Skapa ny omgång</button>
+          </Link>
         </div>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit molestiae
-          dignissimos voluptates vero placeat incidunt unde, sequi, facere atque
-          quam, quos corrupti cum mollitia officia tempora a cupiditate
-          voluptate accusantium.
-        </p>
         <div>
           <Outlet />
         </div>
