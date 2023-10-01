@@ -17,8 +17,8 @@ const UserRegistration = () => {
     Firstname: "Test",
     Lastname: "Testsson",
     Email: "test@test.com",
-    Phone: "07011122233", //LÄGG IN HOMETOPCONTENT FUNKTION SOM GRÅAR REGISTRERA KNAPP OCH GER FLEMEDDELANDE
-    HasPaid: false, //GÄLLER OCKSÅ HOMEBUTTONS
+    Phone: "07011122233",
+    HasPaid: false,
     Coupon: [],
     UserCreated: FormattedDate(),
   });

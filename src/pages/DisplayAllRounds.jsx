@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GetAllRounds from "../API/GetAllRounds";
 import { DeleteRound } from "../API/DeleteRound";
 import { RoundUpdateForm } from "../components/RoundUpdateForm";
@@ -11,11 +11,15 @@ const DisplayAllRounds = () => {
   const [openFormIds, setOpenFormIds] = useState([]);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
-  const handleFetchRounds = async () => {
+  const getRounds = async () => {
     const allRounds = await GetAllRounds();
-    console.log("ALL ROUNDS:", allRounds);
+    // console.log("ALL ROUNDS:", allRounds);
     setRounds(allRounds);
   };
+
+  useEffect(() => {
+    getRounds();
+  }, []);
 
   const handleToggleForm = (round) => {
     if (openFormIds.includes(round.id)) {
@@ -39,6 +43,7 @@ const DisplayAllRounds = () => {
     if (remove === "true") {
       await DeleteRound(deleteThisRound);
       setIsConfirmationVisible(!isConfirmationVisible);
+      await getRounds();
     }
 
     setIsConfirmationVisible(!isConfirmationVisible);
@@ -46,7 +51,6 @@ const DisplayAllRounds = () => {
 
   return (
     <main>
-      <button onClick={handleFetchRounds}>Hämta rundor</button>
       {isConfirmationVisible && (
         <>
           <div className="confirmation-buttons">

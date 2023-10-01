@@ -1,19 +1,20 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { FormattedDate } from "../functions/FormattedDate";
 import "./UserUpdateForm.css";
 import { UpdateUser } from "../API/UpdateUser";
 
-export function UserUpdateForm({ incomingUser }) {
+export function UserUpdateForm({ updateUser }) {
   const [responseFromUpdate, setResponseFromUpdate] = useState();
   const [data, setData] = useState({
-    Id: incomingUser.id,
-    Firstname: incomingUser.firstname,
-    Lastname: incomingUser.lastname,
-    Email: incomingUser.email,
-    Phone: incomingUser.phone,
-    HasPaid: incomingUser.hasPaid,
-    Coupon: incomingUser.coupon,
-    UserCreated: incomingUser.userCreated,
+    Id: updateUser.id,
+    Firstname: updateUser.firstname,
+    Lastname: updateUser.lastname,
+    Email: updateUser.email,
+    Phone: updateUser.phone,
+    HasPaid: updateUser.hasPaid,
+    Coupon: updateUser.coupon,
+    UserCreated: updateUser.userCreated,
     UserRenewed: FormattedDate(),
   });
 
