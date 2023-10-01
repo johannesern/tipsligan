@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import "./RoundUpdateForm.css";
 import UpdateRound from "../API/UpdateRound";
@@ -5,17 +6,17 @@ import { FormattedDate } from "../functions/FormattedDate";
 import StartDatepicker from "./DatePicker/StartDatePicker";
 import EndDatepicker from "./datePicker/EndDatePicker";
 
-export function RoundUpdateForm({ incomingRound }) {
+export function RoundUpdateForm({ updateRound, updateRoundsInList }) {
   const [responseFromUpdate, setResponseFromUpdate] = useState();
   const [round, setRound] = useState({
-    id: incomingRound.id,
-    title: incomingRound.title,
-    startDate: incomingRound.startDate,
-    endDate: incomingRound.endDate,
-    userDatas: incomingRound.userDatas,
-    isActive: incomingRound.isActive,
-    isOpen: incomingRound.isOpen,
-    periodInWeeks: incomingRound.periodInWeeks,
+    id: updateRound.id,
+    title: updateRound.title,
+    startDate: updateRound.startDate,
+    endDate: updateRound.endDate,
+    userDatas: updateRound.userDatas,
+    isActive: updateRound.isActive,
+    isOpen: updateRound.isOpen,
+    periodInWeeks: updateRound.periodInWeeks,
   });
 
   const getStartDate = (childStartDate) => {
@@ -37,13 +38,10 @@ export function RoundUpdateForm({ incomingRound }) {
     setRound((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  useEffect(() => {
-    console.log("Update response:", responseFromUpdate);
-  }, [responseFromUpdate]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setResponseFromUpdate(await UpdateRound(round));
+    updateRoundsInList(round);
   };
 
   return (

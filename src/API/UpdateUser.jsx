@@ -12,12 +12,7 @@ export async function UpdateUser(user) {
       body: JSON.stringify(user),
     });
     // console.log("Response:", response);
-
-    if (response.ok) {
-      return response.ok;
-    } else {
-      return response.ok;
-    }
+    return response;
   } catch (error) {
     console.error("API:UpdateUser error", error);
   }

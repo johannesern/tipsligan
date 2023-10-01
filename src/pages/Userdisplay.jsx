@@ -11,15 +11,28 @@ const Userdisplay = () => {
   const [openFormIds, setOpenFormIds] = useState([]);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
+  //First time loading
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   const getUsers = async () => {
     const data = await GetAllUsers();
     setUsers(data);
   };
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+  const update = (user) => {
+    setUser(user);
+  };
 
+  //Update loader
+  const updateUserInList = async () => {
+    await getUsers();
+  };
+
+  useEffect(() => {}, [users]);
+
+  //Handle functions
   const handleToggleForm = (user) => {
     if (openFormIds.includes(user.id)) {
       setOpenFormIds(openFormIds.filter((id) => id !== user.id));
@@ -28,15 +41,6 @@ const Userdisplay = () => {
       update(user);
     }
   };
-
-  const update = (user) => {
-    setUser(user);
-  };
-
-  // const handleDelete = async (userId) => {
-  //   await DeleteUser(userId);
-  //   await handleFetchUsers();
-  // };
 
   const handleDeleteClick = (id) => {
     setSelectedUser(id);
@@ -49,7 +53,6 @@ const Userdisplay = () => {
       setIsConfirmationVisible(!isConfirmationVisible);
       await getUsers();
     }
-
     setIsConfirmationVisible(!isConfirmationVisible);
   };
 
@@ -66,11 +69,14 @@ const Userdisplay = () => {
       <ul>
         {users != null ? (
           users.map((user) => (
-            <li className="list-item" key={user.id}>
+            <li className="list-item" key={user.id || user.Id}>
               {" "}
               <h3>{user.firstname}</h3>
               {openFormIds.includes(user.id) && (
-                <UserUpdateForm update={user} />
+                <UserUpdateForm
+                  updateUser={user}
+                  updateUserInList={updateUserInList}
+                />
               )}
               <div className="user-buttons">
                 <button name="edit" onClick={() => handleToggleForm(user)}>

@@ -1,35 +1,32 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormattedDate } from "../functions/FormattedDate";
 import "./UserUpdateForm.css";
 import { UpdateUser } from "../API/UpdateUser";
 
-export function UserUpdateForm({ updateUser }) {
+export function UserUpdateForm({ updateUser, updateUserInList }) {
   const [responseFromUpdate, setResponseFromUpdate] = useState();
-  const [data, setData] = useState({
+  const [user, setUser] = useState({
     Id: updateUser.id,
-    Firstname: updateUser.firstname,
-    Lastname: updateUser.lastname,
-    Email: updateUser.email,
-    Phone: updateUser.phone,
-    HasPaid: updateUser.hasPaid,
-    Coupon: updateUser.coupon,
-    UserCreated: updateUser.userCreated,
-    UserRenewed: FormattedDate(),
+    firstname: updateUser.firstname,
+    lastname: updateUser.lastname,
+    email: updateUser.email,
+    phone: updateUser.phone,
+    hasPaid: updateUser.hasPaid,
+    coupon: updateUser.coupon,
+    userCreated: updateUser.userCreated,
+    userRenewed: FormattedDate(),
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setData((prevState) => ({ ...prevState, [name]: value }));
+    setUser((prevState) => ({ ...prevState, [name]: value }));
   };
-
-  useEffect(() => {
-    console.log("Update response:", responseFromUpdate);
-  }, [responseFromUpdate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setResponseFromUpdate(await UpdateUser(data));
+    setResponseFromUpdate(await UpdateUser(user));
+    updateUserInList(user);
   };
 
   return (
@@ -40,9 +37,9 @@ export function UserUpdateForm({ updateUser }) {
             Förnamn:
             <input
               className="inputTextBox"
-              value={data.Firstname}
+              value={user.firstname}
               type="text"
-              name="Firstname"
+              name="firstname"
               onChange={handleChange}
             />
           </label>
@@ -51,9 +48,9 @@ export function UserUpdateForm({ updateUser }) {
             Efternamn:
             <input
               className="inputTextBox"
-              value={data.Lastname}
+              value={user.lastname}
               type="text"
-              name="Lastname"
+              name="lastname"
               onChange={handleChange}
             />
           </label>
@@ -62,9 +59,9 @@ export function UserUpdateForm({ updateUser }) {
             Email:
             <input
               className="inputTextBox"
-              value={data.Email}
+              value={user.email}
               type="email"
-              name="Email"
+              name="email"
               onChange={handleChange}
             />
           </label>
@@ -73,18 +70,18 @@ export function UserUpdateForm({ updateUser }) {
             Phone:
             <input
               className="inputTextBox"
-              value={data.Phone}
+              value={user.phone}
               type="text"
-              name="Phone"
+              name="phone"
               onChange={handleChange}
             />
           </label>
           <label>
             Har betalat:
             <select
-              defaultValue={data.HasPaid}
+              defaultValue={user.hasPaid}
               className="inputSelect"
-              name="HasPaid"
+              name="hasPaid"
               onChange={handleChange}
             >
               <option value={true}>Ja</option>

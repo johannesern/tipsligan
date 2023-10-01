@@ -11,27 +11,34 @@ const DisplayAllRounds = () => {
   const [openFormIds, setOpenFormIds] = useState([]);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
-  const getRounds = async () => {
-    const allRounds = await GetAllRounds();
-    // console.log("ALL ROUNDS:", allRounds);
-    setRounds(allRounds);
-  };
-
+  //First time loading
   useEffect(() => {
     getRounds();
   }, []);
 
+  const getRounds = async () => {
+    const allRounds = await GetAllRounds();
+    setRounds(allRounds);
+  };
+
+  const updateRound = (round) => {
+    setRound(round);
+  };
+
+  const updateRoundsInList = async () => {
+    await getRounds();
+  };
+
+  useEffect(() => {}, [rounds]);
+
+  //Handle functions
   const handleToggleForm = (round) => {
     if (openFormIds.includes(round.id)) {
       setOpenFormIds(openFormIds.filter((id) => id !== round.id));
     } else {
       setOpenFormIds([...openFormIds, round.id]);
-      incomingRound(round);
+      updateRound(round);
     }
-  };
-
-  const incomingRound = (round) => {
-    setRound(round);
   };
 
   const handleDeleteClick = (id) => {
@@ -66,7 +73,10 @@ const DisplayAllRounds = () => {
               {" "}
               <h3>{round.title}</h3>
               {openFormIds.includes(round.id) && (
-                <RoundUpdateForm incomingRound={round} />
+                <RoundUpdateForm
+                  updateRound={round}
+                  updateRoundsInList={updateRoundsInList}
+                />
               )}
               <div className="user-buttons">
                 <button name="edit" onClick={() => handleToggleForm(round)}>

@@ -5,7 +5,7 @@ export default async function UpdateRound(round) {
   const baseUrl = DevURL();
   console.log("Runda att uppdatera:", round);
   try {
-    const response = await fetch(`${baseUrl}/rounds/${round.Id}`, {
+    const response = await fetch(`${baseUrl}/rounds/${round.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
