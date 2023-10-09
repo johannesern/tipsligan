@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./RoundUpdateForm.css";
 import UpdateRound from "../API/UpdateRound";
 import { FormattedDate } from "../functions/FormattedDate";
@@ -11,6 +11,7 @@ export function RoundUpdateForm({
   updateRound,
   updateRoundsInList,
   allUserDatas,
+  closeForm,
 }) {
   const [responseFromUpdate, setResponseFromUpdate] = useState();
   const [round, setRound] = useState({
@@ -41,6 +42,7 @@ export function RoundUpdateForm({
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRound((prevState) => ({ ...prevState, [name]: value }));
+    updateRoundsInList(round);
   };
 
   const handleUpdateUserDatas = (updatedUserDatas) => {
@@ -54,17 +56,19 @@ export function RoundUpdateForm({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setResponseFromUpdate(await UpdateRound(round));
+    closeForm();
     updateRoundsInList(round);
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <div className="textfields">
-          <label>
+      <form className="modal-content" onSubmit={handleSubmit}>
+        <div className="close" type="button" onClick={closeForm}></div>
+        <div>
+          <label className="text-color">
             Titel:
             <input
-              className="input-text-color"
+              className="text-color"
               value={round.title}
               type="text"
               name="title"
@@ -72,40 +76,84 @@ export function RoundUpdateForm({
             />
           </label>
           <br />
-          <label>
+          <label className="text-color">
             Startdatum:
             <StartDatepicker getStartDate={getStartDate} />
           </label>
           <br />
-          <label>
+          <label className="text-color">
             Slutdatum:
             <EndDatepicker getEndDate={getEndDate} />
           </label>
           <br />
-          <label>
-            Öppen för registrering:
-            <select
-              defaultValue={round.isOpen}
-              className="input-text-color"
-              name="isOpen"
-              onChange={handleChange}
-            >
-              <option value={true}>Ja</option>
-              <option value={false}>Nej</option>
-            </select>
-          </label>
-          <label>
-            Runda aktiv:
-            <select
-              defaultValue={round.isActive}
-              className="input-text-color"
-              name="isActive"
-              onChange={handleChange}
-            >
-              <option value={true}>Ja</option>
-              <option value={false}>Nej</option>
-            </select>
-          </label>
+          <div className="round-open-element text-color">
+            Öppen för registrering:{" "}
+            {round.isOpen ? (
+              <>
+                <button type="button">Ja</button>
+                <button
+                  type="button"
+                  name="isOpen"
+                  value={!updateRound.isOpen}
+                  onClick={() =>
+                    handleChange({ target: { name: "isOpen", value: false } })
+                  }
+                  className="unfilled-button"
+                >
+                  Nej
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  name="isOpen"
+                  value={!updateRound.isOpen}
+                  onClick={() =>
+                    handleChange({ target: { name: "isOpen", value: true } })
+                  }
+                  className="unfilled-button"
+                >
+                  Ja
+                </button>
+                <button type="button">Nej</button>
+              </>
+            )}
+          </div>
+          <div className="round-active-element text-color">
+            Runda är aktiv:{" "}
+            {round.isActive ? (
+              <>
+                <button type="button">Ja</button>
+                <button
+                  type="button"
+                  name="isActive"
+                  value={!updateRound.isActive}
+                  onClick={() =>
+                    handleChange({ target: { name: "isActive", value: false } })
+                  }
+                  className="unfilled-button"
+                >
+                  Nej
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  name="isActive"
+                  value={!updateRound.isActive}
+                  onClick={() =>
+                    handleChange({ target: { name: "isActive", value: true } })
+                  }
+                  className="unfilled-button"
+                >
+                  Ja
+                </button>
+                <button type="button">Nej</button>
+              </>
+            )}
+          </div>
           <div>
             <UserManager
               roundUserDatas={updateRound.userDatas}

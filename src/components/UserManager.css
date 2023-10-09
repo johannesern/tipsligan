@@ -1,3 +1,52 @@
 .user-manager {
   display: flex;
+  gap: 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.users-list {
+  list-style: none;
+}
+
+.usermanager-list-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 2px;
+}
+
+.paid-element {
+  display: flex;
+  align-items: center;
+}
+
+.unfilled-button {
+  color: black;
+  background-color: transparent;
+}
+
+.middle-column {
+  width: 2rem;
+}
+
+.table-item-column {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.text-color {
+  color: black;
+}
+
+.filter-payment {
+  display: flex;
+  gap: 5px;
+}
+
+.filter-payment-button {
+  border-width: 3px;
+  border-color: black;
+  background-color: transparent;
 }

@@ -18,7 +18,6 @@ const UserRegistration = () => {
     Lastname: "Testsson",
     Email: "test@test.com",
     Phone: "07011122233",
-    HasPaid: false,
     Coupon: [],
     UserCreated: FormattedDate(),
   });

@@ -12,7 +12,6 @@ export function UserUpdateForm({ updateUser, updateUserInList }) {
     lastname: updateUser.lastname,
     email: updateUser.email,
     phone: updateUser.phone,
-    hasPaid: updateUser.hasPaid,
     coupon: updateUser.coupon,
     userCreated: updateUser.userCreated,
     userRenewed: FormattedDate(),
@@ -75,18 +74,6 @@ export function UserUpdateForm({ updateUser, updateUserInList }) {
               name="phone"
               onChange={handleChange}
             />
-          </label>
-          <label>
-            Har betalat:
-            <select
-              defaultValue={user.hasPaid}
-              className="inputSelect"
-              name="hasPaid"
-              onChange={handleChange}
-            >
-              <option value={true}>Ja</option>
-              <option value={false}>Nej</option>
-            </select>
           </label>
         </div>
         <button type="submit">Uppdatera användare</button>

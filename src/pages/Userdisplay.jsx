@@ -66,28 +66,30 @@ const Userdisplay = () => {
           </div>
         </>
       )}
-      <ul>
+      <ul className="users-list">
         {users != null ? (
           users.map((user) => (
             <li className="list-item" key={user.id || user.Id}>
               {" "}
-              <h3>{user.firstname}</h3>
-              {openFormIds.includes(user.id) && (
-                <UserUpdateForm
-                  updateUser={user}
-                  updateUserInList={updateUserInList}
-                />
-              )}
-              <div className="user-buttons">
-                <button name="edit" onClick={() => handleToggleForm(user)}>
-                  Ändra
-                </button>
-                <button
-                  name="delete"
-                  onClick={() => handleDeleteClick(user.id)}
-                >
-                  Ta bort
-                </button>
+              <div className="user-list-item">
+                <h3>{user.firstname}</h3>
+                {openFormIds.includes(user.id) && (
+                  <UserUpdateForm
+                    updateUser={user}
+                    updateUserInList={updateUserInList}
+                  />
+                )}
+                <div className="user-buttons">
+                  <button name="edit" onClick={() => handleToggleForm(user)}>
+                    Ändra
+                  </button>
+                  <button
+                    name="delete"
+                    onClick={() => handleDeleteClick(user.id)}
+                  >
+                    Ta bort
+                  </button>
+                </div>
               </div>
             </li>
           ))

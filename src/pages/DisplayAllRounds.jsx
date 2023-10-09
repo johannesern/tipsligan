@@ -26,7 +26,9 @@ const DisplayAllRounds = () => {
 
   const getUserDataModels = async () => {
     const allUserDataModels = await GetAllUsersAsDataModels();
-    setAllUserDataModels(allUserDataModels);
+    if (allUserDataModels) {
+      setAllUserDataModels(allUserDataModels);
+    }
   };
 
   const updateRound = (round) => {
@@ -47,6 +49,10 @@ const DisplayAllRounds = () => {
       setOpenFormIds([...openFormIds, round.id]);
       updateRound(round);
     }
+  };
+
+  const closeForm = () => {
+    setOpenFormIds([]);
   };
 
   const handleDeleteClick = (id) => {
@@ -74,25 +80,33 @@ const DisplayAllRounds = () => {
           </div>
         </>
       )}
-      <ul>
+      <ul className="rounds-list">
         {rounds != null ? (
           rounds.map((round) => (
-            <li className="list-item" key={round.id}>
+            <li className="rounds-list-item" key={round.id}>
               {" "}
               <h3>{round.title}</h3>
               {openFormIds.includes(round.id) && (
-                <RoundUpdateForm
-                  updateRound={round}
-                  updateRoundsInList={updateRoundsInList}
-                  allUserDatas={allUserDataModels}
-                />
+                <div className="form-overlay">
+                  <RoundUpdateForm
+                    closeForm={closeForm}
+                    updateRound={round}
+                    updateRoundsInList={updateRoundsInList}
+                    allUserDatas={allUserDataModels}
+                  />
+                </div>
               )}
-              <div className="user-buttons">
-                <button name="edit" onClick={() => handleToggleForm(round)}>
+              <div className="round-buttons">
+                <button
+                  name="edit"
+                  className="round-button"
+                  onClick={() => handleToggleForm(round)}
+                >
                   Ändra
                 </button>
                 <button
                   name="delete"
+                  className="round-button"
                   onClick={() => handleDeleteClick(round.id)}
                 >
                   Ta bort
