@@ -3,51 +3,48 @@ import GetAllRounds from "../API/GetAllRounds";
 import GetAllUsersAsDataModels from "../API/GetAllUsersAsDataModels";
 import { DeleteRound } from "../API/DeleteRound";
 import { RoundUpdateForm } from "../components/RoundUpdateForm";
+import useStore from "../store/useStore";
 import "./DisplayAllRounds.css";
 
 const DisplayAllRounds = () => {
+  const addUserDataModels = useStore((state) => state.addUserDataModels);
+  const addRounds = useStore((state) => state.addRounds);
+  const addRoundToUpdate = useStore((state) => state.addRoundToUpdate);
+  const rounds = useStore((state) => state.roundsCollection);
   const [deleteThisRound, setDeleteThisRound] = useState("");
-  const [rounds, setRounds] = useState([]);
-  const [round, setRound] = useState("");
-  const [allUserDataModels, setAllUserDataModels] = useState([]);
   const [openFormIds, setOpenFormIds] = useState([]);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
-  //First time loading
   useEffect(() => {
     getRounds();
     getUserDataModels();
   }, []);
 
+  const refreshRounds = async () => {
+    await getRounds();
+    await getUserDataModels();
+  };
+
   const getRounds = async () => {
     const allRounds = await GetAllRounds();
-    setRounds(allRounds);
+    addRounds(allRounds);
   };
 
   const getUserDataModels = async () => {
-    const allUserDataModels = await GetAllUsersAsDataModels();
-    if (allUserDataModels) {
-      setAllUserDataModels(allUserDataModels);
-    }
+    const dataModels = await GetAllUsersAsDataModels();
+    addUserDataModels(dataModels);
   };
 
-  const updateRound = (round) => {
-    setRound(round);
-  };
-
-  const updateRoundsInList = async () => {
-    await getRounds();
-  };
-
-  useEffect(() => {}, [rounds]);
-
-  //Handle functions
   const handleToggleForm = (round) => {
+    // Check if the clicked round is already open
     if (openFormIds.includes(round.id)) {
-      setOpenFormIds(openFormIds.filter((id) => id !== round.id));
+      // If it's already open, close it
+      setOpenFormIds([]);
     } else {
-      setOpenFormIds([...openFormIds, round.id]);
-      updateRound(round);
+      // If it's not open, close any open forms first
+      setOpenFormIds([round.id]);
+      // Set the currently selected round
+      addRoundToUpdate(round);
     }
   };
 
@@ -90,9 +87,7 @@ const DisplayAllRounds = () => {
                 <div className="form-overlay">
                   <RoundUpdateForm
                     closeForm={closeForm}
-                    updateRound={round}
-                    updateRoundsInList={updateRoundsInList}
-                    allUserDatas={allUserDataModels}
+                    refreshRounds={refreshRounds}
                   />
                 </div>
               )}

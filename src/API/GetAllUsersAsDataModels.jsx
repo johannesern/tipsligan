@@ -9,7 +9,7 @@ export default async function GetAllUsersAsDataModels() {
 
     if (response.ok) {
       const responseData = await response.json();
-      //   console.log("Fetchuser response:", responseData);
+      // console.log("Fetchuser response:", responseData);
       return responseData;
     } else {
       console.error("Failed to get data");

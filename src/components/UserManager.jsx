@@ -1,104 +1,102 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import useStore from "../store/useStore";
 import "./UserManager.css";
 
-export default function UserManager({
-  roundUserDatas,
-  allUserDatas,
-  updateUserDatasCallback,
-}) {
-  // Sample data
+export default function UserManager() {
+  const users = useStore((state) => state.usersDataModelsCollection);
+  const round = useStore((state) => state.roundToUpdate);
+  const updateRound = useStore((state) => state.addRoundToUpdate);
   const [filter, setFilter] = useState("");
+  const [filteredRoundUsers, setFilteredRoundUsers] = useState([]);
+  const [filteredAvailableUser, setFilteredAvailableUser] = useState([]);
 
-  const [addedPlayers, setAddedPlayers] = useState(
-    roundUserDatas ? roundUserDatas : []
-  );
-
-  const [filteredAddedPlayers, setFilteredAddedPlayers] = useState();
-
-  const [availablePlayers, setAvailablePlayers] = useState(
-    allUserDatas ? allUserDatas : []
-  );
-
-  const handleAddPlayer = (player) => {
-    // Remove player from available players
-    const newAvailablePlayers = availablePlayers.filter(
-      (p) => p.id !== player.id
+  const mainFilter = () => {
+    const tmpfilteredRoundUser = round.userDatas?.filter((user) =>
+      user.firstname.toLowerCase().includes(filter.toLowerCase())
     );
-    setAvailablePlayers(newAvailablePlayers);
-
-    // Add player to added players
-    setAddedPlayers([...addedPlayers, player]);
-  };
-
-  const handleRemovePlayer = (player) => {
-    // Remove player from added players
-    const newAddedPlayers = addedPlayers.filter((p) => p.id !== player.id);
-    setAddedPlayers(newAddedPlayers);
-
-    // Add player to available players
-    setAvailablePlayers([...availablePlayers, player]);
-  };
-
-  const handlePlayerChange = (updatedPlayer) => {
-    const updatedPlayers = addedPlayers.map((player) => {
-      if (player.id === updatedPlayer.id) {
-        return {
-          ...player,
-          hasPaid: !player.hasPaid, // Update the score for the selected player
-        };
-      }
-      return player; // Return unchanged players
-    });
-
-    // Update the state with the new array
-    setAddedPlayers(updatedPlayers);
+    const tmpfilteredAvUser = filteringAvailablePlayers().filter((aUser) =>
+      aUser.firstname.toLowerCase().includes(filter.toLowerCase())
+    );
+    // console.log("TMPFR", tmpfilteredRoundUser);´
+    setFilteredRoundUsers(tmpfilteredRoundUser);
+    // console.log("TMPAU", tmpfilteredAvUser);
+    setFilteredAvailableUser(tmpfilteredAvUser);
   };
 
   const filteringAvailablePlayers = () => {
-    if (addedPlayers) {
-      const filteredPlayers = allUserDatas.filter(
-        (user) =>
-          !addedPlayers.some((addedPlayer) => addedPlayer.id === user.id)
+    if (round.userDatas) {
+      const tmpAvailablePlayers = users.filter(
+        (user) => !round.userDatas.some((player) => player.id === user.id)
       );
-      setAvailablePlayers(filteredPlayers);
-    }
-  };
-
-  const updateFilteredPlayers = () => {
-    let filteredPlayers;
-    if (addedPlayers && filter) {
-      filteredPlayers = filteredAddedPlayers.filter((player) => {
-        const playerNameLower = player.firstname.toLowerCase();
-        const filterLowerCase = filter.toLowerCase();
-        return playerNameLower.includes(filterLowerCase);
-      }, setAddedPlayers(filteredPlayers));
+      return tmpAvailablePlayers;
     } else {
-      setAddedPlayers(addedPlayers);
+      return users;
     }
   };
 
-  useEffect(() => {
-    console.log("ON MOUNT");
-    console.log("FILTERED ADDED:", filteredAddedPlayers);
-    updateUserDatasCallback(
-      filteredAddedPlayers ? filteredAddedPlayers : addedPlayers
-    );
-    filteringAvailablePlayers();
-  }, [addedPlayers]);
+  const handleAddPlayer = (user) => {
+    if (round.userDatas === null) {
+      round.userDatas = [];
+      const newRound = {
+        ...round,
+        userDatas: [...round.userDatas, user],
+      };
+      updateRound(newRound);
+    } else {
+      const newRound = {
+        ...round,
+        userDatas: [...round.userDatas, user],
+      };
+      updateRound(newRound);
+    }
+    mainFilter();
+  };
 
-  useEffect(() => {
-    // Call the filter function when the filter value changes
+  const handleRemovePlayer = (player) => {
+    const newRound = {
+      ...round,
+      userDatas: round.userDatas.filter((p) => p.id !== player.id),
+    };
+    updateRound(newRound);
+    mainFilter();
+  };
+
+  const handlePlayerChange = (updatedPlayer) => {
+    const updatedPlayers = round.userDatas.map((player) => {
+      if (player.id === updatedPlayer.id) {
+        return {
+          ...player,
+          hasPaid: !player.hasPaid,
+        };
+      }
+      return player;
+    });
+
+    const newRound = {
+      ...round,
+      userDatas: updatedPlayers,
+    };
+
+    updateRound(newRound);
+  };
 
   const handleChange = (e) => {
     setFilter(e.target.value);
   };
 
+  useEffect(() => {
+    mainFilter();
+  }, []);
+
+  useEffect(() => {
+    mainFilter();
+  }, [round, filter]);
+
   return (
     <div className="user-manager">
       <div>
         <h2 className="text-color">Anmälda spelare</h2>
-
         <table>
           <thead>
             <tr>
@@ -113,14 +111,11 @@ export default function UserManager({
               <td>
                 <input
                   className="text-color"
-                  value={filter}
                   type="text"
                   onChange={handleChange}
                 />
               </td>
-              <td>
-                <input className="text-color" type="text" />
-              </td>
+              <td></td>
               <td className="filter-payment">
                 <button
                   type="button"
@@ -138,8 +133,8 @@ export default function UserManager({
             </tr>
           </tbody>
 
-          {addedPlayers ? (
-            addedPlayers.map((player) => (
+          {filteredRoundUsers ? (
+            filteredRoundUsers.map((player) => (
               <tbody key={player.id}>
                 <tr className="player-row">
                   <td className="table-item-column text-color">
@@ -194,8 +189,8 @@ export default function UserManager({
         <h2 className="text-color">Tillgängliga spelare</h2>
         <table>
           <tbody>
-            {availablePlayers ? (
-              availablePlayers.map((player) => (
+            {filteredAvailableUser ? (
+              filteredAvailableUser.map((player) => (
                 <tr className="player-row" key={player.id}>
                   <td className="table-item-column text-color">
                     {player.firstname}
@@ -219,55 +214,4 @@ export default function UserManager({
       </div>
     </div>
   );
-}
-
-{
-  /* <ul className="users-list">
-  {addedPlayers ? (
-    addedPlayers.map((player) => (
-      <li key={player.id}>
-        <div className="usermanager-list-item">
-          {player.firstname}
-          <label>
-            <div className="paid-element">
-              Betalat:{" "}
-              {player.hasPaid ? (
-                <>
-                  <button>Ja</button>
-                  <button className="unfilled-button">Nej</button>
-                </>
-              ) : (
-                <>
-                  <button className="unfilled-button">Ja</button>
-                  <button>Nej</button>
-                </>
-              )}
-            </div>
-          </label>
-
-          <button onClick={() => handleRemovePlayer(player)}>Ta bort</button>
-        </div>
-      </li>
-    ))
-  ) : (
-    <></>
-  )}
-</ul>; */
-
-  {
-    /* <ul className="users-list">
-  {availablePlayers ? (
-    availablePlayers.map((player) => (
-      <li key={player.id}>
-        <div className="usermanager-list-item">
-          {player.firstname}
-          <button onClick={() => handleAddPlayer(player)}>Lägg till</button>
-        </div>
-      </li>
-    ))
-  ) : (
-    <></>
-  )}
-</ul>; */
-  }
 }

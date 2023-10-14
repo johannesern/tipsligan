@@ -1,39 +1,25 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
 import "./RoundUpdateForm.css";
 import UpdateRound from "../API/UpdateRound";
 import { FormattedDate } from "../functions/FormattedDate";
 import StartDatepicker from "./DatePicker/StartDatePicker";
 import EndDatepicker from "./datePicker/EndDatePicker";
 import UserManager from "./UserManager";
+import useStore from "../store/useStore";
 
-export function RoundUpdateForm({
-  updateRound,
-  updateRoundsInList,
-  allUserDatas,
-  closeForm,
-}) {
-  const [responseFromUpdate, setResponseFromUpdate] = useState();
-  const [round, setRound] = useState({
-    id: updateRound.id,
-    title: updateRound.title,
-    startDate: updateRound.startDate,
-    endDate: updateRound.endDate,
-    userDatas: updateRound.userDatas,
-    isActive: updateRound.isActive,
-    isOpen: updateRound.isOpen,
-    periodInWeeks: updateRound.periodInWeeks,
-  });
+export function RoundUpdateForm({ refreshRounds, closeForm }) {
+  const round = useStore((state) => state.roundToUpdate);
+  const updateRound = useStore((state) => state.addRoundToUpdate);
 
   const getStartDate = (childStartDate) => {
-    setRound({
+    updateRound({
       ...round,
       startDate: FormattedDate(childStartDate),
     });
   };
 
   const getEndDate = (childEndDate) => {
-    setRound({
+    updateRound({
       ...round,
       endDate: FormattedDate(childEndDate),
     });
@@ -41,23 +27,18 @@ export function RoundUpdateForm({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setRound((prevState) => ({ ...prevState, [name]: value }));
-    updateRoundsInList(round);
-  };
-
-  const handleUpdateUserDatas = (updatedUserDatas) => {
-    // Update the updateRound.userDatas prop in the parent component
-    setRound({
+    const newRound = {
       ...round,
-      userDatas: updatedUserDatas,
-    });
+      [name]: value,
+    };
+    updateRound(newRound);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setResponseFromUpdate(await UpdateRound(round));
+    await UpdateRound(round);
+    refreshRounds();
     closeForm();
-    updateRoundsInList(round);
   };
 
   return (
@@ -94,7 +75,7 @@ export function RoundUpdateForm({
                 <button
                   type="button"
                   name="isOpen"
-                  value={!updateRound.isOpen}
+                  value={!round.isOpen}
                   onClick={() =>
                     handleChange({ target: { name: "isOpen", value: false } })
                   }
@@ -108,7 +89,7 @@ export function RoundUpdateForm({
                 <button
                   type="button"
                   name="isOpen"
-                  value={!updateRound.isOpen}
+                  value={!round.isOpen}
                   onClick={() =>
                     handleChange({ target: { name: "isOpen", value: true } })
                   }
@@ -128,7 +109,7 @@ export function RoundUpdateForm({
                 <button
                   type="button"
                   name="isActive"
-                  value={!updateRound.isActive}
+                  value={!round.isActive}
                   onClick={() =>
                     handleChange({ target: { name: "isActive", value: false } })
                   }
@@ -142,7 +123,7 @@ export function RoundUpdateForm({
                 <button
                   type="button"
                   name="isActive"
-                  value={!updateRound.isActive}
+                  value={!round.isActive}
                   onClick={() =>
                     handleChange({ target: { name: "isActive", value: true } })
                   }
@@ -155,11 +136,7 @@ export function RoundUpdateForm({
             )}
           </div>
           <div>
-            <UserManager
-              roundUserDatas={updateRound.userDatas}
-              allUserDatas={allUserDatas}
-              updateUserDatasCallback={handleUpdateUserDatas}
-            />
+            <UserManager />
           </div>
         </div>
         <button type="submit">Uppdatera rundan</button>
