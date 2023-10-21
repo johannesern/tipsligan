@@ -1,29 +1,15 @@
 /* eslint-disable react/prop-types */
 import "./RoundUpdateForm.css";
 import UpdateRound from "../API/UpdateRound";
-import { FormattedDate } from "../functions/FormattedDate";
 import StartDatepicker from "./DatePicker/StartDatePicker";
 import EndDatepicker from "./datePicker/EndDatePicker";
 import UserManager from "./UserManager";
 import useStore from "../store/useStore";
+import { FormattedDate } from "../functions/FormattedDate";
 
 export function RoundUpdateForm({ refreshRounds, closeForm }) {
   const round = useStore((state) => state.roundToUpdate);
   const updateRound = useStore((state) => state.addRoundToUpdate);
-
-  const getStartDate = (childStartDate) => {
-    updateRound({
-      ...round,
-      startDate: FormattedDate(childStartDate),
-    });
-  };
-
-  const getEndDate = (childEndDate) => {
-    updateRound({
-      ...round,
-      endDate: FormattedDate(childEndDate),
-    });
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,7 +22,12 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await UpdateRound(round);
+    const newRound = {
+      ...round,
+      startDate: FormattedDate(round.startDate),
+      endDate: FormattedDate(round.endDate),
+    };
+    await UpdateRound(newRound);
     refreshRounds();
     closeForm();
   };
@@ -59,12 +50,12 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
           <br />
           <label className="text-color">
             Startdatum:
-            <StartDatepicker getStartDate={getStartDate} />
+            <StartDatepicker />
           </label>
           <br />
           <label className="text-color">
             Slutdatum:
-            <EndDatepicker getEndDate={getEndDate} />
+            <EndDatepicker />
           </label>
           <br />
           <div className="round-open-element text-color">

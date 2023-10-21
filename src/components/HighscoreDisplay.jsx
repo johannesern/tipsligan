@@ -1,30 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import GetActiveRound from "../API/GetActiveRound";
 import "./HighscoreDisplay.css";
+import useStore from "../store/useStore";
 
 const HighscoreDisplay = () => {
-  const [users, setUsers] = useState();
-  const [usersLength, setUsersLength] = useState(0);
+  const round = useStore((state) => state.roundToUpdate);
+  const addRound = useStore((state) => state.addRoundToUpdate);
+
   const noPlayers = "Inga spelare";
   // console.log("Users:", users);
 
   useEffect(() => {
-    const getAllRounds = async () => {
-      const round = await GetActiveRound();
-      // console.log("Data:", round);
-      setUsers(round.userDatas);
-      if (round.id != null) {
-        setUsersLength(round.userDatas.length);
-      }
-      // console.log("Users display:", data.users);
+    const tmp = async () => {
+      getRound();
     };
-    getAllRounds();
+    tmp();
   }, []);
+
+  const getRound = async () => {
+    const activeRound = await GetActiveRound();
+    console.log(activeRound);
+    addRound(activeRound);
+  };
 
   return (
     <article className="highscore-list">
       <h1>Topplista för denna omgång</h1>
-      {usersLength != 0 ? (
+      {round ? (
         <div>
           <table>
             <thead>
@@ -35,7 +37,7 @@ const HighscoreDisplay = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
+              {round.userDatas?.map((user) => (
                 <tr key={user.id}>
                   <td className="position-column">{user.position}</td>
                   <td className="column">{user.points}</td>

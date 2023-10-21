@@ -2,21 +2,21 @@
 import { create } from "zustand";
 
 const useStore = create((set) => ({
-    usersCollection: [],
-
     userDataModelsCollection: [],
 
     filteredUsersCollection: [],
 
     roundsCollection: [],
 
+    roundActive: {},
+
     roundToUpdate: {},
+
+    addRoundActive: (round) => set((state) => ({ roundActive: round })),
 
     addRoundToUpdate: (round) => set((state) => ({ roundToUpdate: round })),
 
-    addUsers: (users) => set((state) => ({ userCollection: users })),
-
-    addUserDataModels: (userDataModels) => set((state) => ({ usersDataModelsCollection: userDataModels })),
+    addUserDataModels: (userDataModels) => set((state) => ({ userDataModelsCollection: userDataModels })),
 
     addfilteredUsers: (users) =>
         set((state) => ({ filteredUserCollection: users })),

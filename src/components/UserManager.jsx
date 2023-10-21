@@ -4,12 +4,21 @@ import useStore from "../store/useStore";
 import "./UserManager.css";
 
 export default function UserManager() {
-  const users = useStore((state) => state.usersDataModelsCollection);
+  const users = useStore((state) => state.userDataModelsCollection);
   const round = useStore((state) => state.roundToUpdate);
   const updateRound = useStore((state) => state.addRoundToUpdate);
   const [filter, setFilter] = useState("");
   const [filteredRoundUsers, setFilteredRoundUsers] = useState([]);
   const [filteredAvailableUser, setFilteredAvailableUser] = useState([]);
+  const [paymentFilter, setPaymentFilter] = useState(null);
+
+  useEffect(() => {
+    mainFilter();
+  }, [round, filter, paymentFilter]);
+
+  useEffect(() => {
+    mainFilter();
+  }, []);
 
   const mainFilter = () => {
     const tmpfilteredRoundUser = round.userDatas?.filter((user) =>
@@ -18,8 +27,20 @@ export default function UserManager() {
     const tmpfilteredAvUser = filteringAvailablePlayers().filter((aUser) =>
       aUser.firstname.toLowerCase().includes(filter.toLowerCase())
     );
-    // console.log("TMPFR", tmpfilteredRoundUser);´
-    setFilteredRoundUsers(tmpfilteredRoundUser);
+    if (paymentFilter) {
+      const usersHasPaid = tmpfilteredRoundUser.filter(
+        (user) => paymentFilter === user.hasPaid
+      );
+      setFilteredRoundUsers(usersHasPaid);
+    } else if (paymentFilter === false) {
+      const usersNotPaid = tmpfilteredRoundUser.filter(
+        (user) => paymentFilter === user.hasPaid
+      );
+      // console.log("TMPFR", tmpfilteredRoundUser);´
+      setFilteredRoundUsers(usersNotPaid);
+    } else {
+      setFilteredRoundUsers(tmpfilteredRoundUser);
+    }
     // console.log("TMPAU", tmpfilteredAvUser);
     setFilteredAvailableUser(tmpfilteredAvUser);
   };
@@ -85,132 +106,171 @@ export default function UserManager() {
     setFilter(e.target.value);
   };
 
-  useEffect(() => {
-    mainFilter();
-  }, []);
+  const handlePaymentFilter = (condition) => {
+    if (paymentFilter === null || paymentFilter === Boolean.condition) {
+      if (condition === "true") {
+        setPaymentFilter(true);
+      } else {
+        setPaymentFilter(false);
+      }
+    } else {
+      setPaymentFilter(null);
+    }
+  };
 
-  useEffect(() => {
-    mainFilter();
-  }, [round, filter]);
+  const handlePlayerPointsChange = (updatedPlayer, e) => {
+    const newPoints = e.target.value;
+
+    const updatedPlayers = round.userDatas.map((player) => {
+      if (player.id === updatedPlayer.id) {
+        return {
+          ...player,
+          points: newPoints,
+        };
+      }
+      return player;
+    });
+
+    const newRound = {
+      ...round,
+      userDatas: updatedPlayers,
+    };
+
+    updateRound(newRound);
+  };
 
   return (
     <div className="user-manager">
-      <div>
-        <h2 className="text-color">Anmälda spelare</h2>
-        <table>
-          <thead>
-            <tr>
-              <th className="text-color">Förnamn</th>
-              <th className="text-color">Efternamn</th>
-              <th className="text-color">Betalat</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <input
-                  className="text-color"
-                  type="text"
-                  onChange={handleChange}
-                />
-              </td>
-              <td></td>
-              <td className="filter-payment">
-                <button
-                  type="button"
-                  className="filter-payment-button text-color"
-                >
-                  Ja
-                </button>
-                <button
-                  type="button"
-                  className="filter-payment-button text-color"
-                >
-                  Nej
-                </button>
-              </td>
-            </tr>
-          </tbody>
-
-          {filteredRoundUsers ? (
-            filteredRoundUsers.map((player) => (
-              <tbody key={player.id}>
-                <tr className="player-row">
-                  <td className="table-item-column text-color">
-                    {player.firstname}
-                  </td>
-                  <td className="text-color">Efternamn</td>
-                  <td className="table-item-column">
-                    <div className="paid-element text-color">
-                      {player.hasPaid ? (
-                        <>
-                          <button type="button">Ja</button>
-                          <button
-                            type="button"
-                            onClick={() => handlePlayerChange(player)}
-                            className="unfilled-button"
-                          >
-                            Nej
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => handlePlayerChange(player)}
-                            className="unfilled-button"
-                          >
-                            Ja
-                          </button>
-                          <button type="button">Nej</button>
-                        </>
-                      )}
-                    </div>
-                  </td>
-                  <td className="table-item-column">
-                    <button
-                      type="button"
-                      onClick={() => handleRemovePlayer(player)}
-                    >
-                      Ta bort
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            ))
-          ) : (
-            <></>
-          )}
-        </table>
+      <div className="filter-elements">
+        <div>
+          <h3 className="text-color">Sök</h3>
+          <input className="text-color" type="text" onChange={handleChange} />
+        </div>
+        <div>
+          <div className="paid-and-points">
+            <h3 className="text-color">Betalat</h3>
+            <h3 className="text-color">Poäng</h3>
+          </div>
+          <div className="filter-payment">
+            <button
+              type="button"
+              className={`text-color ${
+                paymentFilter === true
+                  ? "filter-payment-button-active"
+                  : "filter-payment-button"
+              }`}
+              onClick={() => handlePaymentFilter("true")}
+            >
+              Ja
+            </button>
+            <button
+              type="button"
+              className={`text-color ${
+                paymentFilter === false
+                  ? "filter-payment-button-active"
+                  : "filter-payment-button"
+              }`}
+              onClick={() => handlePaymentFilter("false")}
+            >
+              Nej
+            </button>
+          </div>
+        </div>
       </div>
-
-      <div>
-        <h2 className="text-color">Tillgängliga spelare</h2>
-        <table>
-          <tbody>
-            {filteredAvailableUser ? (
-              filteredAvailableUser.map((player) => (
-                <tr className="player-row" key={player.id}>
-                  <td className="table-item-column text-color">
-                    {player.firstname}
-                  </td>
-                  <td className="table-item-column"></td>
-                  <td className="table-item-column">
-                    <button
-                      type="button"
-                      onClick={() => handleAddPlayer(player)}
-                    >
-                      Lägg till
-                    </button>
-                  </td>
-                </tr>
+      <div className="users-columns">
+        <div className="added-users-column">
+          <h2 className="text-color">Anmälda spelare</h2>
+          <table>
+            {filteredRoundUsers ? (
+              filteredRoundUsers.map((player) => (
+                <tbody key={player.id}>
+                  <tr className="player-row">
+                    <td className="table-item-column text-color firstname-min-width">
+                      {player.firstname}
+                    </td>
+                    <td className="table-item-column text-color lastname-min-width">
+                      {player.lastname}
+                    </td>
+                    <td className="table-item-column">
+                      <div className="paid-element text-color">
+                        {player.hasPaid ? (
+                          <>
+                            <button type="button">Ja</button>
+                            <button
+                              type="button"
+                              onClick={() => handlePlayerChange(player)}
+                              className="unfilled-button"
+                            >
+                              Nej
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              type="button"
+                              onClick={() => handlePlayerChange(player)}
+                              className="unfilled-button"
+                            >
+                              Ja
+                            </button>
+                            <button type="button">Nej</button>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                    <td className="table-item-column">
+                      <input
+                        className="text-color points-column"
+                        type="text"
+                        value={player.points}
+                        onChange={(e) => handlePlayerPointsChange(player, e)}
+                      />
+                    </td>
+                    <td className="table-item-column">
+                      <button
+                        type="button"
+                        onClick={() => handleRemovePlayer(player)}
+                      >
+                        Ta bort
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
               ))
             ) : (
               <></>
             )}
-          </tbody>
-        </table>
+          </table>
+        </div>
+        <div>
+          <h2 className="text-color">Tillgängliga spelare</h2>
+          <table>
+            <tbody>
+              {filteredAvailableUser ? (
+                filteredAvailableUser.map((player) => (
+                  <tr className="player-row" key={player.id}>
+                    <td className="table-item-column text-color">
+                      {player.firstname}
+                    </td>
+                    <td className="table-item-column text-color">
+                      {player.lastname}
+                    </td>
+                    <td className="table-item-column">
+                      <button
+                        type="button"
+                        onClick={() => handleAddPlayer(player)}
+                      >
+                        Lägg till
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <></>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

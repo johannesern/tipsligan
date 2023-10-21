@@ -4,21 +4,29 @@ import ReactDatePicker from "react-datepicker";
 
 import "./Datepicker.css";
 import "react-datepicker/dist/react-datepicker.css";
+import useStore from "../../store/useStore";
+import { FormattedDate } from "../../functions/FormattedDate";
 
-export default function EndDatepicker({ getEndDate }) {
-  const [endDate, setEndDate] = useState(new Date());
+export default function EndDatepicker() {
+  const round = useStore((state) => state.roundToUpdate);
+  const updateRoundInStore = useStore((state) => state.addRoundToUpdate);
+  const [chosenDate, setChosenDate] = useState(new Date(round.endDate));
 
   const handleChange = (date) => {
-    setEndDate(date);
-    getEndDate(date);
+    setChosenDate(date);
+    const newRound = {
+      ...round,
+      endDate: FormattedDate(date),
+    };
+    updateRoundInStore(newRound);
   };
 
   return (
     <>
       <ReactDatePicker
         className="datepicker"
-        value={endDate}
-        selected={endDate}
+        value={chosenDate}
+        selected={chosenDate}
         dateFormat="yyyy-MM-dd"
         onChange={(date) => handleChange(date)}
       />

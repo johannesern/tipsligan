@@ -1,6 +1,4 @@
 .user-manager {
-  display: flex;
-  gap: 16px;
   padding-top: 5px;
   padding-bottom: 5px;
 }
@@ -40,13 +38,55 @@
   color: black;
 }
 
+.filter-elements {
+  display: flex;
+  gap: 72px;
+}
+
 .filter-payment {
   display: flex;
-  gap: 5px;
 }
 
 .filter-payment-button {
   border-width: 3px;
   border-color: black;
   background-color: transparent;
+}
+
+.filter-payment-button-active {
+  border-width: 3px;
+  border-color: black;
+  color: white;
+}
+
+.filter-header-elements {
+  display: flex;
+  gap: 151px;
+}
+
+.filter-body-elements {
+  display: flex;
+  gap: 36px;
+}
+
+.users-columns {
+  display: flex;
+}
+
+.firstname-min-width {
+  min-width: 90px;
+}
+
+.lastname-min-width {
+  min-width: 100px;
+}
+
+.points-column {
+  font-size: 20px;
+  max-width: 35px;
+}
+
+.paid-and-points {
+  display: flex;
+  gap: 14px;
 }
