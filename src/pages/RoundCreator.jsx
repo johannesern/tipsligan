@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import StartDatepicker from "../components/datePicker/StartDatepicker.jsx";
+import StartDatepicker from "../components/datepicker/StartDatepicker.jsx";
 import { CreateRound } from "../API/CreateRound.jsx";
 import { FormattedDate } from "../functions/FormattedDate.jsx";
 import "./RoundCreator.css";
