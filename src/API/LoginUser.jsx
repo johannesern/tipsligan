@@ -1,25 +1,25 @@
 import { DevURL } from "../constants/Constants";
 import { TipsliganAPIURL } from "../constants/Constants";
 
-export async function CreateRound(data) {
+export default async function LoginUser(credentials) {
   const baseUrl = DevURL();
   try {
-    const response = await fetch(baseUrl + "/rounds", {
+    const response = await fetch(baseUrl + "/authorize", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(credentials),
     });
 
     if (response.ok) {
       const responseData = await response.json();
-      //   console.log("Response data success!", responseData);
+      console.log("Response data success!", responseData);
       return responseData;
     } else {
-      console.error("Failed to post data");
+      console.error("Failed to login user");
     }
   } catch (error) {
-    console.error("API:Create round error", error);
+    console.error("API:Login user error", error);
   }
 }

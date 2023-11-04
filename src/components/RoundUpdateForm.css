@@ -1,0 +1,51 @@
+.text-color {
+  color: black;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #eee;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+}
+
+.close-button-align {
+  top: 4px;
+  right: 10px;
+
+  position: absolute;
+}
+
+.form-top-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.close {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.6;
+}
+.close:hover {
+  opacity: 1;
+}
+.close:before,
+.close:after {
+  position: absolute;
+  left: 15px;
+  content: " ";
+  height: 33px;
+  width: 2px;
+  background-color: #333;
+}
+.close:before {
+  transform: rotate(45deg);
+}
+.close:after {
+  transform: rotate(-45deg);
+}

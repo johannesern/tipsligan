@@ -1,7 +1,10 @@
+import { DevURL } from "../constants/Constants";
+import { TipsliganAPIURL } from "../constants/Constants";
+
 export async function UpdateUser(user) {
-  // console.log("The user to update:", user);
+  const baseUrl = DevURL();
   try {
-    const response = await fetch(`https://tipsligan-api.fly.dev/${user.Id}`, {
+    const response = await fetch(`${baseUrl}/users/${user.Id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -9,13 +12,8 @@ export async function UpdateUser(user) {
       body: JSON.stringify(user),
     });
     // console.log("Response:", response);
-
-    if (response.ok) {
-      return response.ok;
-    } else {
-      return response.ok;
-    }
+    return response;
   } catch (error) {
-    console.error(error);
+    console.error("API:UpdateUser error", error);
   }
 }

@@ -1,8 +1,24 @@
-.list-item {
+.user-list-item {
   display: flex;
   justify-content: space-between;
+  padding: 2px;
 }
 
 .user-buttons {
+  display: flex;
   margin-right: 20px;
+  gap: 4px;
+  max-height: 36px;
+}
+
+.confirmation-buttons {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Ensure it appears on top of other content */
 }

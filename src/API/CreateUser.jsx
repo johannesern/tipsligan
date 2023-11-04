@@ -1,6 +1,10 @@
+import { DevURL } from "../constants/Constants";
+import { TipsliganAPIURL } from "../constants/Constants";
+
 export async function CreateUser(data) {
+  const baseUrl = DevURL();
   try {
-    const response = await fetch("https://tipsligan-api.fly.dev/users", {
+    const response = await fetch(baseUrl + "/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -16,6 +20,6 @@ export async function CreateUser(data) {
       console.error("Failed to post data");
     }
   } catch (error) {
-    console.error(error);
+    console.error("API:Create user error", error);
   }
 }

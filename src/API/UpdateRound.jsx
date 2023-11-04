@@ -1,14 +1,16 @@
+import { DevURL } from "../constants/Constants";
+import { TipsliganAPIURL } from "../constants/Constants";
+
 export default async function UpdateRound(round) {
-  // console.log("The round to update:", round);
+  const baseUrl = DevURL();
   try {
-    const response = await fetch(`https://tipsligan-api.fly.dev/${round.Id}`, {
+    const response = await fetch(`${baseUrl}/rounds/${round.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(round),
     });
-    // console.log("Response:", response);
 
     if (response.ok) {
       return response.ok;
@@ -16,6 +18,6 @@ export default async function UpdateRound(round) {
       return response.ok;
     }
   } catch (error) {
-    console.error(error);
+    console.error("API:UpdateRound error", error);
   }
 }

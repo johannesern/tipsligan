@@ -9,3 +9,19 @@
 .coupon {
   margin: 0 auto;
 }
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+}
+
+.coupon-title {
+  display: flex;
+  margin-left: 31px;
+  gap: 15px;
+}
+
+.coupon-row-partial {
+  display: flex;
+  gap: 5px;
+}

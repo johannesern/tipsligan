@@ -1,8 +1,10 @@
+import { DevURL } from "../constants/Constants";
+import { TipsliganAPIURL } from "../constants/Constants";
+
 export async function GetUser(userId) {
+  const baseUrl = DevURL();
   try {
-    const response = await fetch(
-      `https://tipsligan-api.fly.dev/users/${userId}`
-    );
+    const response = await fetch(`${baseUrl}/users/${userId}`);
 
     if (response.ok) {
       const responseData = await response.json();
@@ -12,6 +14,6 @@ export async function GetUser(userId) {
       console.error("Failed to get one data");
     }
   } catch (error) {
-    console.error(error);
+    console.error("API:GetUser error", error);
   }
 }

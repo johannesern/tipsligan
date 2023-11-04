@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import "./Coupon.css";
 
@@ -37,7 +38,7 @@ const Coupon = ({ setCouponSelections }) => {
 
     const value = couponArray[rowIndex] || "";
     columns.push(
-      <div key={rowIndex} className="column">
+      <div key={rowIndex} className="coupon-row-partial">
         <input
           className="checkbox"
           type="checkbox"
@@ -62,7 +63,16 @@ const Coupon = ({ setCouponSelections }) => {
     return columns;
   };
 
-  return <div className="coupon">1X2{renderRows()}</div>;
+  return (
+    <div className="coupon">
+      <div className="coupon-title">
+        <h3>1</h3>
+        <h3>X</h3>
+        <h3>2</h3>
+      </div>
+      <div>{renderRows()}</div>
+    </div>
+  );
 };
 
 export default Coupon;

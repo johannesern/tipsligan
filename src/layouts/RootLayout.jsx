@@ -9,6 +9,7 @@ export function RootLayout() {
             <Link to="/">Tipsligan</Link>
           </h1>
           <NavLink to="/">Hem</NavLink>
+          <NavLink to="registrera-rad">Registrera rad</NavLink>
           <NavLink to="kontakta-oss">Kontakt</NavLink>
           <NavLink to="admin">Admin</NavLink>
         </nav>

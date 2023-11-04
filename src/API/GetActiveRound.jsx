@@ -1,10 +1,10 @@
 import { DevURL } from "../constants/Constants";
 import { TipsliganAPIURL } from "../constants/Constants";
 
-export default async function GetSiteInfo() {
+export default async function GetAllRounds() {
   const baseUrl = DevURL();
   try {
-    const response = await fetch(baseUrl + "/siteinfo");
+    const response = await fetch(baseUrl + "/rounds/active");
     // console.log("Rounds response:", response);
     if (response.ok) {
       const responseData = await response.json();
@@ -14,6 +14,7 @@ export default async function GetSiteInfo() {
       console.error("Failed to get data");
     }
   } catch (error) {
-    console.error("API:GetSiteInfo error", error);
+    console.error("API:GetActiveRound error", error);
+    return error;
   }
 }

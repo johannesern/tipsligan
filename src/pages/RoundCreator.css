@@ -1,0 +1,15 @@
+.input-field {
+  color: black;
+}
+
+.input-field option {
+  color: black;
+}
+
+.title-weeks {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-new-round {
+}

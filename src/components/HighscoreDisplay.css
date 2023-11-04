@@ -1,0 +1,15 @@
+.highscore-list {
+  margin-top: 10px;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+}
+
+.column {
+  text-align: left;
+  padding-left: 1rem;
+}
+
+.position-column {
+  text-align: center;
+}
