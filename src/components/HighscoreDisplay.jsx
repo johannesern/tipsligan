@@ -19,7 +19,6 @@ const HighscoreDisplay = () => {
 
   const getRound = async () => {
     const activeRound = await GetActiveRound();
-    console.log(activeRound);
     addRound(activeRound);
   };
 

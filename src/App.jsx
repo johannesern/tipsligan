@@ -6,12 +6,12 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
-import { RootLayout } from "./layouts/RootLayout";
 
 //css
 import "./App.css";
 
 //pages
+import { RootLayout } from "./layouts/RootLayout";
 import Home from "./pages/Home";
 import UserRegistration from "./pages/UserRegistration";
 import Userdisplay from "./pages/Userdisplay";
@@ -20,10 +20,12 @@ import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import RoundCreator from "./pages/RoundCreator";
 import DisplayAllRounds from "./pages/DisplayAllRounds";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
+      <Route path="login" element={<Login />} />
       <Route path="/" element={<Home />}>
         <Route index element={<HighscoreDisplay />}></Route>
         <Route path="registrera-rad" element={<UserRegistration />} />
