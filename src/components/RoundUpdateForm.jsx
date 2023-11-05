@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import "./RoundUpdateForm.css";
 import UpdateRound from "../API/UpdateRound";
-import StartDatepicker from "./datepicker/StartDatepicker";
-import EndDatepicker from "./datepicker/EndDatePicker";
+import StartDatepicker from "../components/datepicker/StartDatePicker";
+import EndDatepicker from "../components/datepicker/EndDatePicker";
 import UserManager from "./UserManager";
 import useStore from "../store/useStore";
 import { FormattedDate } from "../functions/FormattedDate";
