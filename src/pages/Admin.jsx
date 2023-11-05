@@ -2,14 +2,20 @@ import "./Home.css";
 
 import { Link, Outlet } from "react-router-dom";
 import Login from "./Login";
-import useToken from "../API/LoginUser";
+import useToken from "../hooks/useToken";
+import { useEffect } from "react";
 
 export default function Home() {
   const { token, setToken } = useToken();
 
+  useEffect(() => {
+    console.log("ADMIN", token);
+  }, [token]);
+
   if (!token) {
     return <Login setToken={setToken} />;
   }
+
   return (
     <section>
       <article>

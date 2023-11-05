@@ -1,20 +1,25 @@
-import PropTypes from "prop-types";
 import LoginUser from "../API/LoginUser";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./Login.css";
+import useToken from "../hooks/useToken";
 
-export default function Login({ setToken }) {
-  const [username, setUserName] = useState();
+export default function Login() {
+  const { setToken } = useToken();
+  const [email, setUserName] = useState();
   const [password, setPassword] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = await LoginUser({
-      username,
+    const response = await LoginUser({
+      email,
       password,
     });
-    setToken(token);
+    if (response.error != null) {
+      window.alert(response.error);
+    } else {
+      setToken(response.token);
+    }
   };
 
   return (
@@ -39,7 +44,3 @@ export default function Login({ setToken }) {
     </div>
   );
 }
-
-Login.propTypes = {
-  setToken: PropTypes.func.isRequired,
-};
