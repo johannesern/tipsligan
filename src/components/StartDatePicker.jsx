@@ -4,8 +4,8 @@ import ReactDatePicker from "react-datepicker";
 
 import "./Datepicker.css";
 import "react-datepicker/dist/react-datepicker.css";
-import useStore from "../../store/useStore";
-import { FormattedDate } from "../../functions/FormattedDate";
+import useStore from "../store/useStore";
+import { FormattedDate } from "../functions/FormattedDate";
 
 export default function StartDatepicker() {
   const round = useStore((state) => state.roundToUpdate);
