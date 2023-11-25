@@ -1,20 +1,24 @@
 import "./Home.css";
 
 import { Link, Outlet } from "react-router-dom";
-import Login from "./Login";
-import useToken from "../hooks/useToken";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-  const { token, setToken } = useToken();
+  const navigate = useNavigate();
+  const [token, setToken] = useState();
 
   useEffect(() => {
-    console.log("ADMIN", token);
-  }, [token]);
+    const token = localStorage.getItem("token");
+    if (token) {
+      setToken(token);
+    } else {
+      navigate("/login"); // You can also return a loading spinner or message here if needed
+    }
+  }, [navigate]);
 
-  if (!token) {
-    return <Login setToken={setToken} />;
-  }
+  useEffect(() => {
+  }, [token]);
 
   return (
     <section>

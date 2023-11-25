@@ -5,7 +5,7 @@ import { FormattedDate } from "../functions/FormattedDate.jsx";
 import "./RoundCreator.css";
 
 export default function RoundCreator() {
-  const defaultStartDate = FormattedDate();
+  const defaultStartDate = FormattedDate(new Date());
   const defaultPeriodInWeeks = "10";
   const [createdRound, setCreatedRound] = useState();
   const [roundData, setRoundData] = useState({
@@ -39,9 +39,9 @@ export default function RoundCreator() {
     (index + 3).toString()
   );
 
-  useEffect(() => {
-    // console.log('Round data:', roundData);
-  }, [roundData]);
+  // useEffect(() => {
+  //   console.log('Round data:', roundData);
+  // }, [roundData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -11,7 +11,7 @@ export default async function LoginUser(credentials) {
       },
       body: JSON.stringify(credentials),
     });
-    console.log("Response", response);
+    console.log("Response from API:LoginUser", response);
 
     if (response.ok) {
       const responseData = await response.json();

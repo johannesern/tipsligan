@@ -11,10 +11,8 @@ export async function CreateRound(data) {
       },
       body: JSON.stringify(data),
     });
-
     if (response.ok) {
       const responseData = await response.json();
-      //   console.log("Response data success!", responseData);
       return responseData;
     } else {
       console.error("Failed to post data");
