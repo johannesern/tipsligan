@@ -13,10 +13,11 @@
 .rounds-list-item {
   display: flex;
   justify-content: space-between;
-}
-
-.round-buttons {
-  padding-right: 40px;
+  margin-right: 40px;
+  padding: 3px;
+  border-style: dashed;
+  border-width: 3px;
+  border-color: #efefef;
 }
 
 .round-button {
@@ -34,4 +35,8 @@
   justify-content: center;
   align-items: center;
   z-index: 1000; /* Ensure the overlay is above other content */
+}
+
+.active{
+border-color: blueviolet;
 }

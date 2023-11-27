@@ -222,7 +222,7 @@ export default function UserManager() {
                       <input
                         className="text-color points-column"
                         type="text"
-                        value={player.points}
+                        value={player.points ? player.points : ""}
                         onChange={(e) => handlePlayerPointsChange(player, e)}
                       />
                     </td>

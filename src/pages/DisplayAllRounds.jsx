@@ -67,6 +67,10 @@ const DisplayAllRounds = () => {
     setIsConfirmationVisible(!isConfirmationVisible);
   };
 
+  const activeRound = (round) => {
+    return round.isActive && round.isOpen;
+  }
+
   return (
     <main>
       {isConfirmationVisible && (
@@ -80,7 +84,7 @@ const DisplayAllRounds = () => {
       <ul className="rounds-list">
         {rounds != null ? (
           rounds.map((round) => (
-            <li className="rounds-list-item" key={round.id}>
+            <li className={`rounds-list-item ${activeRound(round) ? "active" : ""}`} key={round.id}>
               {" "}
               <h3>{round.title}</h3>
               {openFormIds.includes(round.id) && (
@@ -91,7 +95,7 @@ const DisplayAllRounds = () => {
                   />
                 </div>
               )}
-              <div className="round-buttons">
+              <div>
                 <button
                   name="edit"
                   className="round-button"

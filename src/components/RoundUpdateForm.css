@@ -49,3 +49,7 @@
 .close:after {
   transform: rotate(-45deg);
 }
+
+.disabled {
+  background-color: #787878;
+}
