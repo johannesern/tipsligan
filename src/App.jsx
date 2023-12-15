@@ -21,6 +21,7 @@ import Admin from "./pages/Admin";
 import RoundCreator from "./pages/RoundCreator";
 import DisplayAllRounds from "./pages/DisplayAllRounds";
 import Login from "./pages/Login";
+import CorrectionRound from "./pages/CorrectionRound";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
         <Route path="registrera" element={<UserRegistration />} />
         <Route path="skapa-ny-omgång" element={<RoundCreator />} />
         <Route path="alla-omgångar" element={<DisplayAllRounds />} />
+        <Route path="rätta-omgång" element={<CorrectionRound />} />
       </Route>
     </Route>
   )

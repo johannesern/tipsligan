@@ -41,6 +41,9 @@ export default function Home() {
           <Link to="skapa-ny-omgång">
             <button>Skapa ny omgång</button>
           </Link>
+          <Link to="rätta-omgång">
+            <button>Rätta pågående omgång</button>
+          </Link>
         </div>
         <div>
           <Outlet />

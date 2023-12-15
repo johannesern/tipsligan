@@ -1,0 +1,13 @@
+.disabled {
+  background-color: #787878;
+}
+
+.correction-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error {
+  color: red;
+}

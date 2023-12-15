@@ -1,7 +1,7 @@
 import { DevURL } from "../constants/Constants";
 import { TipsliganAPIURL } from "../constants/Constants";
 
-export default async function GetAllRounds() {
+export default async function GetActivRound() {
   const baseUrl = DevURL();
   try {
     const response = await fetch(baseUrl + "/rounds/active");
