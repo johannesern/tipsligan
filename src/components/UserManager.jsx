@@ -36,12 +36,10 @@ export default function UserManager() {
       const usersNotPaid = tmpfilteredRoundUser.filter(
         (user) => paymentFilter === user.hasPaid
       );
-      // console.log("TMPFR", tmpfilteredRoundUser);´
       setFilteredRoundUsers(usersNotPaid);
     } else {
       setFilteredRoundUsers(tmpfilteredRoundUser);
     }
-    // console.log("TMPAU", tmpfilteredAvUser);
     setFilteredAvailableUser(tmpfilteredAvUser);
   };
 

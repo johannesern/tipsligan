@@ -6,10 +6,10 @@ export default async function CorrectionRound() {
   try {
     const response = await fetch(baseUrl + "/Coupon");
 
-    if (response.ok) {      
-      console.log("coupon response:", response);
+    if (response.ok) {
+      // console.log("coupon response:", response);
       return response;
-    } else {      
+    } else {
       console.error("Failed to get data", response);
       return response;
     }

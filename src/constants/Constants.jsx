@@ -3,5 +3,5 @@ export function TipsliganAPIURL() {
 }
 
 export function DevURL() {
-  return "https://localhost:5000";
+  return "https://localhost:5001";
 }

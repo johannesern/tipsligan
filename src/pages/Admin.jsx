@@ -17,8 +17,7 @@ export default function Home() {
     }
   }, [navigate]);
 
-  useEffect(() => {
-  }, [token]);
+  useEffect(() => {}, [token]);
 
   return (
     <section>

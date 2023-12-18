@@ -1,38 +1,44 @@
 import { useState, useEffect } from "react";
-import GetActiveRound from "../API/GetActiveRound";
 import "./CorrectionRound.css";
 import { EnableCorrection } from "../functions/EnableCorrection";
 import CorrectionRound from "../API/CorrectionRound";
+import useStore from "../store/useStore";
+import UpdateRound from "../API/UpdateRound";
+import GetActiveRound from "../API/GetActiveRound";
 
-const Userdisplay = () => {
-  const [users, setUsers] = useState([]);
+export default function RoundToCorrect() {
   const [message, setMessage] = useState();
   const [isError, setIsError] = useState(false);
-  const [enableCorrectionButton, setEnableCorrectionButton] = useState(true);
+  const [enableCorrectionButton, setEnableCorrectionButton] = useState(false);
+  const [manualMode, setManualMode] = useState(false);
+
+  //Store
+  const addRound = useStore((state) => state.addRoundActive);
+  const round = useStore((state) => state.roundActive);
 
   //First time loading
   useEffect(() => {
-    userDatas();
+    getActiveRound();
     if (EnableCorrection()) {
       setEnableCorrectionButton(true);
+    } else {
+      setMessage("Automatisk rättning tillgänglig söndag kl 20:00");
     }
   }, []);
 
-  const userDatas = async () => {
-    const round = await GetActiveRound();
-    setUsers(round.userDatas);
+  const getActiveRound = async () => {
+    const activeRound = await GetActiveRound();
+    addRound(activeRound);
   };
 
   const handleClick = async () => {
     const response = await CorrectionRound();
     if (response.ok) {
-      console.log("success", response);
       setMessage("Omgången är rättad!");
       setTimeout(() => {
         setMessage("");
       }, 5000);
     } else {
-      console.log("error", response);
       setMessage("Kunde inte rätta omgången");
       setIsError(true);
       setTimeout(() => {
@@ -40,25 +46,55 @@ const Userdisplay = () => {
         setIsError(false);
       }, 5000);
     }
-    userDatas();
   };
 
-  useEffect(() => {}, [users]);
+  const handleManualMode = () => {
+    setManualMode(!manualMode);
+  };
+
+  const handleChange = (updatedUser, e) => {
+    const newPoints = e.target.value;
+
+    const updatedUsers = round.userDatas.map((player) => {
+      if (player.id === updatedUser.id) {
+        return {
+          ...player,
+          points: newPoints,
+        };
+      }
+      return player;
+    });
+
+    const newRound = {
+      ...round,
+      userDatas: updatedUsers,
+    };
+
+    addRound(newRound);
+  };
+
+  const handleSave = async () => {
+    await UpdateRound(round);
+    setManualMode(!manualMode);
+    getActiveRound();
+  };
 
   return (
     <main>
+      {message && (
+        <div className={"message" + (isError ? "error" : "")}>{message}</div>
+      )}
       <div className="correction-area">
         <button
           type="button"
           onClick={handleClick}
           className={enableCorrectionButton ? "" : "disabled"}
         >
-          Rätta omgång
+          Automatisk rättning
         </button>
-        {message && (
-          <div className={"message" + (isError ? "error" : "")}>{message}</div>
-        )}
+        <button onClick={handleManualMode}>Manuell rättning</button>
       </div>
+      <br />
       <table>
         <thead>
           <tr>
@@ -68,21 +104,36 @@ const Userdisplay = () => {
           </tr>
         </thead>
         <tbody>
-          {users != null ? (
-            users.map((user) => (
+          {round ? (
+            round?.userDatas?.map((user) => (
               <tr key={user.id || user.Id}>
                 <td>{user.position}</td>
-                <td>{user.points}</td>
+                {manualMode ? (
+                  <td>
+                    <input
+                      className="editedable"
+                      value={user.points}
+                      type="text"
+                      name="userpoints"
+                      onChange={(e) => handleChange(user, e)}
+                    />
+                  </td>
+                ) : (
+                  <td>{user.points}</td>
+                )}
                 <td>{user.firstname}</td>
               </tr>
             ))
           ) : (
-            <div>Loading...</div>
+            <tr>
+              <td>Loading...</td>
+            </tr>
           )}
         </tbody>
       </table>
+      <button className={manualMode ? "" : "hide"} onClick={handleSave}>
+        Spara
+      </button>
     </main>
   );
-};
-
-export default Userdisplay;
+}

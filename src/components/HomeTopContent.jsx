@@ -14,7 +14,6 @@ export default function HomeTopContent() {
     try {
       const siteUpdate = async () => {
         const round = await GetActiveRound();
-        // console.log("Data from api:", round);
         if (round.id != null && round.id !== undefined) {
           setRound(round);
           passRoundToButtons();

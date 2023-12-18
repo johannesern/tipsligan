@@ -8,7 +8,6 @@ const HighscoreDisplay = () => {
   const addRound = useStore((state) => state.addRoundToUpdate);
 
   const noPlayers = "Inga spelare";
-  // console.log("Users:", users);
 
   useEffect(() => {
     const tmp = async () => {

@@ -11,11 +11,11 @@ export default async function LoginUser(credentials) {
       },
       body: JSON.stringify(credentials),
     });
-    console.log("Response from API:LoginUser", response);
+    // console.log("Response from API:LoginUser", response);
 
     if (response.ok) {
       const responseData = await response.json();
-      console.log("Response data success!", responseData);
+      // console.log("Response data success!", responseData);
       return responseData;
     } else {
       console.error("Failed to login user");

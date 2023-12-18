@@ -39,10 +39,6 @@ export default function RoundCreator() {
     (index + 3).toString()
   );
 
-  // useEffect(() => {
-  //   console.log('Round data:', roundData);
-  // }, [roundData]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 

@@ -6,7 +6,7 @@ import EndDatepicker from "./EndDatePicker";
 import UserManager from "./UserManager";
 import useStore from "../store/useStore";
 import { FormattedDate } from "../functions/FormattedDate";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function RoundUpdateForm({ refreshRounds, closeForm }) {
   const round = useStore((state) => state.roundToUpdate);
@@ -17,10 +17,12 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
   const handleChange = (e) => {
     setError("");
     const { name, value } = e.target;
-    if(name === "isOpen" || name === "isActive") {
-      const activeRound = allRounds.find((round) => round.isActive === true && round.isOpen === true);
+    if (name === "isOpen" || name === "isActive") {
+      const activeRound = allRounds.find(
+        (round) => round.isActive === true && round.isOpen === true
+      );
       if (activeRound && activeRound.id !== round.id) {
-          setError("Du kan inte ha två aktiva rundor samtidigt");
+        setError("Du kan inte ha två aktiva rundor samtidigt");
       }
     }
     const newRound = {
@@ -141,7 +143,13 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
             <UserManager />
           </div>
         </div>
-        <button className={`${error ? "disabled" : ""}`} disabled={error} type="submit">Uppdatera rundan</button>
+        <button
+          className={`${error ? "disabled" : ""}`}
+          disabled={error}
+          type="submit"
+        >
+          Uppdatera rundan
+        </button>
       </form>
     </>
   );

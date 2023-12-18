@@ -5,7 +5,6 @@ import { useState } from "react";
 import "./HomeButtons.css";
 
 export default function HomeButtons({ passRoundToButtons }) {
-  // console.log("Homebuttons incoming:", passRoundToButtons);
   const [tryToRegistrateMessage, setTryToRegistrateMessage] = useState("");
 
   const handleNoRoundAvailable = () => {
