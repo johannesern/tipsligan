@@ -3,6 +3,8 @@ import "./Home.css";
 import { Link, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CreateFile from "../functions/CreateFile";
+import GetActiveRound from "../API/GetActiveRound";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -19,6 +21,11 @@ export default function Home() {
 
   useEffect(() => {}, [token]);
 
+  const handleFileCreation = async () => {
+    const round = await GetActiveRound();
+    CreateFile(round.userDatas, "Stryktipset");
+  };
+
   return (
     <section>
       <article>
@@ -28,6 +35,7 @@ export default function Home() {
           tillvägagångssätt för hur vissa funktioner fungerar.
         </p>
         <div className="home-buttons">
+          <button onClick={handleFileCreation}>Skapa fil för inlämning</button>
           <Link to="användare">
             <button>Hämta alla användare</button>
           </Link>
