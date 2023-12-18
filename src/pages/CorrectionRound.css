@@ -38,3 +38,15 @@
   width: 20px;
   text-align: right;
 }
+
+.mid-content {
+  display: flex;
+  align-items: top;
+  gap: 25px;
+}
+
+.coupon-correction {
+  border: 2px solid;
+  border-radius: 5px;
+  padding: 10px;
+}

@@ -5,12 +5,15 @@ import CorrectionRound from "../API/CorrectionRound";
 import useStore from "../store/useStore";
 import UpdateRound from "../API/UpdateRound";
 import GetActiveRound from "../API/GetActiveRound";
+import Coupon from "../components/Coupon";
 
 export default function RoundToCorrect() {
   const [message, setMessage] = useState();
   const [isError, setIsError] = useState(false);
   const [enableCorrectionButton, setEnableCorrectionButton] = useState(false);
+  const [semiauto, setSemiAuto] = useState(false);
   const [manualMode, setManualMode] = useState(false);
+  const [coupon, setCoupon] = useState([]);
 
   //Store
   const addRound = useStore((state) => state.addRoundActive);
@@ -21,8 +24,6 @@ export default function RoundToCorrect() {
     getActiveRound();
     if (EnableCorrection()) {
       setEnableCorrectionButton(true);
-    } else {
-      setMessage("Automatisk rättning tillgänglig söndag kl 20:00");
     }
   }, []);
 
@@ -48,7 +49,13 @@ export default function RoundToCorrect() {
     }
   };
 
+  const handleSemiAutoMode = () => {
+    setManualMode(false);
+    setSemiAuto(!semiauto);
+  };
+
   const handleManualMode = () => {
+    setSemiAuto(false);
     setManualMode(!manualMode);
   };
 
@@ -79,10 +86,36 @@ export default function RoundToCorrect() {
     getActiveRound();
   };
 
+  // useEffect(() => {
+  //   console.log(coupon);
+  // }, [coupon]);
+
+  const handleSemiCorrection = async () => {
+    const newUserDatas = round.userDatas;
+    newUserDatas.forEach((user) => {
+      for (let i = 0; i < coupon.length; i++) {
+        if (user.coupon[i] === coupon[i]) {
+          user.points += 1;
+        }
+      }
+    });
+    const newRound = {
+      ...round,
+      userDatas: newUserDatas,
+    };
+
+    addRound(newRound);
+    await UpdateRound(round);
+    setSemiAuto(false);
+    getActiveRound();
+  };
+
   return (
     <main>
-      {message && (
-        <div className={"message" + (isError ? "error" : "")}>{message}</div>
+      {!enableCorrectionButton && (
+        <div className={"message" + (isError ? "error" : "")}>
+          Automatisk rättning tillgänglig på söndag kl 20:00
+        </div>
       )}
       <div className="correction-area">
         <button
@@ -92,48 +125,70 @@ export default function RoundToCorrect() {
         >
           Automatisk rättning
         </button>
+        <button onClick={handleSemiAutoMode}>Semi Automatisk</button>
         <button onClick={handleManualMode}>Manuell rättning</button>
       </div>
-      <br />
-      <table>
-        <thead>
-          <tr>
-            <th>Position</th>
-            <th>Antal poäng</th>
-            <th>Namn</th>
-          </tr>
-        </thead>
-        <tbody>
-          {round ? (
-            round?.userDatas?.map((user) => (
-              <tr key={user.id || user.Id}>
-                <td>{user.position}</td>
-                {manualMode ? (
-                  <td>
-                    <input
-                      className="editedable"
-                      value={user.points}
-                      type="text"
-                      name="userpoints"
-                      onChange={(e) => handleChange(user, e)}
-                    />
-                  </td>
-                ) : (
-                  <td>{user.points}</td>
-                )}
-                <td>{user.firstname}</td>
+      {semiauto && (
+        <p>
+          <i>
+            Knappa in rätt rad och klicka på Rätta, alla spelares poäng kommer
+            att uppdateras
+          </i>
+        </p>
+      )}
+      {manualMode && (
+        <p>
+          <i>Rätta en eller flera spelares poäng och klicka sedan på Spara</i>
+        </p>
+      )}
+      {!semiauto && !manualMode && <br />}
+      <div className="mid-content">
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Position</th>
+                <th>Antal poäng</th>
+                <th>Namn</th>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td>Loading...</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-      <button className={manualMode ? "" : "hide"} onClick={handleSave}>
-        Spara
-      </button>
+            </thead>
+            <tbody>
+              {round ? (
+                round?.userDatas?.map((user) => (
+                  <tr key={user.id || user.Id}>
+                    <td>{user.position}</td>
+                    {manualMode ? (
+                      <td>
+                        <input
+                          className="editedable"
+                          value={user.points}
+                          type="text"
+                          name="userpoints"
+                          onChange={(e) => handleChange(user, e)}
+                        />
+                      </td>
+                    ) : (
+                      <td>{user.points}</td>
+                    )}
+                    <td>{user.firstname}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td>Loading...</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        {semiauto && (
+          <div className="coupon-correction">
+            <Coupon setCouponSelections={setCoupon} />
+            <button onClick={handleSemiCorrection}>Rätta</button>
+          </div>
+        )}
+      </div>
+      {manualMode && <button onClick={handleSave}>Spara</button>}
     </main>
   );
 }
