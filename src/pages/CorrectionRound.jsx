@@ -6,18 +6,21 @@ import useStore from "../store/useStore";
 import UpdateRound from "../API/UpdateRound";
 import GetActiveRound from "../API/GetActiveRound";
 import Coupon from "../components/Coupon";
+import { FormattedDate } from "../functions/FormattedDate";
 
 export default function RoundToCorrect() {
   const [message, setMessage] = useState();
   const [isError, setIsError] = useState(false);
   const [enableCorrectionButton, setEnableCorrectionButton] = useState(false);
-  const [semiauto, setSemiAuto] = useState(false);
+  const [autoMode, setAutoMode] = useState(true);
+  const [semiautoMode, setSemiAutoMode] = useState(false);
   const [manualMode, setManualMode] = useState(false);
   const [coupon, setCoupon] = useState([]);
 
   //Store
   const addRound = useStore((state) => state.addRoundActive);
   const round = useStore((state) => state.roundActive);
+  const clearActiveRound = useStore((state) => state.clearRoundActive);
 
   //First time loading
   useEffect(() => {
@@ -36,6 +39,7 @@ export default function RoundToCorrect() {
     const response = await CorrectionRound();
     if (response.ok) {
       setMessage("Omgången är rättad!");
+      getActiveRound();
       setTimeout(() => {
         setMessage("");
       }, 5000);
@@ -50,14 +54,26 @@ export default function RoundToCorrect() {
   };
 
   const handleSemiAutoMode = () => {
-    setManualMode(false);
-    setSemiAuto(!semiauto);
+    setAutoMode(false);
+    setSemiAutoMode(!semiautoMode);
+    if (manualMode) {
+      setManualMode(false);
+    }
   };
 
   const handleManualMode = () => {
-    setSemiAuto(false);
+    setAutoMode(false);
     setManualMode(!manualMode);
+    if (semiautoMode) {
+      setSemiAutoMode(false);
+    }
   };
+
+  useEffect(() => {
+    if (!manualMode && !semiautoMode) {
+      setAutoMode(true);
+    }
+  }, [manualMode, semiautoMode, autoMode]);
 
   const handleChange = (updatedUser, e) => {
     const newPoints = e.target.value;
@@ -80,17 +96,24 @@ export default function RoundToCorrect() {
     addRound(newRound);
   };
 
-  const handleSave = async () => {
-    await UpdateRound(round);
+  const handleManualSave = async () => {
+    const now = new Date();
+    const newdate = FormattedDate(now.toString());
+    const newRound = {
+      ...round,
+      correctedAt: newdate,
+    };
+    clearActiveRound;
+    addRound(newRound);
+    await UpdateRound(newRound);
     setManualMode(!manualMode);
     getActiveRound();
   };
 
-  // useEffect(() => {
-  //   console.log(coupon);
-  // }, [coupon]);
+  const handleSemiSave = async () => {
+    const now = new Date();
+    const newdate = FormattedDate(now.toString());
 
-  const handleSemiCorrection = async () => {
     const newUserDatas = round.userDatas;
     newUserDatas.forEach((user) => {
       for (let i = 0; i < coupon.length; i++) {
@@ -99,56 +122,79 @@ export default function RoundToCorrect() {
         }
       }
     });
+
     const newRound = {
       ...round,
       userDatas: newUserDatas,
+      correctedAt: newdate,
     };
-
+    clearActiveRound;
     addRound(newRound);
-    await UpdateRound(round);
-    setSemiAuto(false);
+    await UpdateRound(newRound);
+    setSemiAutoMode(false);
     getActiveRound();
   };
 
   return (
     <main>
-      {!enableCorrectionButton && (
-        <div className={"message" + (isError ? "error" : "")}>
-          Automatisk rättning tillgänglig på söndag kl 20:00
+      {round.correctedAt && (
+        <div className="corrected-date">
+          Rättades senast den {round.correctedAt}
         </div>
       )}
+
       <div className="correction-area">
         <button
           type="button"
           onClick={handleClick}
           className={enableCorrectionButton ? "" : "disabled"}
+          disabled={!enableCorrectionButton}
         >
           Automatisk rättning
         </button>
         <button onClick={handleSemiAutoMode}>Semi Automatisk</button>
         <button onClick={handleManualMode}>Manuell rättning</button>
+        {message && (
+          <div className={"message" + (isError ? "error" : "")}>{message}</div>
+        )}
       </div>
-      {semiauto && (
+      {enableCorrectionButton && (
+        <div className={"message" + (isError ? "error" : "")}>
+          Automatisk rättning är blockerad tills alla matcher är spelade
+        </div>
+      )}
+      {autoMode && (
         <p>
           <i>
-            Knappa in rätt rad och klicka på Rätta, alla spelares poäng kommer
-            att uppdateras
+            Automatisk rättning hämtar senaste resultatet från Svenska Spel och
+            uppdaterar alla spelares poäng
+          </i>
+        </p>
+      )}
+      {semiautoMode && (
+        <p>
+          <i>
+            Semi Automatisk rättning: Fyll i rätt rad och klicka på Rätta, alla
+            spelares poäng kommer att uppdateras
           </i>
         </p>
       )}
       {manualMode && (
         <p>
-          <i>Rätta en eller flera spelares poäng och klicka sedan på Spara</i>
+          <i>
+            Manuell rättning: Rätta en eller flera spelares poäng och klicka
+            sedan på Spara
+          </i>
         </p>
       )}
-      {!semiauto && !manualMode && <br />}
+      {!semiautoMode && !manualMode}
       <div className="mid-content">
         <div>
-          <table>
+          <table name="total">
             <thead>
               <tr>
                 <th>Position</th>
-                <th>Antal poäng</th>
+                <th>Poäng</th>
                 <th>Namn</th>
               </tr>
             </thead>
@@ -181,14 +227,14 @@ export default function RoundToCorrect() {
             </tbody>
           </table>
         </div>
-        {semiauto && (
+        {semiautoMode && (
           <div className="coupon-correction">
             <Coupon setCouponSelections={setCoupon} />
-            <button onClick={handleSemiCorrection}>Rätta</button>
+            <button onClick={handleSemiSave}>Rätta</button>
           </div>
         )}
       </div>
-      {manualMode && <button onClick={handleSave}>Spara</button>}
+      {manualMode && <button onClick={handleManualSave}>Spara</button>}
     </main>
   );
 }

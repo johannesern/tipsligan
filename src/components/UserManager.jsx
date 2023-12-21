@@ -28,12 +28,12 @@ export default function UserManager() {
       aUser.firstname.toLowerCase().includes(filter.toLowerCase())
     );
     if (paymentFilter) {
-      const usersHasPaid = tmpfilteredRoundUser.filter(
+      const usersHasPaid = tmpfilteredRoundUser?.filter(
         (user) => paymentFilter === user.hasPaid
       );
       setFilteredRoundUsers(usersHasPaid);
     } else if (paymentFilter === false) {
-      const usersNotPaid = tmpfilteredRoundUser.filter(
+      const usersNotPaid = tmpfilteredRoundUser?.filter(
         (user) => paymentFilter === user.hasPaid
       );
       setFilteredRoundUsers(usersNotPaid);
@@ -116,27 +116,6 @@ export default function UserManager() {
     }
   };
 
-  const handlePlayerPointsChange = (updatedPlayer, e) => {
-    const newPoints = e.target.value;
-
-    const updatedPlayers = round.userDatas.map((player) => {
-      if (player.id === updatedPlayer.id) {
-        return {
-          ...player,
-          points: newPoints,
-        };
-      }
-      return player;
-    });
-
-    const newRound = {
-      ...round,
-      userDatas: updatedPlayers,
-    };
-
-    updateRound(newRound);
-  };
-
   return (
     <div className="user-manager">
       <div className="filter-elements">
@@ -147,7 +126,6 @@ export default function UserManager() {
         <div>
           <div className="paid-and-points">
             <h3 className="text-color">Betalat</h3>
-            <h3 className="text-color">Poäng</h3>
           </div>
           <div className="filter-payment">
             <button
@@ -215,14 +193,6 @@ export default function UserManager() {
                           </>
                         )}
                       </div>
-                    </td>
-                    <td className="table-item-column">
-                      <input
-                        className="text-color points-column"
-                        type="text"
-                        value={player.points ? player.points : ""}
-                        onChange={(e) => handlePlayerPointsChange(player, e)}
-                      />
                     </td>
                     <td className="table-item-column">
                       <button

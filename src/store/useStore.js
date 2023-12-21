@@ -12,9 +12,13 @@ const useStore = create((set) => ({
 
     roundToUpdate: {},
 
+    weeklySnapshot: {},
+
     addRoundActive: (round) => set((state) => ({ roundActive: round })),
 
     addRoundToUpdate: (round) => set((state) => ({ roundToUpdate: round })),
+
+    addWeeklySnapshot: (snapshot) => set((state) => ({ weeklySnapshot: snapshot })),
 
     addUserDataModels: (userDataModels) => set((state) => ({ userDataModelsCollection: userDataModels })),
 
@@ -25,6 +29,10 @@ const useStore = create((set) => ({
         set((state) => ({ roundsCollection: rounds })),
 
     // clearCollection: (collection) => set((state) => ({ collection: [] })),
+
+    clearActiveRound: () => set((state) => ({ roundActive: {} })),
+
+    clearWeeklySnapshot: () => set((state) => ({ weeklySnapshot: {} })),
 }));
 
 export default useStore;

@@ -3,8 +3,8 @@ export function EnableCorrection() {
     var today = new Date();
     var day = today.getDay();
     var hour = today.getHours();
-    var minute = today.getMinutes();
-    if (day == 0 && hour >= 20 && minute >= 0) {
+    const notDuringFootballTime = !(day === 6 && hour >= 15 && hour < 21);
+    if (notDuringFootballTime) {
         return true;
     }
     return false;

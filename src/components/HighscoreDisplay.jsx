@@ -1,56 +1,92 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import GetActiveRound from "../API/GetActiveRound";
 import "./HighscoreDisplay.css";
 import useStore from "../store/useStore";
+import GetLatestWeekly from "../API/GetLatestWeekly";
 
 const HighscoreDisplay = () => {
-  const round = useStore((state) => state.roundToUpdate);
-  const addRound = useStore((state) => state.addRoundToUpdate);
+  //Store
+  const round = useStore((state) => state.roundActive);
+  const addRound = useStore((state) => state.addRoundActive);
+  const addWeeklySnapshot = useStore((state) => state.addWeeklySnapshot);
+  const weeklySnapshot = useStore((state) => state.weeklySnapshot);
+  const clearWeeklySnapshot = useStore((state) => state.clearWeeklySnapshot);
 
   const noPlayers = "Inga spelare";
 
   useEffect(() => {
-    const tmp = async () => {
-      getRound();
-    };
-    tmp();
+    getRound();
+    // getSnapshot();
   }, []);
 
   const getRound = async () => {
     const activeRound = await GetActiveRound();
+    const weeklySnapshot = await GetLatestWeekly();
     addRound(activeRound);
+    addWeeklySnapshot(weeklySnapshot);
   };
+
+  useEffect(() => {
+    console.log(weeklySnapshot);
+  }, [weeklySnapshot]);
 
   return (
     <article className="highscore-list">
-      <h1>Topplista för denna omgång</h1>
-      {round ? (
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th className="position-column">Placering</th>
-                <th className="column">Poäng</th>
-                <th className="column">Namn</th>
-              </tr>
-            </thead>
-            <tbody>
-              {round.userDatas?.map((user) => (
-                <tr key={user.id}>
-                  <td className="position-column">{user.position}</td>
-                  <td className="column">{user.points}</td>
-                  <td className="column">{user.firstname}</td>
+      <div className="highscore-area">
+        <h1>Veckans resultat</h1>
+        {weeklySnapshot ? (
+          <div>
+            <table>
+              <thead>
+                <tr>
+                  <th className="position-column">Placering</th>
+                  <th className="column">Poäng</th>
+                  <th className="column">Namn</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <>
-          <br />
-          <div>{noPlayers}</div>
-        </>
-      )}
+              </thead>
+              <tbody>
+                {weeklySnapshot?.weeklyUserResults?.map((user) => (
+                  <tr key={user.id}>
+                    <td className="position-column">{user.position}</td>
+                    <td className="column">{user.points}</td>
+                    <td className="column">{user.firstname}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div>Inget</div>
+        )}
+        <h1>Topplista total</h1>
+        {round ? (
+          <div>
+            <table>
+              <thead>
+                <tr>
+                  <th className="position-column">Placering</th>
+                  <th className="column">Poäng</th>
+                  <th className="column">Namn</th>
+                </tr>
+              </thead>
+              <tbody>
+                {round.userDatas?.map((user) => (
+                  <tr key={user.id}>
+                    <td className="position-column">{user.position}</td>
+                    <td className="column">{user.points}</td>
+                    <td className="column">{user.firstname}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <>
+            <br />
+            <div>{noPlayers}</div>
+          </>
+        )}
+      </div>
     </article>
   );
 };

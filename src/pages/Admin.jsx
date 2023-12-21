@@ -51,6 +51,9 @@ export default function Home() {
           <Link to="rätta-omgång">
             <button>Rätta pågående omgång</button>
           </Link>
+          <Link to="veckorundor">
+            <button>Visa alla veckor</button>
+          </Link>
         </div>
         <div>
           <Outlet />
