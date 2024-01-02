@@ -10,13 +10,11 @@ const HighscoreDisplay = () => {
   const addRound = useStore((state) => state.addRoundActive);
   const addWeeklySnapshot = useStore((state) => state.addWeeklySnapshot);
   const weeklySnapshot = useStore((state) => state.weeklySnapshot);
-  const clearWeeklySnapshot = useStore((state) => state.clearWeeklySnapshot);
 
   const noPlayers = "Inga spelare";
 
   useEffect(() => {
     getRound();
-    // getSnapshot();
   }, []);
 
   const getRound = async () => {
@@ -27,64 +25,69 @@ const HighscoreDisplay = () => {
   };
 
   useEffect(() => {
-    console.log(weeklySnapshot);
+    const test = weeklySnapshot ? "true" : "false";
+    console.log("WEEKLY: ", test);
+    console.log("WEEKLY: ", weeklySnapshot);
   }, [weeklySnapshot]);
+
+  // useEffect(() => {
+  //   console.log("ROUND: ", round);
+  // }, [round]);
 
   return (
     <article className="highscore-list">
       <div className="highscore-area">
-        <h1>Veckans resultat</h1>
-        {weeklySnapshot ? (
-          <div>
-            <table>
-              <thead>
-                <tr>
-                  <th className="position-column">Placering</th>
-                  <th className="column">Poäng</th>
-                  <th className="column">Namn</th>
-                </tr>
-              </thead>
-              <tbody>
-                {weeklySnapshot?.weeklyUserResults?.map((user) => (
-                  <tr key={user.id}>
-                    <td className="position-column">{user.position}</td>
-                    <td className="column">{user.points}</td>
-                    <td className="column">{user.firstname}</td>
+        {/* <div className="table-layout">
+          <h1>Veckans resultat</h1>
+          {weeklySnapshot.id !== null ? (
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th className="position-column">Placering</th>
+                    <th className="column">Poäng</th>
+                    <th className="column">Namn</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <div>Inget</div>
-        )}
-        <h1>Topplista total</h1>
-        {round ? (
-          <div>
-            <table>
-              <thead>
-                <tr>
-                  <th className="position-column">Placering</th>
-                  <th className="column">Poäng</th>
-                  <th className="column">Namn</th>
-                </tr>
-              </thead>
-              <tbody>
-                {round.userDatas?.map((user) => (
-                  <tr key={user.id}>
-                    <td className="position-column">{user.position}</td>
-                    <td className="column">{user.points}</td>
-                    <td className="column">{user.firstname}</td>
+                </thead>
+                <tbody>
+                  {weeklySnapshot?.weeklyUserResults?.map((user) => (
+                    <tr key={user.id}>
+                      <td className="position-column">{user.position}</td>
+                      <td className="column">{user.points}</td>
+                      <td className="column">{user.firstname}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div>Inget</div>
+          )}
+        </div> */}
+        {round.id !== null && (
+          <div className="table-layout">
+            <h1>Topplista total</h1>
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th className="position-column">Placering</th>
+                    <th className="column">Poäng</th>
+                    <th className="column">Namn</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {round.userDatas?.map((user) => (
+                    <tr key={user.id}>
+                      <td className="position-column">{user.position}</td>
+                      <td className="column">{user.points}</td>
+                      <td className="column">{user.firstname}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        ) : (
-          <>
-            <br />
-            <div>{noPlayers}</div>
-          </>
         )}
       </div>
     </article>

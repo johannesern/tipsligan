@@ -5,8 +5,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateFile from "../functions/CreateFile";
 import GetActiveRound from "../API/GetActiveRound";
+import useStore from "../store/useStore";
+import GetSettings from "../API/GetSettings";
 
 export default function Home() {
+  const addSettings = useStore((state) => state.addSettings);
   const navigate = useNavigate();
   const [token, setToken] = useState();
 
@@ -53,6 +56,12 @@ export default function Home() {
           </Link>
           <Link to="veckorundor">
             <button>Visa alla veckor</button>
+          </Link>
+          <Link to="vinstfördelning">
+            <button>Vinstfördelning</button>
+          </Link>
+          <Link to="inställningar">
+            <button>Inställningar</button>
           </Link>
         </div>
         <div>

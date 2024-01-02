@@ -12,4 +12,20 @@
 }
 
 .create-new-round {
+  display: flex;
+}
+
+.title-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label {
+  font-size: 16px;
+}
+
+.input-column {
+  display: flex;
+  flex-direction: column;
+  height: 25px;
 }

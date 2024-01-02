@@ -73,68 +73,58 @@ export default function RoundCreator() {
       <div className="">
         <h2>Skapa ny omgång</h2>
         <form className="create-new-round" onSubmit={handleSubmit}>
-          <div className="title-weeks">
-            <label>
-              Titel:
-              <input
-                className="input-field"
-                value={roundData.title}
-                type="text"
-                name="title"
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Antal veckor:
-              <select
-                onChange={handleChange}
-                defaultValue={10}
-                className="input-field"
-                name="periodInWeeks"
-              >
-                {weeks.map((week, index) => (
-                  <option key={index} value={week}>
-                    {week}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Öppen för registrering:
-              <select
-                className="input-field"
-                name="isOpen"
-                onChange={handleChange}
-                defaultValue={true}
-              >
-                <option value="true">Ja</option>
-                <option value="false">Nej</option>
-              </select>
-            </label>
-            <label>
-              Rundan aktiv:
-              <select
-                className="input-field"
-                name="isActive"
-                onChange={handleChange}
-                defaultValue={true}
-              >
-                <option value="true">Ja</option>
-                <option value="false">Nej</option>
-              </select>
-            </label>
+          <div className="title-column">
+            <label className="input-label">Titel:</label>
+            <label className="input-label">Antal veckor:</label>
+            <label className="input-label">Öppen för registrering:</label>
+            <label className="input-label">Rundan aktiv:</label>
+            <label className="input-label">Startdatum:</label>
           </div>
-
-          <label>
-            Startdatum:
+          <div className="input-column">
+            <input
+              className="input-field"
+              value={roundData.title}
+              type="text"
+              name="title"
+              onChange={handleChange}
+            />
+            <select
+              onChange={handleChange}
+              defaultValue={10}
+              className="input-field"
+              name="periodInWeeks"
+            >
+              {weeks.map((week, index) => (
+                <option key={index} value={week}>
+                  {week}
+                </option>
+              ))}
+            </select>
+            <select
+              className="input-field"
+              name="isOpen"
+              onChange={handleChange}
+              defaultValue={true}
+            >
+              <option value="true">Ja</option>
+              <option value="false">Nej</option>
+            </select>
+            <select
+              className="input-field"
+              name="isActive"
+              onChange={handleChange}
+              defaultValue={true}
+            >
+              <option value="true">Ja</option>
+              <option value="false">Nej</option>
+            </select>
             <StartDatepicker getStartDate={getStartDate} />
-          </label>
+          </div>
           <br />
-          <br />
-          <button onSubmit={handleSubmit} type="submit">
-            Skapa omgång
-          </button>
         </form>
+        <button onSubmit={handleSubmit} type="submit">
+          Skapa omgång
+        </button>
         {createdRound ? (
           <>
             {createdRound.isActive != false ? (

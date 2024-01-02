@@ -4,7 +4,7 @@ import { TipsliganAPIURL } from "../constants/Constants";
 export default async function UpdateRound(round) {
   const baseUrl = DevURL();
   try {
-    console.log("API:UpdateRound", round);
+    // console.log("API:UpdateRound", round);
     const response = await fetch(`${baseUrl}/rounds/${round.id}`, {
       method: "PUT",
       headers: {

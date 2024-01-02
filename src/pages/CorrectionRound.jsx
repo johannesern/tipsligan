@@ -20,7 +20,6 @@ export default function RoundToCorrect() {
   //Store
   const addRound = useStore((state) => state.addRoundActive);
   const round = useStore((state) => state.roundActive);
-  const clearActiveRound = useStore((state) => state.clearRoundActive);
 
   //First time loading
   useEffect(() => {
@@ -103,7 +102,6 @@ export default function RoundToCorrect() {
       ...round,
       correctedAt: newdate,
     };
-    clearActiveRound;
     addRound(newRound);
     await UpdateRound(newRound);
     setManualMode(!manualMode);
@@ -128,7 +126,6 @@ export default function RoundToCorrect() {
       userDatas: newUserDatas,
       correctedAt: newdate,
     };
-    clearActiveRound;
     addRound(newRound);
     await UpdateRound(newRound);
     setSemiAutoMode(false);

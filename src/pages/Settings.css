@@ -1,0 +1,38 @@
+.settings-area {
+  display: flex;
+  gap: 5px;
+}
+
+.input-column {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.label-column {
+  display: flex;
+  flex-direction: column;
+  line-height: 44px;
+}
+
+.input-field {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  width: 50px;
+  border: 2px solid #787878;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.settings-save-btn {
+  margin-top: 10px;
+  margin-left: 224px;
+}
+
+.settings-error {
+  border: 4px solid #960303;
+}
+
+.error-color {
+  color: #960303;
+}

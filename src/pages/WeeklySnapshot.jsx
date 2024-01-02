@@ -1,50 +1,40 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import "./WeeklySnapshot.css";
 import GetAllWeekly from "../API/GetAllWeekly";
 import DeleteWeekly from "../API/DeleteWeekly";
+import useStore from "../store/useStore";
 
 const WeeklySnapshot = () => {
-  const [weeklys, setWeekly] = useState();
+  //Store
+  const addWeeklys = useStore((state) => state.addWeeklySnapshots);
+  const weeklysInStore = useStore((state) => state.weeklySnapshotsCollection);
 
   //First time loading
   useEffect(() => {
     getWeeklys();
   }, []);
 
+  useEffect(() => {}, [weeklysInStore]);
+
   const getWeeklys = async () => {
     const data = await GetAllWeekly();
-    setWeekly(data);
+    addWeeklys(data);
   };
 
   const handleDeleteClick = async (id) => {
     await DeleteWeekly(id);
-    setWeekly(weeklys);
+    getWeeklys();
   };
-
-  useEffect(() => {
-    console.log(weeklys);
-  }, [weeklys]); //DU FÖRSÖKER FÅ WEEKLY ATT UPPDATERAS DIREKT
 
   return (
     <main>
       <ul className="users-list">
-        {weeklys != null ? (
-          weeklys.map((weekly) => (
+        {weeklysInStore ? (
+          weeklysInStore?.map((weekly) => (
             <li className="list-item" key={weekly.id || weekly.Id}>
               <div className="weeklys">
                 <div>{weekly.round.title}</div>
                 <div>{weekly.createdAt}</div>
-                {/* <ul>
-                  {weekly.weeklyUserResults != null
-                    ? weekly.weeklyUserResults.map((user) => (
-                        <li key={user.id}>
-                          <div>{user.firstname}</div>
-                          <div>{user.points}</div>
-                        </li>
-                      ))
-                    : ""}
-                </ul> */}
-
                 <div className="user-buttons">
                   <button
                     name="delete"
