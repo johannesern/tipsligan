@@ -96,22 +96,12 @@ export default function RoundToCorrect() {
   };
 
   const handleManualSave = async () => {
-    const now = new Date();
-    const newdate = FormattedDate(now.toString());
-    const newRound = {
-      ...round,
-      correctedAt: newdate,
-    };
-    addRound(newRound);
-    await UpdateRound(newRound);
+    await UpdateRound(round);
     setManualMode(!manualMode);
     getActiveRound();
   };
 
   const handleSemiSave = async () => {
-    const now = new Date();
-    const newdate = FormattedDate(now.toString());
-
     const newUserDatas = round.userDatas;
     newUserDatas.forEach((user) => {
       for (let i = 0; i < coupon.length; i++) {
@@ -124,7 +114,6 @@ export default function RoundToCorrect() {
     const newRound = {
       ...round,
       userDatas: newUserDatas,
-      correctedAt: newdate,
     };
     addRound(newRound);
     await UpdateRound(newRound);
@@ -155,7 +144,7 @@ export default function RoundToCorrect() {
           <div className={"message" + (isError ? "error" : "")}>{message}</div>
         )}
       </div>
-      {enableCorrectionButton && (
+      {!enableCorrectionButton && (
         <div className={"message" + (isError ? "error" : "")}>
           Automatisk rättning är blockerad tills alla matcher är spelade
         </div>
@@ -171,7 +160,7 @@ export default function RoundToCorrect() {
       {semiautoMode && (
         <p>
           <i>
-            Semi Automatisk rättning: Fyll i rätt rad och klicka på Rätta, alla
+            Semi-Automatisk rättning: Fyll i rätt rad och klicka på Rätta, alla
             spelares poäng kommer att uppdateras
           </i>
         </p>
