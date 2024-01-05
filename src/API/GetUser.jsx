@@ -17,3 +17,19 @@ export async function GetUser(userId) {
     console.error("API:GetUser error", error);
   }
 }
+
+export async function GetUserByToken(token) {
+  const baseUrl = DevURL();
+  try {
+    const response = await fetch(`${baseUrl}/users/by-token/`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("API:GetUser error", error);
+  }
+}

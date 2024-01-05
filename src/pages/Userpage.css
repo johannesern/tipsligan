@@ -1,0 +1,43 @@
+.userpage_player-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.userpage_user-input-field {
+  font-family: "Poppins", sans-serif;
+  min-width: 60px;
+  font-size: 16px;
+  border: 2px solid #787878;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.userpage_center-coupon {
+  display: flex;
+  justify-content: center;
+}
+
+.userpage_align-submit-update-button {
+  display: flex;
+  justify-content: center;
+}
+
+.userpage_align-message {
+  display: flex;
+  justify-content: center;
+}
+
+.userpage_registration-error {
+  color: red;
+}
+
+.userpage_registration-success {
+  color: green;
+}
+
+.userpage_player-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}

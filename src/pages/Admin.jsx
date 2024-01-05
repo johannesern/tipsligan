@@ -5,18 +5,15 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateFile from "../functions/CreateFile";
 import GetActiveRound from "../API/GetActiveRound";
-import useStore from "../store/useStore";
-import GetSettings from "../API/GetSettings";
 
 export default function Home() {
-  const addSettings = useStore((state) => state.addSettings);
   const navigate = useNavigate();
   const [token, setToken] = useState();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setToken(token);
+    const adminToken = localStorage.getItem("adminToken");
+    if (adminToken) {
+      setToken(adminToken);
     } else {
       navigate("/login"); // You can also return a loading spinner or message here if needed
     }

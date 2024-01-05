@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import GetActiveRound from "../API/GetActiveRound";
 import "./HighscoreDisplay.css";
 import useStore from "../store/useStore";
@@ -23,16 +23,6 @@ const HighscoreDisplay = () => {
     addRound(activeRound);
     addWeeklySnapshot(weeklySnapshot);
   };
-
-  useEffect(() => {
-    const test = weeklySnapshot ? "true" : "false";
-    console.log("WEEKLY: ", test);
-    console.log("WEEKLY: ", weeklySnapshot);
-  }, [weeklySnapshot]);
-
-  // useEffect(() => {
-  //   console.log("ROUND: ", round);
-  // }, [round]);
 
   return (
     <article className="highscore-list">

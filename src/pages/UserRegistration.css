@@ -1,6 +1,62 @@
-.inputTextBox {
+.returning-player-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.registration-content {
+  display: flex;
+}
+
+.user-input-field {
   font-family: "Poppins", sans-serif;
+  min-width: 60px;
   font-size: 16px;
-  /* max-width: 103px; */
   border: 2px solid #787878;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.registration-divider {
+  margin-left: 10px;
+  margin-right: 10px;
+  border-left: 3px solid #787878;
+}
+
+.center-coupon {
+  display: flex;
+  justify-content: center;
+}
+
+.align-submit-button {
+  display: flex;
+  justify-content: center;
+}
+
+.align-message {
+  display: flex;
+  justify-content: center;
+}
+
+.registration-error {
+  color: red;
+}
+
+.registration-success {
+  color: green;
+}
+
+.returning-player-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.returning-player-input-fields {
+  display: flex;
+  flex-direction: column;
+}
+
+.registration-button-disabled {
+  background-color: #787878;
 }
