@@ -36,7 +36,7 @@ export default function Home() {
         </p>
         <div className="home-buttons">
           <button onClick={handleFileCreation}>Skapa fil för inlämning</button>
-          <Link to="användare">
+          <Link to="deltagare">
             <button>Hämta alla användare</button>
           </Link>
           <Link to="registrera">
