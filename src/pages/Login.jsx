@@ -26,8 +26,8 @@ export default function Login() {
     e.preventDefault();
     if (isUser) {
       const response = await LoginUser({
-        email: "johannes.ragnarsson@gmail.com",
-        password: "string",
+        email,
+        password,
       });
       if (response.ok) {
         const data = await response.json();
