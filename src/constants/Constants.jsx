@@ -1,5 +1,5 @@
 export function TipsliganAPIURL() {
-  return "https://tipsligan-api-twilight-glitter-4832.fly.dev/";
+  return "https://tipsligan-api-twilight-glitter-4832.fly.dev";
 }
 
 export function DevURL() {

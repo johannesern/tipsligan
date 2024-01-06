@@ -2,7 +2,7 @@ import { DevURL } from "../constants/Constants";
 import { TipsliganAPIURL } from "../constants/Constants";
 
 export default async function UpdateRound(round) {
-  const baseUrl = DevURL();
+  const baseUrl = TipsliganAPIURL();
   try {
     // console.log("API:UpdateRound", round);
     const response = await fetch(`${baseUrl}/rounds/${round.id}`, {

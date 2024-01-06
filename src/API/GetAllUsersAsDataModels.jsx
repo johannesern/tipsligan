@@ -2,7 +2,7 @@ import { DevURL } from "../constants/Constants";
 import { TipsliganAPIURL } from "../constants/Constants";
 
 export default async function GetAllUsersAsDataModels() {
-  const baseUrl = DevURL();
+  const baseUrl = TipsliganAPIURL();
   try {
     const response = await fetch(baseUrl + "/users/userDataModels");
     // console.log("USERDATAMODELS:", response);

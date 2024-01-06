@@ -2,7 +2,7 @@ import { DevURL } from "../constants/Constants";
 import { TipsliganAPIURL } from "../constants/Constants";
 
 export default async function DeleteRound(weeklyId) {
-    const baseUrl = DevURL();
+    const baseUrl = TipsliganAPIURL();
     try {
         const response = await fetch(`${baseUrl}/weeklySnapshot/${weeklyId}`, {
             method: "DELETE",

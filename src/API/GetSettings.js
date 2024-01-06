@@ -2,7 +2,7 @@ import { DevURL } from "../constants/Constants";
 import { TipsliganAPIURL } from "../constants/Constants";
 
 export default async function GetSettings() {
-    const baseUrl = DevURL();
+    const baseUrl = TipsliganAPIURL();
     try {
         const response = await fetch(baseUrl + "/AssociationSettings/settings");
         // console.log("User response:", response);

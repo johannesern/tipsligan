@@ -2,7 +2,7 @@ import { DevURL } from "../constants/Constants";
 import { TipsliganAPIURL } from "../constants/Constants";
 
 export async function UpdatePartialUser(user) {
-    const baseUrl = DevURL();
+    const baseUrl = TipsliganAPIURL();
     try {
         const response = await fetch(`${baseUrl}/users/partial-user/${user.id}`, {
             method: "PUT",

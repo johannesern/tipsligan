@@ -2,7 +2,7 @@ import { DevURL } from "../constants/Constants";
 import { TipsliganAPIURL } from "../constants/Constants";
 
 export default async function GetAllUsers() {
-  const baseUrl = DevURL();
+  const baseUrl = TipsliganAPIURL();
   try {
     const response = await fetch(baseUrl + "/users");
     // console.log("User response:", response);
