@@ -1,9 +1,9 @@
 import "./Settings.css";
 import { useState, useEffect } from "react";
-import GetSettings from "../API/GetSettings";
 import useStore from "../store/useStore";
-import UpdateSettings from "../API/UpdateSettings";
 import { FormattedDate } from "../functions/FormattedDate";
+import { GetSettings } from "../API/SettingsAPI";
+import { UpdateSettings } from "../API/SettingsAPI";
 
 export default function Settings() {
   const [tmpSettings, setTmpSettings] = useState({});

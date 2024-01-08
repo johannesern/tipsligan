@@ -1,8 +1,10 @@
 import { useEffect } from "react";
-import GetActiveRound from "../API/GetActiveRound";
-import "./HighscoreDisplay.css";
 import useStore from "../store/useStore";
-import GetLatestWeekly from "../API/GetLatestWeekly";
+
+import "./HighscoreDisplay.css";
+
+import { GetActiveRound } from "../API/RoundsAPI";
+import { GetLatestWeekly } from "../API/WeeklysAPI";
 
 const HighscoreDisplay = () => {
   //Store

@@ -5,7 +5,7 @@ import "./UserRegistration.css";
 
 //components
 import Coupon from "../components/Coupon";
-import { CreateUser } from "../API/CreateUser";
+import { CreateUser } from "../API/UsersAPI";
 
 const UserRegistration = () => {
   const [newUser, setNewUser] = useState({

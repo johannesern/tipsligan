@@ -31,6 +31,12 @@ const useStore = create((set) => ({
     addSettings: (settings) => set((state) => ({ settings: settings })),
     clearSettings: () => set((state) => ({ settings: {} })),
 
+    //Tokens
+    adminToken: "",
+    userToken: "",
+    addAdminToken: (token) => set((state) => ({ adminToken: token })),
+    addUserToken: (token) => set((state) => ({ userToken: token })),
+
     // clearCollection: (collection) => set((state) => ({ collection: [] })),
 }));
 

@@ -1,10 +1,10 @@
+import "./RoundsDisplay.css";
 import { useEffect, useState } from "react";
-import GetAllRounds from "../API/GetAllRounds";
-import GetAllUsersAsDataModels from "../API/GetAllUsersAsDataModels";
-import { DeleteRound } from "../API/DeleteRound";
 import { RoundUpdateForm } from "../components/RoundUpdateForm";
 import useStore from "../store/useStore";
-import "./RoundsDisplay.css";
+import { DeleteRound } from "../API/RoundsAPI";
+import { GetAllRounds } from "../API/RoundsAPI";
+import { GetAllUsersAsDataModels } from "../API/UsersAPI";
 
 const DisplayAllRounds = () => {
   const addUserDataModels = useStore((state) => state.addUserDataModels);

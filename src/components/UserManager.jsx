@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import useStore from "../store/useStore";
+
 import "./UserManager.css";
+
+import useStore from "../store/useStore";
 
 export default function UserManager() {
   const users = useStore((state) => state.userDataModelsCollection);

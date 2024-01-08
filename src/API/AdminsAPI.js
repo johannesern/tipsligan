@@ -1,10 +1,8 @@
-import { DevURL } from "../constants/Constants";
-import { TipsliganAPIURL } from "../constants/Constants";
+const baseUrl = import.meta.env.VITE_API_URL
 
-export async function LoginUser(credentials) {
-    const baseUrl = TipsliganAPIURL();
+export async function LoginAdmin(credentials) {
     try {
-        const response = await fetch(baseUrl + "/users/login", {
+        const response = await fetch(baseUrl + "/Admin/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

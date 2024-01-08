@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import "./CorrectionRound.css";
 import { EnableCorrection } from "../functions/EnableCorrection";
-import CorrectionRound from "../API/CorrectionRound";
-import useStore from "../store/useStore";
-import UpdateRound from "../API/UpdateRound";
-import GetActiveRound from "../API/GetActiveRound";
 import Coupon from "../components/Coupon";
-import { FormattedDate } from "../functions/FormattedDate";
+import useStore from "../store/useStore";
+import { UpdateRound } from "../API/RoundsAPI";
+import { GetActiveRound } from "../API/RoundsAPI";
+import { CorrectionRound } from "../API/RoundsAPI";
 
 export default function RoundToCorrect() {
   const [message, setMessage] = useState();

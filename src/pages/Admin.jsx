@@ -4,7 +4,7 @@ import { Link, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateFile from "../functions/CreateFile";
-import GetActiveRound from "../API/GetActiveRound";
+import { GetActiveRound } from "../API/RoundsAPI";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -26,10 +26,18 @@ export default function Home() {
     CreateFile(round.userDatas, "Stryktipset");
   };
 
+  const logout = () => {
+    localStorage.removeItem("adminToken");
+    navigate("/login");
+  };
+
   return (
     <section>
       <article>
-        <h2>Adminsidan</h2>
+        <h2>Admin</h2>
+        <button onClick={logout} type="button">
+          Logga ut
+        </button>
         <p>
           Här kan man skriva in saker som är bra för admins att veta eller
           tillvägagångssätt för hur vissa funktioner fungerar.

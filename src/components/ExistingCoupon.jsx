@@ -3,7 +3,7 @@ import "./Coupon.css";
 /* eslint-disable react/prop-types */
 import "./Coupon.css";
 
-const ExistingCoupon = ({ setExistingCouponSelections, coupon }) => {
+const ExistingCoupon = ({ setExistingCouponSelections, coupon, editMode }) => {
   const numRows = 13;
 
   const handleCheckboxChange = (rowIndex, value) => {
@@ -35,18 +35,21 @@ const ExistingCoupon = ({ setExistingCouponSelections, coupon }) => {
         <input
           className="checkbox"
           type="checkbox"
+          disabled={!editMode}
           checked={coupon[rowIndex] === "1"}
           onChange={() => handleCheckboxChange(rowIndex, "1")}
         />
         <input
           className="checkbox"
           type="checkbox"
+          disabled={!editMode}
           checked={coupon[rowIndex] === "X"}
           onChange={() => handleCheckboxChange(rowIndex, "X")}
         />
         <input
           className="checkbox"
           type="checkbox"
+          disabled={!editMode}
           checked={coupon[rowIndex] === "2"}
           onChange={() => handleCheckboxChange(rowIndex, "2")}
         />

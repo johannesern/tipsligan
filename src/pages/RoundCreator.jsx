@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import StartDatepicker from "../components/StartDatePicker.jsx";
-import { CreateRound } from "../API/CreateRound.jsx";
-import { FormattedDate } from "../functions/FormattedDate.jsx";
+import { CreateRound } from "../API/RoundsAPI";
+// import { FormattedDate } from "../functions/FormattedDate.jsx";
 import "./RoundCreator.css";
 
 export default function RoundCreator() {
-  const defaultStartDate = FormattedDate(new Date());
+  // const defaultStartDate = FormattedDate(new Date());
   const defaultPeriodInWeeks = "10";
   const [createdRound, setCreatedRound] = useState();
   const [roundData, setRoundData] = useState({
     title: "",
     periodInWeeks: defaultPeriodInWeeks,
-    startDate: defaultStartDate,
+    // startDate: defaultStartDate,
     isOpen: "true",
     isActive: "true",
   });

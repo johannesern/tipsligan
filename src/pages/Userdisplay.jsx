@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import GetAllUsers from "../API/GetAllUsers";
-import { DeleteUser } from "../API/DeleteUser";
 import "./Userdisplay.css";
+import { useState, useEffect } from "react";
 import { UserUpdateForm } from "../components/UserUpdateForm";
+import { DeleteUser } from "../API/UsersAPI";
+import { GetAllUsers } from "../API/UsersAPI";
 
 const Userdisplay = () => {
   const [selectedUser, setSelectedUser] = useState("");

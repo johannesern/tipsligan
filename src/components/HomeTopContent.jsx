@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import GetActiveRound from "../API/GetActiveRound";
+
 import HomeButtons from "./HomeButtons";
+
+import { GetActiveRound } from "../API/RoundsAPI";
 
 export default function HomeTopContent() {
   const [round, setRound] = useState();

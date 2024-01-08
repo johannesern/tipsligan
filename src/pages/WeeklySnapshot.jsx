@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./WeeklySnapshot.css";
-import GetAllWeekly from "../API/GetAllWeekly";
-import DeleteWeekly from "../API/DeleteWeekly";
+import { GetAllWeekly } from "../API/WeeklysAPI";
+import { DeleteWeekly } from "../API/WeeklysAPI";
 import useStore from "../store/useStore";
 
 const WeeklySnapshot = () => {

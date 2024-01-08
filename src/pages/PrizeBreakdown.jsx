@@ -1,7 +1,7 @@
 import "./PrizeBreakdown.css";
 import { useState, useEffect } from "react";
-import GetSettings from "../API/GetSettings";
-import GetActiveRound from "../API/GetActiveRound";
+import { GetSettings } from "../API/SettingsAPI";
+import { GetActiveRound } from "../API/RoundsAPI";
 
 export default function PrizeBreakdown() {
   const [settings, setSettings] = useState({});

@@ -1,41 +1,14 @@
+import useStore from "../store/useStore";
 import { Link, NavLink, Outlet } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 export function RootLayout() {
-  const [adminToken, setAdminToken] = useState(null);
-  const [userToken, setUserToken] = useState(null);
+  const adminTokenInStore = useStore((state) => state.adminToken);
+  const userTokenInStore = useStore((state) => state.userToken);
 
-  useEffect(() => {
-    const adminToken = localStorage.getItem("adminToken");
-    if (adminToken) {
-      setAdminToken(adminToken);
-    }
-
-    const userToken = localStorage.getItem("userToken");
-    if (userToken) {
-      setUserToken(userToken);
-    }
-  }, []);
-
-  const notLoggedIn = () => {
-    if (!adminToken && !userToken) {
-      return true;
-    }
-    return false;
-  };
-
-  const adminLoggedIn = () => {
-    if (adminToken) {
-      return true;
-    }
-    return false;
-  };
-
-  const userLoggedIn = () => {
-    if (userToken) {
-      return true;
-    }
-    return false;
+  const determineLoggedIn = () => {
+    if (adminTokenInStore) return <NavLink to="/admin">Admin</NavLink>;
+    if (userTokenInStore) return <NavLink to="/användare">Min profil</NavLink>;
+    return <NavLink to="/login">Logga in</NavLink>;
   };
 
   return (
@@ -47,9 +20,7 @@ export function RootLayout() {
           </h1>
           <NavLink to="/">Hem</NavLink>
           <NavLink to="registrera-rad">Registrera mig</NavLink>
-          {notLoggedIn() && <NavLink to="login">Logga in</NavLink>}
-          {adminLoggedIn() && <NavLink to="admin">Admin</NavLink>}
-          {userLoggedIn() && <NavLink to="användare">Min profil</NavLink>}
+          {determineLoggedIn()}
           <NavLink to="kontakta-oss">Kontakt</NavLink>
         </nav>
       </header>

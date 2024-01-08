@@ -1,9 +1,9 @@
 import "./Login.css";
-
-import { LoginAdmin } from "../API/LoginAdmin";
-import { LoginUser } from "../API/LoginUser";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useStore from "../store/useStore";
+import { LoginAdmin } from "../API/AdminsAPI";
+import { LoginUser } from "../API/UsersAPI";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -11,6 +11,17 @@ export default function Login() {
   const [password, setPassword] = useState();
   const [loginError, setLoginError] = useState();
   const [isUser, setIsUser] = useState(true);
+
+  //Store
+  const adminTokenInStore = useStore((state) => state.adminToken);
+  const userTokenInStore = useStore((state) => state.userToken);
+  const addAdminToken = useStore((state) => state.addAdminToken);
+  const addUserToken = useStore((state) => state.addUserToken);
+
+  useEffect(() => {
+    addAdminToken(localStorage.getItem("adminToken"));
+    addUserToken(localStorage.getItem("userToken"));
+  }, [adminTokenInStore, userTokenInStore]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,6 +43,7 @@ export default function Login() {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem("userToken", data.token);
+        addUserToken(data.token);
         navigate("/användare");
       } else {
         setLoginError("Felaktig email eller lösenord");
@@ -44,6 +56,7 @@ export default function Login() {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem("adminToken", data.token);
+        addAdminToken(data.token);
         navigate("/admin");
       } else {
         setLoginError("Felaktig email eller lösenord");
@@ -53,7 +66,7 @@ export default function Login() {
 
   return (
     <div className="login-wrapper">
-      <h1>Logga in som {}</h1>
+      <h1>Logga in som</h1>
       <br />
       <div className="login_user-type">
         <button

@@ -1,8 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { FormattedDate } from "../functions/FormattedDate";
+
 import "./UserUpdateForm.css";
-import { UpdateUser } from "../API/UpdateUser";
+
+import { FormattedDate } from "../functions/FormattedDate";
+
+import { UpdateUser } from "../API/UsersAPI";
 
 export function UserUpdateForm({ updateUser, updateUserInList }) {
   const [responseFromUpdate, setResponseFromUpdate] = useState();
