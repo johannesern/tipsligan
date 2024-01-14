@@ -26,10 +26,12 @@ import CorrectionRound from "./pages/CorrectionRound";
 import WeeklySnapshot from "./pages/WeeklySnapshot";
 import Settings from "./pages/Settings";
 import PrizeBreakdown from "./pages/PrizeBreakdown";
+import ResetPassword from "./pages/ResetPassword";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
+      <Route path="återställa-lösenord" element={<ResetPassword />} />
       <Route path="login" element={<Login />} />
       <Route path="/" element={<Home />}>
         <Route index element={<HighscoreDisplay />}></Route>
