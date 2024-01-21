@@ -11,9 +11,14 @@ export default function PrizeBreakdown() {
   useEffect(() => {
     const loadData = async () => {
       const settings = await GetSettings();
-      const activeRound = await GetActiveRound();
+      const activeRoundResponse = await GetActiveRound();
+      if (activeRoundResponse.ok) {
+        const data = await activeRoundResponse.json();
+        setActiveRound(data);
+      } else {
+        alert("Kunde inte hämta aktiv runda");
+      }
       setSettings(settings[0]);
-      setActiveRound(activeRound);
     };
     loadData();
   }, []);

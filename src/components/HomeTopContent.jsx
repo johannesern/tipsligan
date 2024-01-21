@@ -15,8 +15,9 @@ export default function HomeTopContent() {
   useEffect(() => {
     try {
       const siteUpdate = async () => {
-        const round = await GetActiveRound();
-        if (round.id != null && round.id !== undefined) {
+        const roundResponse = await GetActiveRound();
+        if (roundResponse.ok) {
+          const round = await roundResponse.json();
           setRound(round);
           passRoundToButtons();
           if (round.isOpen && round.isActive) {

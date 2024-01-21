@@ -29,8 +29,13 @@ export default function RoundToCorrect() {
   }, []);
 
   const getActiveRound = async () => {
-    const activeRound = await GetActiveRound();
-    addRound(activeRound);
+    const activeRoundResponse = await GetActiveRound();
+    if (activeRoundResponse.ok) {
+      const data = await activeRoundResponse.json();
+      addRound(data);
+    } else {
+      alert("Kunde inte hämta aktiv runda");
+    }
   };
 
   const handleClick = async () => {

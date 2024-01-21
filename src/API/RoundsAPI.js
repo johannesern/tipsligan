@@ -24,10 +24,10 @@ export async function GetActiveRound() {
     try {
         const response = await fetch(baseUrl + "/rounds/active");
         if (response.ok) {
-            const responseData = await response.json();
-            return responseData;
+            return response;
         } else {
             console.error("Failed to get data");
+            return response;
         }
     } catch (error) {
         console.error("API:GetActiveRound error", error);

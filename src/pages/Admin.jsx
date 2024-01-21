@@ -22,8 +22,13 @@ export default function Home() {
   useEffect(() => {}, [token]);
 
   const handleFileCreation = async () => {
-    const round = await GetActiveRound();
-    CreateFile(round.userDatas, "Stryktipset");
+    const roundResponse = await GetActiveRound();
+    if (roundResponse.ok) {
+      const round = await roundResponse.json();
+      CreateFile(round);
+    } else {
+      alert("Kunde inte hämta aktiv runda");
+    }
   };
 
   const logout = () => {

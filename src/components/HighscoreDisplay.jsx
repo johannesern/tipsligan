@@ -20,9 +20,14 @@ const HighscoreDisplay = () => {
   }, []);
 
   const getRound = async () => {
-    const activeRound = await GetActiveRound();
+    const activeRoundResponse = await GetActiveRound();
     const weeklySnapshot = await GetLatestWeekly();
-    addRound(activeRound);
+    if (activeRoundResponse.ok) {
+      const data = await activeRoundResponse.json();
+      addRound(data);
+    } else {
+      alert("Kunde inte hämta aktiv runda");
+    }
     addWeeklySnapshot(weeklySnapshot);
   };
 
