@@ -1,8 +1,6 @@
-import { DevURL } from "../constants/Constants";
-import { TipsliganAPIURL } from "../constants/Constants";
+const baseUrl = import.meta.env.VITE_API_URL
 
 export default async function GetSiteInfo() {
-  const baseUrl = TipsliganAPIURL();
   try {
     const response = await fetch(baseUrl + "/siteinfo");
     // console.log("Rounds response:", response);
