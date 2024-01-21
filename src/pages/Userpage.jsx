@@ -83,9 +83,7 @@ export default function Home() {
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  useEffect(() => {
-    console.log("New values: ", user);
-  }, [user]);
+  useEffect(() => {}, [user]);
 
   const changeMode = () => {
     setEditMode(!editMode);
