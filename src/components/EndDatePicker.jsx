@@ -5,7 +5,6 @@ import ReactDatePicker from "react-datepicker";
 import "./Datepicker.css";
 import "react-datepicker/dist/react-datepicker.css";
 import useStore from "../store/useStore";
-import { FormattedDate } from "../functions/FormattedDate";
 
 export default function EndDatepicker() {
   const round = useStore((state) => state.roundToUpdate);
@@ -16,7 +15,7 @@ export default function EndDatepicker() {
     setChosenDate(date);
     const newRound = {
       ...round,
-      endDate: FormattedDate(date),
+      endDate: date,
     };
     updateRoundInStore(newRound);
   };

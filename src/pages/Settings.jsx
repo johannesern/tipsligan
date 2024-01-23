@@ -1,7 +1,6 @@
 import "./Settings.css";
 import { useState, useEffect } from "react";
 import useStore from "../store/useStore";
-import { FormattedDate } from "../functions/FormattedDate";
 import { GetSettings } from "../API/SettingsAPI";
 import { UpdateSettings } from "../API/SettingsAPI";
 
@@ -59,7 +58,7 @@ export default function Settings() {
   const handleSave = async () => {
     const newSettings = {
       ...tmpSettings,
-      modifiedAt: FormattedDate(new Date()),
+      modifiedAt: new Date().toISOString(),
     };
     const response = await UpdateSettings(newSettings);
     if (response.ok) {

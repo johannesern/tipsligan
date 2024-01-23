@@ -1,17 +1,16 @@
 import { useState } from "react";
 import StartDatepicker from "../components/StartDatePicker.jsx";
 import { CreateRound } from "../API/RoundsAPI";
-import { FormattedDate } from "../functions/FormattedDate.js";
 import "./RoundCreator.css";
 
 export default function RoundCreator() {
-  const defaultStartDate = FormattedDate(new Date());
+  const defaultStartDate = new Date().toISOString();
   const defaultPeriodInWeeks = "10";
   const [createdRound, setCreatedRound] = useState();
   const [roundData, setRoundData] = useState({
     title: "",
     periodInWeeks: defaultPeriodInWeeks,
-    startDate: FormattedDate(defaultStartDate),
+    startDate: defaultStartDate,
     isOpen: "true",
     isActive: "true",
   });
@@ -28,7 +27,6 @@ export default function RoundCreator() {
   };
 
   const handleChange = (e) => {
-    console.log("Något hönder");
     const value = e.target.value;
     setRoundData({
       ...roundData,
@@ -41,7 +39,6 @@ export default function RoundCreator() {
   );
 
   const handleSubmit = async (e) => {
-    console.log("Round data: ");
     e.preventDefault();
 
     // js is stupid... needs to convert string to bool before POST because

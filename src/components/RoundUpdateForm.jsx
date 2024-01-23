@@ -9,7 +9,6 @@ import EndDatepicker from "./EndDatePicker";
 import StartDatepicker from "./StartDatePicker";
 
 import { UpdateRound } from "../API/RoundsAPI";
-import { FormattedDate } from "../functions/FormattedDate";
 
 export function RoundUpdateForm({ refreshRounds, closeForm }) {
   const round = useStore((state) => state.roundToUpdate);
@@ -39,8 +38,8 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
     e.preventDefault();
     const newRound = {
       ...round,
-      startDate: FormattedDate(round.startDate),
-      endDate: FormattedDate(round.endDate),
+      startDate: round.startDate,
+      endDate: round.endDate,
     };
     await UpdateRound(newRound);
     refreshRounds();

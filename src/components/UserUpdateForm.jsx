@@ -3,8 +3,6 @@ import { useState } from "react";
 
 import "./UserUpdateForm.css";
 
-import { FormattedDate } from "../functions/FormattedDate";
-
 import { UpdateUser } from "../API/UsersAPI";
 
 export function UserUpdateForm({ updateUser, updateUserInList }) {
@@ -17,7 +15,7 @@ export function UserUpdateForm({ updateUser, updateUserInList }) {
     phone: updateUser.phone,
     coupon: updateUser.coupon,
     userCreated: updateUser.userCreated,
-    userRenewed: FormattedDate(),
+    userRenewed: new Date().toISOString(),
   });
 
   const handleChange = (e) => {
