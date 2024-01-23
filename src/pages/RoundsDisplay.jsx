@@ -83,41 +83,43 @@ const DisplayAllRounds = () => {
       )}
       <ul className="rounds-list">
         {rounds != null ? (
-          rounds.map((round) => (
-            <li
-              className={`rounds-list-item ${
-                activeRound(round) ? "active" : ""
-              }`}
-              key={round.id}
-            >
-              {" "}
-              <h3>{round.title}</h3>
-              {openFormIds.includes(round.id) && (
-                <div className="form-overlay">
-                  <RoundUpdateForm
-                    closeForm={closeForm}
-                    refreshRounds={refreshRounds}
-                  />
+          rounds
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .map((round) => (
+              <li
+                className={`rounds-list-item ${
+                  activeRound(round) ? "active" : ""
+                }`}
+                key={round.id}
+              >
+                {" "}
+                <h3>{round.title}</h3>
+                {openFormIds.includes(round.id) && (
+                  <div className="form-overlay">
+                    <RoundUpdateForm
+                      closeForm={closeForm}
+                      refreshRounds={refreshRounds}
+                    />
+                  </div>
+                )}
+                <div>
+                  <button
+                    name="edit"
+                    className="round-button"
+                    onClick={() => handleToggleForm(round)}
+                  >
+                    Ändra
+                  </button>
+                  <button
+                    name="delete"
+                    className="round-button"
+                    onClick={() => handleDeleteClick(round.id)}
+                  >
+                    Ta bort
+                  </button>
                 </div>
-              )}
-              <div>
-                <button
-                  name="edit"
-                  className="round-button"
-                  onClick={() => handleToggleForm(round)}
-                >
-                  Ändra
-                </button>
-                <button
-                  name="delete"
-                  className="round-button"
-                  onClick={() => handleDeleteClick(round.id)}
-                >
-                  Ta bort
-                </button>
-              </div>
-            </li>
-          ))
+              </li>
+            ))
         ) : (
           <div>Loading...</div>
         )}

@@ -1,17 +1,17 @@
 import { useState } from "react";
 import StartDatepicker from "../components/StartDatePicker.jsx";
 import { CreateRound } from "../API/RoundsAPI";
-// import { FormattedDate } from "../functions/FormattedDate.jsx";
+import { FormattedDate } from "../functions/FormattedDate.js";
 import "./RoundCreator.css";
 
 export default function RoundCreator() {
-  // const defaultStartDate = FormattedDate(new Date());
+  const defaultStartDate = FormattedDate(new Date());
   const defaultPeriodInWeeks = "10";
   const [createdRound, setCreatedRound] = useState();
   const [roundData, setRoundData] = useState({
     title: "",
     periodInWeeks: defaultPeriodInWeeks,
-    // startDate: defaultStartDate,
+    startDate: FormattedDate(defaultStartDate),
     isOpen: "true",
     isActive: "true",
   });
@@ -23,11 +23,12 @@ export default function RoundCreator() {
   const getStartDate = (childStartDate) => {
     setRoundData({
       ...roundData,
-      startDate: FormattedDate(childStartDate),
+      startDate: childStartDate,
     });
   };
 
   const handleChange = (e) => {
+    console.log("Något hönder");
     const value = e.target.value;
     setRoundData({
       ...roundData,
@@ -40,6 +41,7 @@ export default function RoundCreator() {
   );
 
   const handleSubmit = async (e) => {
+    console.log("Round data: ");
     e.preventDefault();
 
     // js is stupid... needs to convert string to bool before POST because
@@ -150,11 +152,8 @@ export default function RoundCreator() {
               </tr>
             </tbody>
           </table>
-          <br />
+          <button type="submit">Skapa omgång</button>
         </form>
-        <button onSubmit={handleSubmit} type="submit">
-          Skapa omgång
-        </button>
         {createdRound ? (
           <>
             {createdRound.isActive != false ? (

@@ -5,6 +5,7 @@ import ExistingCoupon from "../components/ExistingCoupon";
 import useStore from "../store/useStore";
 import { UpdateUser } from "../API/UsersAPI";
 import { GetUserByToken } from "../API/UsersAPI";
+import { GetActiveRound } from "../API/RoundsAPI";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -13,6 +14,10 @@ export default function Home() {
   const [existingCoupon, setExistingCoupon] = useState([]);
   const [updateStatus, setUpdateStatus] = useState({});
   const [editMode, setEditMode] = useState(false);
+  const [foundUser, setFoundUser] = useState(false);
+  const [foundUserMessage, setFoundUserMessage] = useState("");
+
+  //Store
   const adminTokenInStore = useStore((state) => state.adminToken);
   const userTokenInStore = useStore((state) => state.userToken);
   const addAdminToken = useStore((state) => state.addAdminToken);
@@ -24,12 +29,16 @@ export default function Home() {
   }, [adminTokenInStore, userTokenInStore]);
 
   useEffect(() => {
-    const userToken = localStorage.getItem("userToken");
-    if (userToken) {
-      getUser(userToken);
-    } else {
-      navigate("/login"); // You can also return a loading spinner or message here if needed
-    }
+    const fetchData = async () => {
+      const userToken = localStorage.getItem("userToken");
+      if (userToken) {
+        await getUser(userToken);
+      } else {
+        navigate("/login");
+      }
+    };
+
+    fetchData();
   }, [navigate]);
 
   useEffect(() => {
@@ -39,6 +48,21 @@ export default function Home() {
       setExistingCoupon([]);
     }
   }, [user]);
+
+  const getActiveRound = async () => {
+    const response = await GetActiveRound();
+    if (response.ok) {
+      const data = await response.json();
+      const foundUser = data.userDatas.find(
+        (userdata) => userdata.id === user.id
+      );
+      if (foundUser) {
+        setFoundUser(true);
+      }
+    } else {
+      setMessage("Något gick fel vid inläsning, uppdatera sidan");
+    }
+  };
 
   const getUser = async (userToken) => {
     const response = await GetUserByToken(userToken);
@@ -83,9 +107,12 @@ export default function Home() {
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {}, [user, editMode]);
 
-  const changeMode = () => {
+  const changeMode = async () => {
+    if (!foundUser) {
+      await getActiveRound();
+    }
     setEditMode(!editMode);
   };
 
@@ -98,6 +125,13 @@ export default function Home() {
   const logout = () => {
     localStorage.removeItem("userToken");
     navigate("/login");
+  };
+
+  const isEditable = () => {
+    if (editMode && !foundUser) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -207,11 +241,12 @@ export default function Home() {
                   </tbody>
                 </table>
               </div>
+              {/* {foundUser && } */}
               <div className="userpage_center-coupon">
                 <ExistingCoupon
                   setExistingCouponSelections={setExistingCoupon}
                   coupon={existingCoupon ? existingCoupon : []}
-                  editMode={editMode}
+                  couponEditable={isEditable()}
                 />
               </div>
               <br />

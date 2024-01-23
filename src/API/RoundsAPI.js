@@ -87,7 +87,6 @@ export async function DeleteRound(roundId) {
 }
 
 export async function CorrectionRound() {
-    const baseUrl = import.meta.env.REACT_APP_API_URL
     try {
         const response = await fetch(baseUrl + "/Coupon");
 
