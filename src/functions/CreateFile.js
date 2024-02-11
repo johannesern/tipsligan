@@ -1,4 +1,4 @@
-export default function CreateFile(users, typeOfGame) {
+export default function CreateFile(users) {
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -6,8 +6,7 @@ export default function CreateFile(users, typeOfGame) {
     const modifiedData = users.flatMap((user) => {
         return 'E,' + user.coupon;
     });
-
-    const csvContent = typeOfGame + '\n' + modifiedData.join('\n'); // Add typeOfGame at the beginning
+    const csvContent = modifiedData.join('\n'); // Add typeOfGame at the beginning
 
     const blob = new Blob([csvContent], { type: 'text/plain' });
 
