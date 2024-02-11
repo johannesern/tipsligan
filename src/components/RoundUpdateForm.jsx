@@ -48,13 +48,14 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
 
   return (
     <>
+      <div></div>
       <form className="modal-content" onSubmit={handleSubmit}>
         <div className="close" type="button" onClick={closeForm}></div>
         <div>
           <label className="text-color">
             Titel:
             <input
-              className="text-color"
+              className="round-update-field"
               value={round.title}
               type="text"
               name="title"

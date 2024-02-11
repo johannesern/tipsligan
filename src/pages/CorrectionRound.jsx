@@ -34,7 +34,7 @@ export default function RoundToCorrect() {
       const data = await activeRoundResponse.json();
       addRound(data);
     } else {
-      alert("Kunde inte hämta aktiv runda");
+      console.error("Rättning: Kunde inte hämta aktiv runda");
     }
   };
 

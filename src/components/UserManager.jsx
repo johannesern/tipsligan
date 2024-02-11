@@ -123,7 +123,11 @@ export default function UserManager() {
       <div className="filter-elements">
         <div>
           <h3 className="text-color">Sök</h3>
-          <input className="text-color" type="text" onChange={handleChange} />
+          <input
+            className="usermanager-input-field"
+            type="text"
+            onChange={handleChange}
+          />
         </div>
         <div>
           <div className="paid-and-points">

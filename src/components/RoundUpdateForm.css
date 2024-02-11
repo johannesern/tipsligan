@@ -11,6 +11,16 @@
   z-index: 1001;
 }
 
+.round-update-field {
+  color: black;
+  font-family: "Poppins", sans-serif;
+  min-width: 60px;
+  font-size: 16px;
+  border: 2px solid #787878;
+  border-radius: 5px;
+  text-align: left;
+}
+
 .close-button-align {
   top: 4px;
   right: 10px;

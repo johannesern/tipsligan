@@ -15,6 +15,15 @@
   padding: 2px;
 }
 
+.usermanager-input-field {
+  font-family: "Poppins", sans-serif;
+  min-width: 60px;
+  font-size: 16px;
+  border: 2px solid #787878;
+  border-radius: 5px;
+  text-align: left;
+}
+
 .paid-element {
   display: flex;
   align-items: center;

@@ -16,7 +16,7 @@ export default function PrizeBreakdown() {
         const data = await activeRoundResponse.json();
         setActiveRound(data);
       } else {
-        alert("Kunde inte hämta aktiv runda");
+        console.error("Vinstfördelning: Kunde inte hämta aktiv runda");
       }
       setSettings(settings[0]);
     };

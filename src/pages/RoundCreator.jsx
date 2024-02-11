@@ -76,7 +76,7 @@ export default function RoundCreator() {
             <tbody>
               <tr>
                 <td>
-                  <label className="input-label">Titel:</label>
+                  <label>Titel:</label>
                 </td>
                 <td className="round-title">
                   <input

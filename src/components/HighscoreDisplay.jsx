@@ -26,7 +26,7 @@ const HighscoreDisplay = () => {
       const data = await activeRoundResponse.json();
       addRound(data);
     } else {
-      alert("Kunde inte hämta aktiv runda");
+      console.error("Topplista: Kunde inte hämta aktiv runda");
     }
     addWeeklySnapshot(weeklySnapshot);
   };
