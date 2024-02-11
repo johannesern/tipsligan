@@ -49,7 +49,7 @@
 
 .filter-elements {
   display: flex;
-  gap: 72px;
+  gap: 10px;
 }
 
 .filter-payment {

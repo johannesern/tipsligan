@@ -48,112 +48,149 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
 
   return (
     <>
-      <div></div>
-      <form className="modal-content" onSubmit={handleSubmit}>
-        <div className="close" type="button" onClick={closeForm}></div>
-        <div>
-          <label className="text-color">
-            Titel:
-            <input
-              className="round-update-field"
-              value={round.title}
-              type="text"
-              name="title"
-              onChange={handleChange}
-            />
-          </label>
-          <br />
-          <label className="text-color">
-            Startdatum:
-            <StartDatepicker />
-          </label>
-          <br />
-          <label className="text-color">
-            Slutdatum:
-            <EndDatepicker />
-          </label>
-          <br />
-          <div className="round-open-element text-color">
-            Öppen för registrering:{" "}
-            {round.isOpen ? (
-              <>
-                <button type="button">Ja</button>
-                <button
-                  type="button"
-                  name="isOpen"
-                  value={!round.isOpen}
-                  onClick={() =>
-                    handleChange({ target: { name: "isOpen", value: false } })
-                  }
-                  className="unfilled-button"
-                >
-                  Nej
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  name="isOpen"
-                  value={!round.isOpen}
-                  onClick={() =>
-                    handleChange({ target: { name: "isOpen", value: true } })
-                  }
-                  className="unfilled-button"
-                >
-                  Ja
-                </button>
-                <button type="button">Nej</button>
-              </>
-            )}
-          </div>
-          <div className="round-active-element text-color">
-            Runda är aktiv:{" "}
-            {round.isActive ? (
-              <>
-                <button type="button">Ja</button>
-                <button
-                  type="button"
-                  name="isActive"
-                  value={!round.isActive}
-                  onClick={() =>
-                    handleChange({ target: { name: "isActive", value: false } })
-                  }
-                  className="unfilled-button"
-                >
-                  Nej
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  name="isActive"
-                  value={!round.isActive}
-                  onClick={() =>
-                    handleChange({ target: { name: "isActive", value: true } })
-                  }
-                  className="unfilled-button"
-                >
-                  Ja
-                </button>
-                <button type="button">Nej</button>
-              </>
-            )}
-          </div>
-          {error && <p>{error}</p>}
+      <div className="modal-content">
+        <h2 className="text-color-black">Omgångens data</h2>
+        <div className="close" type="button" onClick={closeForm} />
+        <form className="roundupdate_form" onSubmit={handleSubmit}>
           <div>
-            <UserManager />
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <label className="text-color-black">Titel:</label>
+                  </td>
+                  <td>
+                    <input
+                      className="round-update-field"
+                      value={round.title}
+                      type="text"
+                      name="title"
+                      onChange={handleChange}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label className="text-color-black">Startdatum:</label>
+                  </td>
+                  <td>
+                    <StartDatepicker />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label className="text-color-black">Slutdatum:</label>
+                  </td>
+                  <td>
+                    <EndDatepicker />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label className="text-color-black">
+                      Öppen för registrering:
+                    </label>
+                  </td>
+                  <td>
+                    {round.isOpen ? (
+                      <>
+                        <button type="button">Ja</button>
+                        <button
+                          type="button"
+                          name="isOpen"
+                          value={!round.isOpen}
+                          onClick={() =>
+                            handleChange({
+                              target: { name: "isOpen", value: false },
+                            })
+                          }
+                          className="unfilled-button"
+                        >
+                          Nej
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          name="isOpen"
+                          value={!round.isOpen}
+                          onClick={() =>
+                            handleChange({
+                              target: { name: "isOpen", value: true },
+                            })
+                          }
+                          className="unfilled-button"
+                        >
+                          Ja
+                        </button>
+                        <button type="button">Nej</button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label className="text-color-black">Runda är aktiv:</label>
+                  </td>
+                  <td>
+                    {round.isActive ? (
+                      <>
+                        <button type="button">Ja</button>
+                        <button
+                          type="button"
+                          name="isActive"
+                          value={!round.isActive}
+                          onClick={() =>
+                            handleChange({
+                              target: { name: "isActive", value: false },
+                            })
+                          }
+                          className="unfilled-button"
+                        >
+                          Nej
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          name="isActive"
+                          value={!round.isActive}
+                          onClick={() =>
+                            handleChange({
+                              target: { name: "isActive", value: true },
+                            })
+                          }
+                          className="unfilled-button"
+                        >
+                          Ja
+                        </button>
+                        <button type="button">Nej</button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="divider" />
+            <h2 className="text-color-black">Spelardata</h2>
+            <div>
+              {error && <p>{error}</p>}
+              <div>
+                <UserManager />
+              </div>
+            </div>
           </div>
-        </div>
-        <button
-          className={`${error ? "disabled" : ""}`}
-          disabled={error}
-          type="submit"
-        >
-          Uppdatera rundan
-        </button>
-      </form>
+          <button
+            className={`roundupdate_update-btn ${error ? "disabled" : ""}`}
+            disabled={error}
+            type="submit"
+          >
+            Uppdatera rundan
+          </button>
+        </form>
+      </div>
     </>
   );
 }

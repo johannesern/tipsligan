@@ -17,7 +17,9 @@
 
 .create-new-round {
   display: flex;
+  flex-direction: column;
   gap: 10px;
+  max-width: 400px;
 }
 
 .title-column {

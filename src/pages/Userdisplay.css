@@ -1,13 +1,22 @@
+.list-item {
+  max-width: 500px;
+  &:hover {
+    background-color: #c0c0c0;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+}
+
 .user-list-item {
   display: flex;
   justify-content: space-between;
-  padding: 2px;
+  align-items: center;
+  padding: 3px;
 }
 
 .user-buttons {
   display: flex;
-  margin-right: 20px;
-  gap: 4px;
+  gap: 6px;
   max-height: 36px;
 }
 

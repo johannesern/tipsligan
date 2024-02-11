@@ -69,6 +69,7 @@ export default function RoundCreator() {
 
   return (
     <>
+      <br />
       <div className="">
         <h2>Skapa ny omgång</h2>
         <form className="create-new-round" onSubmit={handleSubmit}>

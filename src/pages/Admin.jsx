@@ -25,7 +25,7 @@ export default function Home() {
     const roundResponse = await GetActiveRound();
     if (roundResponse.ok) {
       const round = await roundResponse.json();
-      CreateFile(round);
+      CreateFile(round.userDatas);
     } else {
       console.error("Admin: Kunde inte hämta aktiv runda");
     }
