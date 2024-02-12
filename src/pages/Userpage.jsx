@@ -107,7 +107,14 @@ export default function Home() {
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  useEffect(() => {}, [user, editMode]);
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setUser((prevState) => ({ ...prevState, [name]: checked }));
+  };
+
+  useEffect(() => {
+    console.log("User: ", user.optIn);
+  }, [user, editMode]);
 
   const changeMode = async () => {
     if (!foundUser) {
@@ -160,7 +167,7 @@ export default function Home() {
                       ) : (
                         <td>
                           <input
-                            className="user-input-field"
+                            className="userpage_user-input-field"
                             value={user.firstname}
                             type="text"
                             name="firstname"
@@ -177,7 +184,7 @@ export default function Home() {
                       ) : (
                         <td>
                           <input
-                            className="user-input-field"
+                            className="userpage_user-input-field"
                             value={user.lastname}
                             type="text"
                             name="lastname"
@@ -194,7 +201,7 @@ export default function Home() {
                       ) : (
                         <td>
                           <input
-                            className="user-input-field"
+                            className="userpage_user-input-field"
                             value={user.email}
                             type="email"
                             name="email"
@@ -211,7 +218,7 @@ export default function Home() {
                       ) : (
                         <td>
                           <input
-                            className="user-input-field"
+                            className="userpage_user-input-field"
                             value={user.phone}
                             type="text"
                             name="phone"
@@ -228,12 +235,35 @@ export default function Home() {
                       ) : (
                         <td>
                           <input
-                            className="user-input-field"
+                            className="userpage_user-input-field"
                             value={user.group || ""}
                             type="text"
                             name="group"
                             id="text"
                             onChange={handleChange}
+                          />
+                        </td>
+                      )}
+                    </tr>
+                    <tr>
+                      <td>Automatisk anmälning:</td>
+                      {!editMode ? (
+                        <td>
+                          <input
+                            className="userpage_checkbox"
+                            type="checkbox"
+                            checked={user.optIn}
+                            disabled
+                          />
+                        </td>
+                      ) : (
+                        <td>
+                          <input
+                            className="userpage_checkbox"
+                            checked={user.optIn}
+                            type="checkbox"
+                            name="optIn"
+                            onChange={handleCheckboxChange}
                           />
                         </td>
                       )}
