@@ -8,6 +8,7 @@
 }
 
 .user-list-item {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,4 +31,47 @@
   border: 1px solid #ccc;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 1000; /* Ensure it appears on top of other content */
+}
+
+.userdisplay_modal-content {
+  position: absolute;
+  background-color: #eee;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  min-width: 630px;
+}
+
+.userdisplay_close {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.6;
+}
+.userdisplay_close:hover {
+  opacity: 1;
+}
+.userdisplay_close:before,
+.userdisplay_close:after {
+  position: absolute;
+  left: 15px;
+  content: " ";
+  height: 33px;
+  width: 2px;
+  background-color: #333;
+}
+.userdisplay_close:before {
+  transform: rotate(45deg);
+}
+.userdisplay_close:after {
+  transform: rotate(-45deg);
+}
+
+.userdisplay_modal--header {
+  display: flex;
+  gap: 100px;
+  margin-top: 20px;
 }

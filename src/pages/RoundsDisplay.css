@@ -6,7 +6,7 @@
   background-color: #fff;
   padding: 20px;
   border: 1px solid #ccc;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px #00000033;
   z-index: 1000; /* Ensure it appears on top of other content */
 }
 
@@ -15,9 +15,12 @@
   justify-content: space-between;
   margin-right: 40px;
   padding: 3px;
-  border-style: dashed;
   border-width: 3px;
   border-color: #efefef;
+  &:hover {
+    background-color: #c0c0c0;
+    cursor: pointer;
+  }
 }
 
 .round-button {
