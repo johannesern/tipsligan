@@ -12,8 +12,8 @@ const DisplayAllRounds = () => {
   const addRoundToUpdate = useStore((state) => state.addRoundToUpdate);
   const rounds = useStore((state) => state.roundsCollection);
   const [deleteThisRound, setDeleteThisRound] = useState("");
-  const [openFormIds, setOpenFormIds] = useState([]);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+  const [round, setRound] = useState();
 
   useEffect(() => {
     getRounds();
@@ -36,20 +36,12 @@ const DisplayAllRounds = () => {
   };
 
   const handleToggleForm = (round) => {
-    // Check if the clicked round is already open
-    if (openFormIds.includes(round.id)) {
-      // If it's already open, close it
-      setOpenFormIds([]);
-    } else {
-      // If it's not open, close any open forms first
-      setOpenFormIds([round.id]);
-      // Set the currently selected round
-      addRoundToUpdate(round);
-    }
+    addRoundToUpdate(round);
+    setRound(round);
   };
 
   const closeForm = () => {
-    setOpenFormIds([]);
+    setRound(null);
   };
 
   const handleDeleteClick = (id) => {
@@ -67,63 +59,66 @@ const DisplayAllRounds = () => {
     setIsConfirmationVisible(!isConfirmationVisible);
   };
 
-  const activeRound = (round) => {
-    return round.isActive && round.isOpen;
-  };
-
   return (
-    <main>
+    <main className="roundsdisplay_main-content">
       {isConfirmationVisible && (
         <>
-          <div className="confirmation-buttons">
-            <button onClick={() => handleConfirm("true")}>Ja</button>
-            <button onClick={() => handleConfirm("false")}>Nej</button>
+          <div className="roundsdisplay_confirmation-buttons">
+            <div>
+              <h2>Vill du verkligen radera?</h2>
+            </div>
+            <div className="roundsdisplay_confirmation-buttons--btndiv">
+              <button onClick={() => handleConfirm("true")}>Ja</button>
+              <button onClick={() => handleConfirm("false")}>Nej</button>
+            </div>
           </div>
         </>
       )}
-      <ul className="rounds-list">
-        {rounds != null ? (
-          rounds
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            .map((round) => (
-              <li
-                className={`rounds-list-item ${
-                  activeRound(round) ? "active" : ""
-                }`}
-                key={round.id}
-              >
-                {" "}
-                <h3>{round.title}</h3>
-                {openFormIds.includes(round.id) && (
-                  <div className="form-overlay">
-                    <RoundUpdateForm
-                      closeForm={closeForm}
-                      refreshRounds={refreshRounds}
-                    />
-                  </div>
-                )}
-                <div>
-                  <button
-                    name="edit"
-                    className="round-button"
-                    onClick={() => handleToggleForm(round)}
-                  >
-                    Ändra
-                  </button>
-                  <button
-                    name="delete"
-                    className="round-button"
-                    onClick={() => handleDeleteClick(round.id)}
-                  >
-                    Ta bort
-                  </button>
-                </div>
-              </li>
-            ))
-        ) : (
-          <div>Loading...</div>
-        )}
-      </ul>
+      {round && (
+        <>
+          <div className="roundsdisplay_form-overlay">
+            <RoundUpdateForm
+              closeForm={closeForm}
+              refreshRounds={refreshRounds}
+            />
+          </div>
+        </>
+      )}
+      <table className="roundsdisplay_table-content">
+        <tbody>
+          {rounds != null ? (
+            rounds
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((round) => (
+                <tr
+                  onClick={() => handleToggleForm(round)}
+                  className="roundsdisplay_rounds-list-item"
+                  key={round.id}
+                >
+                  <td>
+                    <h3>{round.title}</h3>
+                  </td>
+                  <td className="roundsdisplay_list-button">
+                    <button name="edit" onClick={() => handleToggleForm(round)}>
+                      Ändra
+                    </button>
+                    <button
+                      name="delete"
+                      onClick={(e) => {
+                        handleDeleteClick(round.id);
+                        e.stopPropagation();
+                      }}
+                    >
+                      Ta bort
+                    </button>
+                  </td>
+                </tr>
+              ))
+          ) : (
+            <tr>Loading...</tr>
+          )}
+        </tbody>
+      </table>
     </main>
   );
 };

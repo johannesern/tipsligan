@@ -10,6 +10,7 @@ export default function Settings() {
   const [message, setMessage] = useState("");
   //Store
   const addSettings = useStore((state) => state.addSettings);
+  const [playersExample, setPlayersExample] = useState(100);
 
   useEffect(() => {
     getSettings();
@@ -35,24 +36,10 @@ export default function Settings() {
 
   useEffect(() => {
     calculatePlayerShare();
-    setCorrectSum(checkSum());
   }, [tmpSettings]);
 
   const calculatePlayerShare = () => {
     return 100 - tmpSettings.associationShare;
-  };
-
-  const checkSum = () => {
-    if (
-      parseInt(tmpSettings.winnerShare) +
-        parseInt(tmpSettings.secondShare) +
-        parseInt(tmpSettings.thirdShare) ===
-      100
-    ) {
-      return true;
-    } else {
-      return false;
-    }
   };
 
   const handleSave = async () => {
@@ -75,126 +62,218 @@ export default function Settings() {
     getSettings();
   };
 
+  const handleCalcExampleChange = (e) => {
+    let value = parseInt(e.target.value);
+    setPlayersExample(value);
+  };
+
+  const calcExampleSumShares = () => {
+    return parseInt(tmpSettings.pricePerShare) * parseInt(playersExample);
+  };
+
+  const calcExampleAssociationShare = () => {
+    return calcExampleSumShares() * (tmpSettings.associationShare / 100);
+  };
+
+  const calcExamplePlayerShare = () => {
+    return calcExampleSumShares() - calcExampleAssociationShare();
+  };
+
+  const leftToDistribute = () => {
+    const playersSum =
+      (parseInt(tmpSettings.winnerShare) || 0) +
+      (parseInt(tmpSettings.secondShare) || 0) +
+      (parseInt(tmpSettings.thirdShare) || 0);
+
+    const remaining = calcExamplePlayerShare() - playersSum;
+
+    return remaining;
+  };
+
   return (
     <>
-      <br />
-      <h2>Inställningar</h2>
-      <br />
-      {tmpSettings ? (
-        <div>
-          <h1>{tmpSettings.associationTitle}</h1>
+      <main className="settings_main-content">
+        <section>
+          <h2>Inställningar</h2>
+          <br />
+          {tmpSettings ? (
+            <div>
+              <h1>{tmpSettings.associationTitle}</h1>
+              <div>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>Fördelning till förening:</td>
+                      <td>
+                        <input
+                          className="input-field"
+                          value={tmpSettings.associationShare || ""}
+                          type="text"
+                          name="associationShare"
+                          onChange={handleChange}
+                        />
+                      </td>
+                      <td>%</td>
+                    </tr>
+                    <tr>
+                      <td>Fördelning till spelare:</td>
+                      <td>
+                        <input
+                          className="input-field"
+                          value={calculatePlayerShare() || ""}
+                          type="text"
+                          name="playerShare"
+                          onChange={handleChange}
+                          disabled
+                        />
+                      </td>
+                      <td>%</td>
+                    </tr>
+                    <tr>
+                      <td>Pris per andel:</td>
+                      <td>
+                        <input
+                          className="input-field"
+                          value={tmpSettings.pricePerShare || ""}
+                          type="text"
+                          name="pricePerShare"
+                          onChange={handleChange}
+                        />
+                      </td>
+                      <td>kr</td>
+                    </tr>
+                    <tr>
+                      <td>Vinnarpott:</td>
+                      <td>
+                        <input
+                          className="input-field"
+                          value={tmpSettings.winnerShare || ""}
+                          type="text"
+                          name="winnerShare"
+                          onChange={handleChange}
+                        />
+                      </td>
+                      <td>kr</td>
+                    </tr>
+                    <tr>
+                      <td>Andraplats:</td>
+                      <td>
+                        <input
+                          className="input-field"
+                          value={tmpSettings.secondShare || ""}
+                          type="text"
+                          name="secondShare"
+                          onChange={handleChange}
+                        />
+                      </td>
+                      <td>kr</td>
+                    </tr>
+                    <tr>
+                      <td>Tredjeplats:</td>
+                      <td>
+                        <input
+                          className="input-field"
+                          value={tmpSettings.thirdShare || ""}
+                          type="text"
+                          name="thirdShare"
+                          onChange={handleChange}
+                        />
+                      </td>
+                      <td>kr</td>
+                    </tr>
+                  </tbody>
+                </table>
+                {correctSum && (
+                  <button
+                    type="button"
+                    className={
+                      "settings-save-btn" + (correctSum ? "" : " disabled")
+                    }
+                    onClick={handleSave}
+                  >
+                    Spara
+                  </button>
+                )}
+                {message && <div>{message}</div>}
+              </div>
+            </div>
+          ) : (
+            <>Laddar...</>
+          )}
+        </section>
+        <section>
+          <h3>Exempeluträkning</h3>
+          <br />
+          <br />
           <div>
             <table>
               <tbody>
                 <tr>
-                  <td>Fördelning till förening:</td>
+                  <td>Antal deltagare:</td>
                   <td>
                     <input
                       className="input-field"
-                      value={tmpSettings.associationShare || ""}
+                      value={playersExample || ""}
                       type="text"
-                      name="associationShare"
-                      onChange={handleChange}
+                      name="playersExample"
+                      onChange={handleCalcExampleChange}
                     />
                   </td>
-                  <td>%</td>
+                  <td>st</td>
                 </tr>
                 <tr>
-                  <td>Fördelning till spelare:</td>
                   <td>
-                    <input
-                      className="input-field"
-                      value={calculatePlayerShare() || ""}
-                      type="text"
-                      name="playerShare"
-                      onChange={handleChange}
-                      disabled
-                    />
+                    <label>Total summa :</label>
                   </td>
-                  <td>%</td>
-                </tr>
-                <tr>
-                  <td>Pris per andel:</td>
-                  <td>
-                    <input
-                      className="input-field"
-                      value={tmpSettings.pricePerShare || ""}
-                      type="text"
-                      name="pricePerShare"
-                      onChange={handleChange}
-                    />
-                  </td>
+                  <td>{calcExampleSumShares()}</td>
                   <td>kr</td>
                 </tr>
                 <tr>
-                  <td>Vinnare får % av potten:</td>
                   <td>
-                    <input
-                      className={
-                        "input-field" + (correctSum ? "" : " settings-error")
-                      }
-                      value={tmpSettings.winnerShare || ""}
-                      type="text"
-                      name="winnerShare"
-                      onChange={handleChange}
-                    />
+                    <label>Till föreningen:</label>
                   </td>
-                  <td>%</td>
+                  <td>{calcExampleAssociationShare()}</td>
+                  <td>kr</td>
                 </tr>
                 <tr>
-                  <td>Andraplats får % av potten:</td>
                   <td>
-                    <input
-                      className={
-                        "input-field" + (correctSum ? "" : " settings-error")
-                      }
-                      value={tmpSettings.secondShare || ""}
-                      type="text"
-                      name="secondShare"
-                      onChange={handleChange}
-                    />
+                    <label>Till spelarna:</label>
                   </td>
-                  <td>%</td>
+                  <td>{calcExamplePlayerShare()}</td>
+                  <td>kr</td>
                 </tr>
                 <tr>
-                  <td>Tredjeplats får % av potten:</td>
                   <td>
-                    <input
-                      className={
-                        "input-field" + (correctSum ? "" : " settings-error")
-                      }
-                      value={tmpSettings.thirdShare || ""}
-                      type="text"
-                      name="thirdShare"
-                      onChange={handleChange}
-                    />
+                    <label>Till förstaplats:</label>
                   </td>
-                  <td>%</td>
+                  <td>{tmpSettings.winnerShare}</td>
+                  <td>kr</td>
+                </tr>
+                <tr>
+                  <td>
+                    <label>Till andraplats:</label>
+                  </td>
+                  <td>{tmpSettings.secondShare}</td>
+                  <td>kr</td>
+                </tr>
+                <tr>
+                  <td>
+                    <label>Till tredjeplats:</label>
+                  </td>
+                  <td>{tmpSettings.thirdShare}</td>
+                  <td>kr</td>
+                </tr>
+                <tr>
+                  <td>
+                    <label>Kvar att fördela:</label>
+                  </td>
+                  <td>{leftToDistribute()}</td>
                 </tr>
               </tbody>
             </table>
-            {!correctSum && (
-              <div className="error-color">
-                * Summan av dessa skall vara 100
-              </div>
-            )}
-            {correctSum && (
-              <button
-                type="button"
-                className={
-                  "settings-save-btn" + (correctSum ? "" : " disabled")
-                }
-                onClick={handleSave}
-              >
-                Spara
-              </button>
-            )}
-            {message && <div>{message}</div>}
           </div>
-        </div>
-      ) : (
-        <>Laddar...</>
-      )}
+        </section>
+      </main>
     </>
   );
 }

@@ -27,6 +27,7 @@ import WeeklySnapshot from "./pages/WeeklySnapshot";
 import Settings from "./pages/Settings";
 import PrizeBreakdown from "./pages/PrizeBreakdown";
 import ResetPassword from "./pages/ResetPassword";
+import RoundInfo from "./components/RoundInfo";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -45,7 +46,8 @@ const router = createBrowserRouter(
         <Route path="skapa-ny-omgång" element={<RoundCreator />} />
         <Route path="alla-omgångar" element={<RoundsDisplay />} />
         <Route path="rätta-omgång" element={<CorrectionRound />} />
-        <Route path="veckorundor" element={<WeeklySnapshot />} />
+        <Route path="omgång-veckovis" element={<WeeklySnapshot />} />
+        <Route path="omgång-veckovis/:roundid" element={<RoundInfo />} />
         <Route path="inställningar" element={<Settings />} />
         <Route path="vinstfördelning" element={<PrizeBreakdown />} />
       </Route>

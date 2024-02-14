@@ -6,7 +6,6 @@ import { GetActiveRound } from "../API/RoundsAPI";
 export default function PrizeBreakdown() {
   const [settings, setSettings] = useState({});
   const [activeRound, setActiveRound] = useState({});
-  const [prizePool, setPrizePool] = useState();
 
   useEffect(() => {
     const loadData = async () => {
@@ -22,10 +21,6 @@ export default function PrizeBreakdown() {
     };
     loadData();
   }, []);
-
-  useEffect(() => {
-    setPrizePool(calculatePrizePool());
-  }, [settings, activeRound]);
 
   //find all users with position 1, 2 and 3 in activeround userdatas
   const findAllWinners = () => {
@@ -72,36 +67,27 @@ export default function PrizeBreakdown() {
     return thirds;
   };
 
-  //calculate total prize pool with all users times settings pricePerShare and the divide with settings playerShare
-  const calculatePrizePool = () => {
-    const prizePool = activeRound?.userDatas?.length * settings.pricePerShare;
-    const playerShare = prizePool * (settings.playerShare / 100);
-    return playerShare;
-  };
-
   //calculate winnerShare with settings winnerShare and prizePool, then divide with winners.length. calculate secondShare and thirdShare with same method
   const calculateWinnerShare = () => {
     const winners = findAllWinners()?.filter(
       (allWinners) => allWinners.position === 1
     );
-    const winnerSharePool = prizePool * (settings.winnerShare / 100);
-    return winnerSharePool / winners.length;
+    // const winnerSharePool = prizePool * (settings.winnerShare / 100);
+    return settings.winnerShare / winners.length;
   };
 
   const calculateSecondShare = () => {
     const seconds = findAllWinners()?.filter(
       (allWinners) => allWinners.position === 2
     );
-    const secondSharePool = prizePool * (settings.secondShare / 100);
-    return secondSharePool / seconds.length;
+    return settings.secondShare / seconds.length;
   };
 
   const calculateThirdShare = () => {
     const thirds = findAllWinners()?.filter(
       (allWinners) => allWinners.position === 3
     );
-    const thirdSharePool = prizePool * (settings.thirdShare / 100);
-    return thirdSharePool / thirds.length;
+    return settings.thirdShare / thirds.length;
   };
 
   return (

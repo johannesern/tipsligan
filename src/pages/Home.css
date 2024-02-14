@@ -1,9 +1,23 @@
 .home-buttons {
   display: flex;
   gap: 16px;
-  flex-wrap: wrap;
 }
 
 .not-clickable {
   color: gray;
+}
+
+.admin_btn-layout {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &.admin_round {
+    margin-left: 106px;
+  }
+
+  &.admin_settings {
+    margin-left: 212px;
+  }
 }

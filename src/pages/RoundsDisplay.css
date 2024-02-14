@@ -1,4 +1,32 @@
-.confirmation-buttons {
+.roundsdisplay_main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.roundsdisplay_table-content {
+  width: 80%;
+}
+
+.roundsdisplay_rounds-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px;
+  border-radius: 5px;
+  border-width: 3px;
+  border-color: #efefef;
+  &:hover {
+    background-color: #c0c0c0;
+    cursor: pointer;
+  }
+}
+
+.roundsdisplay_confirmation-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -10,24 +38,18 @@
   z-index: 1000; /* Ensure it appears on top of other content */
 }
 
-.rounds-list-item {
+.roundsdisplay_confirmation-buttons--btndiv {
   display: flex;
-  justify-content: space-between;
-  margin-right: 40px;
-  padding: 3px;
-  border-width: 3px;
-  border-color: #efefef;
-  &:hover {
-    background-color: #c0c0c0;
-    cursor: pointer;
-  }
+  gap: 10px;
 }
 
-.round-button {
-  margin: 2px;
+
+.roundsdisplay_list-button {
+  display: flex;
+  gap: 4px;
 }
 
-.form-overlay {
+.roundsdisplay_form-overlay {
   position: fixed;
   top: 0;
   left: 0;

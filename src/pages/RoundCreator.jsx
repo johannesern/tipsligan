@@ -70,7 +70,7 @@ export default function RoundCreator() {
   return (
     <>
       <br />
-      <div className="">
+      <div className="roundcreator_main-content">
         <h2>Skapa ny omgång</h2>
         <form className="create-new-round" onSubmit={handleSubmit}>
           <table>

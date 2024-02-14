@@ -9,6 +9,7 @@ import { GetActiveRound } from "../API/RoundsAPI";
 export default function Home() {
   const navigate = useNavigate();
   const [token, setToken] = useState();
+  const [activeBtn, setActiveBtn] = useState(null);
 
   useEffect(() => {
     const adminToken = localStorage.getItem("adminToken");
@@ -36,6 +37,11 @@ export default function Home() {
     navigate("/login");
   };
 
+  const handleClick = (btnName) => {
+    navigate("/admin");
+    setActiveBtn(activeBtn === btnName ? null : btnName);
+  };
+
   return (
     <section>
       <article>
@@ -48,32 +54,69 @@ export default function Home() {
           tillvägagångssätt för hur vissa funktioner fungerar.
         </p>
         <div className="home-buttons">
-          <button onClick={handleFileCreation}>Skapa fil för inlämning</button>
-          <Link to="deltagare">
-            <button>Hämta alla användare</button>
-          </Link>
-          <Link to="registrera">
-            <button>Skapa ny användare</button>
-          </Link>
-          <Link to="alla-omgångar">
-            <button>Hämta alla omgångar</button>
-          </Link>
-          <Link to="skapa-ny-omgång">
-            <button>Skapa ny omgång</button>
-          </Link>
-          <Link to="rätta-omgång">
-            <button>Rätta pågående omgång</button>
-          </Link>
-          <Link to="veckorundor">
-            <button>Visa alla veckor</button>
-          </Link>
-          <Link to="vinstfördelning">
-            <button>Vinstfördelning</button>
-          </Link>
-          <Link to="inställningar">
-            <button>Inställningar</button>
-          </Link>
+          <button onClick={() => handleClick("userBtn")}>Användare</button>
+          <button onClick={() => handleClick("roundBtn")}>Omgångar</button>
+          <button onClick={() => handleClick("settingsBtn")}>
+            Inställningar
+          </button>
         </div>
+        {activeBtn === "userBtn" && (
+          <div className="admin_btn-layout">
+            <Link to="deltagare">
+              <button onClick={() => setActiveBtn(null)}>
+                Lista alla användare
+              </button>
+            </Link>
+            <Link to="registrera">
+              <button onClick={() => setActiveBtn(null)}>
+                Skapa ny användare
+              </button>
+            </Link>
+          </div>
+        )}
+        {activeBtn === "roundBtn" && (
+          <div className="admin_btn-layout admin_round">
+            <Link to="rätta-omgång">
+              <button onClick={() => setActiveBtn(null)}>
+                Rätta pågående omgång
+              </button>
+            </Link>
+            <Link to="alla-omgångar">
+              <button onClick={() => setActiveBtn(null)}>
+                Administrera omgångar
+              </button>
+            </Link>
+            <Link to="omgång-veckovis">
+              <button onClick={() => setActiveBtn(null)}>
+                Visa omgång veckovis
+              </button>
+            </Link>
+            <Link onClick={() => setActiveBtn(null)}>
+              <button onClick={handleFileCreation}>
+                Skapa fil för inlämning
+              </button>
+            </Link>
+            <Link to="skapa-ny-omgång">
+              <button onClick={() => setActiveBtn(null)}>
+                Skapa ny omgång
+              </button>
+            </Link>
+            <Link to="vinstfördelning">
+              <button onClick={() => setActiveBtn(null)}>
+                Vinstfördelning
+              </button>
+            </Link>
+          </div>
+        )}
+        {activeBtn === "settingsBtn" && (
+          <div className="admin_btn-layout admin_settings">
+            <Link to="inställningar">
+              <button onClick={() => setActiveBtn(null)}>
+                Förenings fördelning
+              </button>
+            </Link>
+          </div>
+        )}
         <div>
           <Outlet />
         </div>
