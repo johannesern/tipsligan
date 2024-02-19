@@ -27,6 +27,7 @@ const DisplayAllRounds = () => {
 
   const getRounds = async () => {
     const allRounds = await GetAllRounds();
+    console.log(allRounds.length, "allRounds");
     addRounds(allRounds);
   };
 
@@ -86,7 +87,7 @@ const DisplayAllRounds = () => {
       )}
       <table className="roundsdisplay_table-content">
         <tbody>
-          {rounds != null ? (
+          {rounds.length > 0 ? (
             rounds
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((round) => (
@@ -95,8 +96,9 @@ const DisplayAllRounds = () => {
                   className="roundsdisplay_rounds-list-item"
                   key={round.id}
                 >
-                  <td>
+                  <td className="roundsdisplay_row-title">
                     <h3>{round.title}</h3>
+                    <h3>{round.isActive ? "<- aktiv" : ""}</h3>
                   </td>
                   <td className="roundsdisplay_list-button">
                     <button name="edit" onClick={() => handleToggleForm(round)}>
@@ -115,7 +117,9 @@ const DisplayAllRounds = () => {
                 </tr>
               ))
           ) : (
-            <tr>Loading...</tr>
+            <tr>
+              <td>Inga rundor</td>
+            </tr>
           )}
         </tbody>
       </table>

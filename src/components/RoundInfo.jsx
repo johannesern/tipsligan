@@ -2,20 +2,21 @@
 import "./RoundInfo.css";
 
 import { useEffect, useState } from "react";
-import { GetAllWeeklysByRoundId } from "../API/WeeklysAPI";
+import { GetAllWeekliesByRoundId } from "../API/WeeklysAPI";
 import { useParams } from "react-router-dom";
 import ListWeeklyResult from "./ListWeeklyResult";
 
 const RoundInfo = () => {
   const { roundid } = useParams();
-  const [roundInfo, setRoundInfo] = useState([]);
   const [weekly, setWeekly] = useState();
 
   useEffect(() => {
     const getWeeklysByRoundId = async (roundId) => {
-      const result = await GetAllWeeklysByRoundId(roundId);
+      const result = await GetAllWeekliesByRoundId(roundId);
+      console.log("RESPONSE: ", result);
       const data = await result.json();
-      setRoundInfo(data);
+      console.log("DATA: ", data);
+      setWeekly(data);
     };
     getWeeklysByRoundId(roundid);
   }, []);
@@ -27,7 +28,7 @@ const RoundInfo = () => {
   return (
     <div>
       <br />
-      <h1>{roundInfo[0]?.round?.title || "HEJ"}</h1>
+      <h1>{weekly?.round?.title || "HEJ"}</h1>
       {weekly && (
         <>
           <div className="roundinfo_form-overlay">
@@ -48,18 +49,7 @@ const RoundInfo = () => {
         </>
       )}
       <table>
-        <tbody>
-          {roundInfo.map((weeklyRound, index) => (
-            <tr key={index}>
-              <td
-                className="roundinfo_list-item"
-                onClick={() => setWeekly(weeklyRound)}
-              >
-                - Vecka {index + 1}
-              </td>
-            </tr>
-          ))}
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
   );

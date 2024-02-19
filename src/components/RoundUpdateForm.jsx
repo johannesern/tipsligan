@@ -13,20 +13,20 @@ import { UpdateRound } from "../API/RoundsAPI";
 export function RoundUpdateForm({ refreshRounds, closeForm }) {
   const round = useStore((state) => state.roundToUpdate);
   const updateRound = useStore((state) => state.addRoundToUpdate);
-  const allRounds = useStore((state) => state.roundsCollection);
+  // const allRounds = useStore((state) => state.roundsCollection);
   const [error, setError] = useState();
 
   const handleChange = (e) => {
     setError("");
     const { name, value } = e.target;
-    if (name === "isOpen" || name === "isActive") {
-      const activeRound = allRounds.find(
-        (round) => round.isActive === true && round.isOpen === true
-      );
-      if (activeRound && activeRound.id !== round.id) {
-        setError("Du kan inte ha två aktiva rundor samtidigt");
-      }
-    }
+    // if (name === "isOpen" || name === "isActive") {
+    //   const activeRound = allRounds.find(
+    //     (round) => round.isActive === true && round.isOpen === true
+    //   );
+    //   if (activeRound && activeRound.id !== round.id) {
+    //     setError("Du kan inte ha två aktiva rundor samtidigt");
+    //   }
+    // }
     const newRound = {
       ...round,
       [name]: value,
@@ -41,27 +41,34 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
       startDate: round.startDate,
       endDate: round.endDate,
     };
-    await UpdateRound(newRound);
-    refreshRounds();
-    closeForm();
+    const response = await UpdateRound(newRound);
+    if (!response.ok) {
+      setError("Kunde inte uppdatera rundan");
+      return;
+    } else {
+      refreshRounds();
+      closeForm();
+    }
   };
 
   return (
     <>
-      <div className="modal-content">
-        <h2 className="text-color-black">Omgångens data</h2>
-        <div className="close" type="button" onClick={closeForm} />
+      <div className="roundupdate_modal-content">
+        <h2 className="roundupdate_text-color-black">Omgångens data</h2>
+        <div className="roundupdate_close" type="button" onClick={closeForm} />
         <form className="roundupdate_form" onSubmit={handleSubmit}>
           <div>
             <table>
               <tbody>
                 <tr>
                   <td>
-                    <label className="text-color-black">Titel:</label>
+                    <label className="roundupdate_text-color-black">
+                      Titel:
+                    </label>
                   </td>
                   <td>
                     <input
-                      className="round-update-field"
+                      className="roundupdate_round-update-field"
                       value={round.title}
                       type="text"
                       name="title"
@@ -71,7 +78,9 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                 </tr>
                 <tr>
                   <td>
-                    <label className="text-color-black">Startdatum:</label>
+                    <label className="roundupdate_text-color-black">
+                      Startdatum:
+                    </label>
                   </td>
                   <td>
                     <StartDatepicker />
@@ -79,7 +88,9 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                 </tr>
                 <tr>
                   <td>
-                    <label className="text-color-black">Slutdatum:</label>
+                    <label className="roundupdate_text-color-black">
+                      Slutdatum:
+                    </label>
                   </td>
                   <td>
                     <EndDatepicker />
@@ -87,7 +98,7 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                 </tr>
                 <tr>
                   <td>
-                    <label className="text-color-black">
+                    <label className="roundupdate_text-color-black">
                       Öppen för registrering:
                     </label>
                   </td>
@@ -104,7 +115,7 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                               target: { name: "isOpen", value: false },
                             })
                           }
-                          className="unfilled-button"
+                          className="roundupdate_unfilled-button"
                         >
                           Nej
                         </button>
@@ -120,7 +131,7 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                               target: { name: "isOpen", value: true },
                             })
                           }
-                          className="unfilled-button"
+                          className="roundupdate_unfilled-button"
                         >
                           Ja
                         </button>
@@ -131,7 +142,9 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                 </tr>
                 <tr>
                   <td>
-                    <label className="text-color-black">Runda är aktiv:</label>
+                    <label className="roundupdate_text-color-black">
+                      Runda är aktiv:
+                    </label>
                   </td>
                   <td>
                     {round.isActive ? (
@@ -146,7 +159,7 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                               target: { name: "isActive", value: false },
                             })
                           }
-                          className="unfilled-button"
+                          className="roundupdate_unfilled-button"
                         >
                           Nej
                         </button>
@@ -162,7 +175,7 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                               target: { name: "isActive", value: true },
                             })
                           }
-                          className="unfilled-button"
+                          className="roundupdate_unfilled-button"
                         >
                           Ja
                         </button>
@@ -173,8 +186,8 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                 </tr>
               </tbody>
             </table>
-            <div className="divider" />
-            <h2 className="text-color-black">Spelardata</h2>
+            <div className="roundupdate_divider" />
+            <h2 className="roundupdate_text-color-black">Spelardata</h2>
             <div>
               {error && <p>{error}</p>}
               <div>

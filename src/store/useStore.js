@@ -2,42 +2,48 @@
 import { create } from "zustand";
 
 const useStore = create((set) => ({
-    //Round
-    roundActive: {},
-    roundToUpdate: {},
-    roundsCollection: [],
-    addRoundActive: (round) => set((state) => ({ roundActive: round })),
-    addRoundToUpdate: (round) => set((state) => ({ roundToUpdate: round })),
-    addRounds: (rounds) =>
-        set((state) => ({ roundsCollection: rounds })),
-    clearActiveRound: () => set((state) => ({ roundActive: {} })),
+  //Round
+  roundActive: {},
+  roundToUpdate: {},
+  roundsCollection: [],
+  addRoundActive: (round) => set((state) => ({ roundActive: round })),
+  addRoundToUpdate: (round) => set((state) => ({ roundToUpdate: round })),
+  addRounds: (rounds) => set((state) => ({ roundsCollection: rounds })),
+  clearActiveRound: () => set((state) => ({ roundActive: {} })),
+  clearRoundToUpdate: () => set((state) => ({ roundToUpdate: {} })),
+  clearRounds: () => set((state) => ({ roundsCollection: [] })),
 
-    //Users
-    filteredUsersCollection: [],
-    userDataModelsCollection: [],
-    addUserDataModels: (userDataModels) => set((state) => ({ userDataModelsCollection: userDataModels })),
-    addfilteredUsers: (users) =>
-        set((state) => ({ filteredUserCollection: users })),
+  //Users
+  // filteredUsersCollection: [],
+  userDataModelsCollection: [],
+  addUserDataModels: (userDataModels) =>
+    set((state) => ({ userDataModelsCollection: userDataModels })),
+  // addfilteredUsers: (users) =>
+  //     set((state) => ({ filteredUserCollection: users })),
 
-    //Weeklys
-    weeklySnapshot: {},
-    weeklySnapshotsCollection: [],
-    addWeeklySnapshot: (snapshot) => set((state) => ({ weeklySnapshot: snapshot })),
-    addWeeklySnapshots: (snapshots) => set((state) => ({ weeklySnapshotsCollection: snapshots })),
-    clearWeeklySnapshot: () => set((state) => ({ weeklySnapshot: {} })),
+  //Weeklys
+  weeklySnapshot: {},
+  weeklySnapshotsCollection: [],
+  addWeeklySnapshot: (snapshot) =>
+    set((state) => ({ weeklySnapshot: snapshot })),
+  addWeeklySnapshots: (snapshots) =>
+    set((state) => ({ weeklySnapshotsCollection: snapshots })),
+  clearWeeklySnapshot: () => set((state) => ({ weeklySnapshot: {} })),
+  clearWeeklySnapshots: () =>
+    set((state) => ({ weeklySnapshotsCollection: [] })),
 
-    //Settings
-    settings: {},
-    addSettings: (settings) => set((state) => ({ settings: settings })),
-    clearSettings: () => set((state) => ({ settings: {} })),
+  //Settings
+  settings: {},
+  addSettings: (settings) => set((state) => ({ settings: settings })),
+  clearSettings: () => set((state) => ({ settings: {} })),
 
-    //Tokens
-    adminToken: "",
-    userToken: "",
-    addAdminToken: (token) => set((state) => ({ adminToken: token })),
-    addUserToken: (token) => set((state) => ({ userToken: token })),
+  //Tokens
+  adminToken: "",
+  userToken: "",
+  addAdminToken: (token) => set((state) => ({ adminToken: token })),
+  addUserToken: (token) => set((state) => ({ userToken: token })),
 
-    // clearCollection: (collection) => set((state) => ({ collection: [] })),
+  // clearCollection: (collection) => set((state) => ({ collection: [] })),
 }));
 
 export default useStore;

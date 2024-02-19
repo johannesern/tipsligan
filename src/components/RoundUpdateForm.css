@@ -1,8 +1,8 @@
-.text-color-black {
+.roundupdate_text-color-black {
   color: black;
 }
 
-.modal-content {
+.roundupdate_modal-content {
   position: relative;
   background-color: #eee;
   padding: 20px;
@@ -12,7 +12,7 @@
   min-width: 630px;
 }
 
-.round-update-field {
+.roundupdate_round-update-field {
   text-align: center;
   color: black;
   font-family: "Poppins", sans-serif;
@@ -22,19 +22,19 @@
   border-radius: 5px;
 }
 
-.close-button-align {
+.roundupdate_close-button-align {
   top: 4px;
   right: 10px;
 
   position: absolute;
 }
 
-.form-top-content {
+.roundupdate_form-top-content {
   display: flex;
   justify-content: space-between;
 }
 
-.close {
+.roundupdate_close {
   position: absolute;
   right: 16px;
   top: 16px;
@@ -42,11 +42,11 @@
   height: 32px;
   opacity: 0.6;
 }
-.close:hover {
+.roundupdate_close:hover {
   opacity: 1;
 }
-.close:before,
-.close:after {
+.roundupdate_close:before,
+.roundupdate_close:after {
   position: absolute;
   left: 15px;
   content: " ";
@@ -54,23 +54,28 @@
   width: 2px;
   background-color: #333;
 }
-.close:before {
+.roundupdate_close:before {
   transform: rotate(45deg);
 }
-.close:after {
+.roundupdate_close:after {
   transform: rotate(-45deg);
 }
 
-.disabled {
+.roundupdate_disabled {
   background-color: #787878;
 }
 
-.divider {
+.roundupdate_divider {
   margin: 10px 0;
   border-bottom: 2px solid #787878;
 }
 
-.roundupdate_form {
+.roundupdate_unfilled-button {
+  color: black;
+  background-color: transparent;
+}
+
+.roundupdate_roundupdate_form {
   display: flex;
   flex-direction: column;
 

@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 const ListWeeklyResult = ({ weekly }) => {
   const [weeklyUserResult, setWeeklyUserResult] = useState([]);
   useEffect(() => {
-    console.log(weekly.round.userDatas);
-    setWeeklyUserResult(weekly.round.userDatas);
+    console.log("LISTWEEKLY: ", weekly?.round?.userDatas);
+    setWeeklyUserResult(weekly?.round?.userDatas);
   }, [weekly]);
 
   const uneven = (index) => {

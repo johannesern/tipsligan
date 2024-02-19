@@ -6,6 +6,7 @@ import useStore from "../store/useStore";
 import { UpdateRound } from "../API/RoundsAPI";
 import { GetActiveRound } from "../API/RoundsAPI";
 import { CorrectionRound } from "../API/RoundsAPI";
+import { CorrectionRoundSemiAuto } from "../API/RoundsAPI";
 
 export default function RoundToCorrect() {
   const [message, setMessage] = useState();
@@ -17,11 +18,13 @@ export default function RoundToCorrect() {
   const [coupon, setCoupon] = useState([]);
 
   //Store
+  const clearActiveRound = useStore((state) => state.clearActiveRound);
   const addRound = useStore((state) => state.addRoundActive);
   const round = useStore((state) => state.roundActive);
 
   //First time loading
   useEffect(() => {
+    clearActiveRound();
     getActiveRound();
     if (EnableCorrection()) {
       setEnableCorrectionButton(true);
@@ -114,13 +117,13 @@ export default function RoundToCorrect() {
         }
       }
     });
-
+    //SKA TA EMOT EN KUPONG INTE RUNDA
     const newRound = {
       ...round,
       userDatas: newUserDatas,
     };
     addRound(newRound);
-    await UpdateRound(newRound);
+    await CorrectionRoundSemiAuto(newRound);
     setSemiAutoMode(false);
     getActiveRound();
   };

@@ -4,7 +4,6 @@ import useStore from "../store/useStore";
 import "./HighscoreDisplay.css";
 
 import { GetActiveRound } from "../API/RoundsAPI";
-import { GetLatestWeekly } from "../API/WeeklysAPI";
 
 const HighscoreDisplay = () => {
   //Store
@@ -13,15 +12,12 @@ const HighscoreDisplay = () => {
   const addWeeklySnapshot = useStore((state) => state.addWeeklySnapshot);
   const weeklySnapshot = useStore((state) => state.weeklySnapshot);
 
-  const noPlayers = "Inga spelare";
-
   useEffect(() => {
     getRound();
   }, []);
 
   const getRound = async () => {
     const activeRoundResponse = await GetActiveRound();
-    const weeklySnapshot = await GetLatestWeekly();
     if (activeRoundResponse.ok) {
       const data = await activeRoundResponse.json();
       addRound(data);

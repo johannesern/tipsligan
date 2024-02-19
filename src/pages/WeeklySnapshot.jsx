@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import "./WeeklySnapshot.css";
 import { GetAllWeekly } from "../API/WeeklysAPI";
 import { DeleteWeekly } from "../API/WeeklysAPI";
@@ -59,7 +59,9 @@ const WeeklySnapshot = () => {
               </tr>
             ))
           ) : (
-            <tr>Loading...</tr>
+            <tr>
+              <td>Inga veckovisa</td>
+            </tr>
           )}
         </tbody>
       </table>

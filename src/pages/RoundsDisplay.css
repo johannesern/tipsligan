@@ -65,3 +65,16 @@
 .active{
 border-color: blueviolet;
 }
+
+.roundsdisplay_row-title {
+  display: flex;
+  gap: 10px;
+}
+
+.roundsdisplay_row-active {
+  color: #bdbdbd;
+}
+
+.roundsdisplay_active-col{
+  width: 11px;
+}

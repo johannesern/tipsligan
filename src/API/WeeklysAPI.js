@@ -10,14 +10,14 @@ export async function GetAllWeekly() {
       console.error("Failed to get data");
     }
   } catch (error) {
-    console.error("API:GetAllUsers error", error);
+    console.error("API:GetWeeklies error", error);
   }
 }
 
-export async function GetAllWeeklysByRoundId(roundId) {
+export async function GetAllWeekliesByRoundId(roundId) {
   try {
     const response = await fetch(
-      baseUrl + `/weeklysnapshot/weeklys-by-round-id/${roundId}`
+      baseUrl + `/weeklysnapshot/weekly-by-round-id/${roundId}`
     );
     if (response.ok) {
       return response;
@@ -26,22 +26,7 @@ export async function GetAllWeeklysByRoundId(roundId) {
       return response;
     }
   } catch (error) {
-    console.error("API:GetAllUsers error", error);
-  }
-}
-
-export async function GetLatestWeekly() {
-  try {
-    const response = await fetch(baseUrl + "/weeklysnapshot/latest");
-    if (response.ok) {
-      const responseData = await response.json();
-      return responseData;
-    } else {
-      console.error("Failed to get data");
-    }
-  } catch (error) {
-    console.error("API:GetActiveRound error", error);
-    return error;
+    console.error("API:GetWeeklies error", error);
   }
 }
 
