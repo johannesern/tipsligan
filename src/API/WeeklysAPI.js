@@ -1,4 +1,5 @@
-const baseUrl = import.meta.env.VITE_API_URL;
+// const baseUrl = import.meta.env.VITE_API_URL;
+const baseUrl = "https://tipsligan-api-twilight-glitter-4832.fly.dev";
 
 export async function GetAllWeekly() {
   try {
