@@ -78,7 +78,7 @@ const HighscoreDisplay = () => {
                     {round.userDatas?.map((user) => (
                       <tr key={user.id}>
                         <td className="position-column">{user.position}</td>
-                        <td className="column">{user.points}</td>
+                        <td className="column">{user.points} || 0</td>
                         <td className="column">{user.firstname}</td>
                       </tr>
                     ))}
