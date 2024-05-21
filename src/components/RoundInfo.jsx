@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import { GetAllWeekliesByRoundId } from "../API/WeeklysAPI";
 import { useParams } from "react-router-dom";
 import ListWeeklyResult from "./ListWeeklyResult";
+import { useNavigate } from "react-router-dom";
 
 const RoundInfo = () => {
+  const navigate = useNavigate();
   const { roundid } = useParams();
   const [weekly, setWeekly] = useState();
 
@@ -22,13 +24,13 @@ const RoundInfo = () => {
   }, []);
 
   const closeForm = () => {
-    setWeekly();
+    navigate(`/admin/omgång-veckovis/`);
   };
 
   return (
     <div>
       <br />
-      <h1>{weekly?.round?.title || "HEJ"}</h1>
+      <h1>{weekly?.round?.title}</h1>
       {weekly && (
         <>
           <div className="roundinfo_form-overlay">
