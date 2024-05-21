@@ -23,8 +23,10 @@ export default function UserManager() {
   }, []);
 
   const mainFilter = () => {
-    const tmpfilteredRoundUser = round.userDatas?.filter((user) =>
-      user.firstname.toLowerCase().includes(filter.toLowerCase())
+    const tmpfilteredRoundUser = round.userDatas?.filter(
+      (user) =>
+        user.firstname.toLowerCase().includes(filter.toLowerCase()) ||
+        user.lastname.toLowerCase().includes(filter.toLowerCase())
     );
     const tmpfilteredAvUser = filteringAvailablePlayers().filter((aUser) =>
       aUser.firstname.toLowerCase().includes(filter.toLowerCase())
