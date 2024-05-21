@@ -88,7 +88,7 @@ const UserRegistration = () => {
       <br />
       <article>
         <p>
-          Skriv in dina uppgifter och välj din intitala spelrad, raden kan
+          Skriv in dina uppgifter och välj din initiala spelrad, raden kan
           alltid ändras på din profil senare.
         </p>
       </article>
