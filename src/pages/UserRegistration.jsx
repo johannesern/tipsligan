@@ -9,12 +9,12 @@ import { CreateUser } from "../API/UsersAPI";
 
 const UserRegistration = () => {
   const [newUser, setNewUser] = useState({
-    Firstname: "Test",
-    Lastname: "Testsson",
-    Email: "test@test.com",
-    Phone: "07011122233",
+    Firstname: "",
+    Lastname: "",
+    Email: "",
+    Phone: "",
     Coupon: [],
-    Password: "testtest",
+    Password: "",
   });
   const [coupon, setCoupon] = useState([]);
   const [createStatus, setCreateStatus] = useState({});
@@ -86,6 +86,12 @@ const UserRegistration = () => {
   return (
     <>
       <br />
+      <article>
+        <p>
+          Skriv in dina uppgifter och välj din intitala spelrad, raden kan
+          alltid ändras på din profil senare.
+        </p>
+      </article>
       <div className="registration-content">
         <div name="new-player">
           <h3>Ny deltagare</h3>

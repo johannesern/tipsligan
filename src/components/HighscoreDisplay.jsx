@@ -28,9 +28,14 @@ const HighscoreDisplay = () => {
   };
 
   return (
-    <article className="highscore-list">
-      <div className="highscore-area">
-        {/* <div className="table-layout">
+    <>
+      <article>
+        <p>Välkommen till Tipsligan!</p>
+        <p>Här nedanför ser du topplistan för pågående omgång </p>
+      </article>
+      <article className="highscore-list">
+        <div className="highscore-area">
+          {/* <div className="table-layout">
           <h1>Veckans resultat</h1>
           {weeklySnapshot.id !== null ? (
             <div>
@@ -57,33 +62,34 @@ const HighscoreDisplay = () => {
             <div>Inget</div>
           )}
         </div> */}
-        {round.id !== null && (
-          <div className="table-layout">
-            <h1>Topplista total</h1>
-            <div>
-              <table>
-                <thead>
-                  <tr>
-                    <th className="position-column">Placering</th>
-                    <th className="column">Poäng</th>
-                    <th className="column">Namn</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {round.userDatas?.map((user) => (
-                    <tr key={user.id}>
-                      <td className="position-column">{user.position}</td>
-                      <td className="column">{user.points}</td>
-                      <td className="column">{user.firstname}</td>
+          {round.id !== null && (
+            <div className="table-layout">
+              <h1>Topplista total</h1>
+              <div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th className="position-column">Placering</th>
+                      <th className="column">Poäng</th>
+                      <th className="column">Namn</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {round.userDatas?.map((user) => (
+                      <tr key={user.id}>
+                        <td className="position-column">{user.position}</td>
+                        <td className="column">{user.points}</td>
+                        <td className="column">{user.firstname}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-    </article>
+          )}
+        </div>
+      </article>
+    </>
   );
 };
 
