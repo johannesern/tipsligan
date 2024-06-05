@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import ExistingCoupon from "../components/ExistingCoupon";
 import useStore from "../store/useStore";
 import { UpdateUser } from "../API/UsersAPI";
-import { GetUserByToken } from "../API/UsersAPI";
+import { GetUserById } from "../API/UsersAPI";
 import { GetActiveRound } from "../API/RoundsAPI";
+import { Logout } from "../API/UsersAPI";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -30,9 +31,9 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const userToken = localStorage.getItem("userToken");
-      if (userToken) {
-        await getUser(userToken);
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        await getUser(userId);
       } else {
         navigate("/login");
       }
@@ -53,7 +54,8 @@ export default function Home() {
     const response = await GetActiveRound();
     if (response.ok) {
       const data = await response.json();
-      const foundUser = data.userDatas.find(
+      console.log("DATA: ", data);
+      const foundUser = data[0].users.find(
         (userdata) => userdata.id === user.id
       );
       if (foundUser) {
@@ -64,8 +66,8 @@ export default function Home() {
     }
   };
 
-  const getUser = async (userToken) => {
-    const response = await GetUserByToken(userToken);
+  const getUser = async (userId) => {
+    const response = await GetUserById(userId);
     if (response.ok) {
       const data = await response.json();
       setUser(data);
@@ -98,7 +100,7 @@ export default function Home() {
         message: "Uppdatering misslyckades",
         success: response.ok,
       });
-    getUser(localStorage.getItem("userToken"));
+    getUser(localStorage.getItem("userId"));
     cleanup();
   };
 
@@ -112,9 +114,7 @@ export default function Home() {
     setUser((prevState) => ({ ...prevState, [name]: checked }));
   };
 
-  useEffect(() => {
-    console.log("User: ", user.optIn);
-  }, [user, editMode]);
+  useEffect(() => {}, [user, editMode]);
 
   const changeMode = async () => {
     if (!foundUser) {
@@ -130,6 +130,8 @@ export default function Home() {
   };
 
   const logout = () => {
+    console.log("Logging out");
+    Logout(localStorage.getItem("userToken"));
     localStorage.removeItem("userToken");
     navigate("/login");
   };

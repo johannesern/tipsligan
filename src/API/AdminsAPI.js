@@ -1,4 +1,4 @@
-// const baseUrl = import.meta.env.VITE_API_URL
+// import { baseUrl } from "../config";
 const baseUrl = "https://tipsligan-api-twilight-glitter-4832.fly.dev";
 
 export async function LoginAdmin(credentials) {

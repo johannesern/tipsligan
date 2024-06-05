@@ -9,14 +9,28 @@ import { CreateUser } from "../API/UsersAPI";
 
 const UserRegistration = () => {
   const [newUser, setNewUser] = useState({
-    Firstname: "",
-    Lastname: "",
-    Email: "",
-    Phone: "",
-    Coupon: [],
-    Password: "",
+    Firstname: "Test",
+    Lastname: "Testsson",
+    Email: "test@test.com",
+    Phone: "07011122233",
+    Coupon: "",
+    Password: "testtest",
   });
-  const [coupon, setCoupon] = useState([]);
+  const [coupon, setCoupon] = useState([
+    "2",
+    "2",
+    "2",
+    "2",
+    "2",
+    "2",
+    "2",
+    "2",
+    "2",
+    "2",
+    "2",
+    "2",
+    "2",
+  ]);
   const [createStatus, setCreateStatus] = useState({});
   const [isUserComplete, setIsUserComplete] = useState(false);
 
@@ -26,7 +40,13 @@ const UserRegistration = () => {
   };
 
   useEffect(() => {
-    setNewUser((prevState) => ({ ...prevState, Coupon: coupon }));
+    let couponAsString = "";
+    if (coupon.length !== 0) {
+      couponAsString = coupon.reduce((acc, curr) => {
+        return acc + curr;
+      });
+    }
+    setNewUser((prevState) => ({ ...prevState, Coupon: couponAsString }));
   }, [coupon]);
 
   useEffect(() => {
@@ -45,29 +65,30 @@ const UserRegistration = () => {
         success: response.ok,
       });
     else {
-      const data = await response.json();
+      const error = await response.json();
+      console.log(error);
       setCreateStatus({
-        message: data,
-        success: response.ok,
+        message: error.message,
+        success: response,
       });
     }
-    cleanup();
+    // cleanup();
   };
 
-  const cleanup = () => {
-    setTimeout(() => {
-      setCreateStatus({});
-      setNewUser({
-        Firstname: "",
-        Lastname: "",
-        Email: "",
-        Phone: "",
-        Coupon: [],
-        Password: "",
-      });
-      setCoupon([]);
-    }, 5000);
-  };
+  // const cleanup = () => {
+  //   setTimeout(() => {
+  //     setCreateStatus({});
+  //     setNewUser({
+  //       Firstname: "",
+  //       Lastname: "",
+  //       Email: "",
+  //       Phone: "",
+  //       Coupon: "",
+  //       Password: "",
+  //     });
+  //     setCoupon([]);
+  //   }, 5000);
+  // };
 
   const determineUserComplete = () => {
     if (

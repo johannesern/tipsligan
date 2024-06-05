@@ -13,9 +13,7 @@ const RoundInfo = () => {
   useEffect(() => {
     const getWeeklysByRoundId = async (roundId) => {
       const result = await GetAllWeekliesByRoundId(roundId);
-      console.log("RESPONSE: ", result);
       const data = await result.json();
-      console.log("DATA: ", data);
       setWeekly(data);
     };
     getWeeklysByRoundId(roundid);

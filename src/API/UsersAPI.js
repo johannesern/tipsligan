@@ -1,11 +1,13 @@
-// const baseUrl = import.meta.env.VITE_API_URL
+// import { baseUrl } from "../config";
 const baseUrl = "https://tipsligan-api-twilight-glitter-4832.fly.dev";
 
 export async function CreateUser(data) {
+  const token = localStorage.getItem("userToken");
   try {
-    const response = await fetch(baseUrl + "/users/create-user", {
+    const response = await fetch(baseUrl + "/users", {
       method: "POST",
       headers: {
+        Authorization: "Bearer " + token,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -18,8 +20,15 @@ export async function CreateUser(data) {
 }
 
 export async function GetAllUsers() {
+  const token = localStorage.getItem("userToken");
   try {
-    const response = await fetch(baseUrl + "/users");
+    const response = await fetch(baseUrl + "/users", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+    });
     if (response.ok) {
       const responseData = await response.json();
       return responseData;
@@ -31,25 +40,32 @@ export async function GetAllUsers() {
   }
 }
 
-export async function GetUser(userId) {
-  try {
-    const response = await fetch(`${baseUrl}/users/${userId}`);
+// export async function GetUser(userId) {
+//   const token = localStorage.getItem("userToken");
+//   try {
+//     const response = await fetch(`${baseUrl}/users/${userId}`, {
+//       method: "GET",
+//       headers: {
+//         Authorization: "Bearer " + token,
+//       },
+//     });
 
-    if (response.ok) {
-      const responseData = await response.json();
-      // console.log("Fetch one user response:", responseData);
-      return responseData;
-    } else {
-      console.error("Failed to get one data");
-    }
-  } catch (error) {
-    console.error("API:GetUser error", error);
-  }
-}
+//     if (response.ok) {
+//       const responseData = await response.json();
+//       // console.log("Fetch one user response:", responseData);
+//       return responseData;
+//     } else {
+//       console.error("Failed to get one data");
+//     }
+//   } catch (error) {
+//     console.error("API:GetUser error", error);
+//   }
+// }
 
-export async function GetUserByToken(token) {
+export async function GetUserById(userId) {
+  const token = localStorage.getItem("userToken");
   try {
-    const response = await fetch(`${baseUrl}/users/by-token/`, {
+    const response = await fetch(`${baseUrl}/users/${userId}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + token,
@@ -63,8 +79,15 @@ export async function GetUserByToken(token) {
 }
 
 export async function GetAllUsersAsDataModels() {
+  const token = localStorage.getItem("userToken");
   try {
-    const response = await fetch(baseUrl + "/users/userDataModels");
+    const response = await fetch(baseUrl + "/users/userDataModels", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+    });
     if (response.ok) {
       const responseData = await response.json();
       return responseData;
@@ -77,11 +100,12 @@ export async function GetAllUsersAsDataModels() {
 }
 
 export async function UpdateUser(user) {
+  const token = localStorage.getItem("userToken");
   try {
-    console.log("API:UpdateUser", user);
     const response = await fetch(`${baseUrl}/users/${user.id}`, {
       method: "PUT",
       headers: {
+        Authorization: "Bearer " + token,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(user),
@@ -93,9 +117,13 @@ export async function UpdateUser(user) {
 }
 
 export async function DeleteUser(userId) {
+  const token = localStorage.getItem("userToken");
   try {
     const response = await fetch(`${baseUrl}/users/${userId}`, {
       method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
     });
 
     if (response.ok) {
@@ -109,13 +137,32 @@ export async function DeleteUser(userId) {
 }
 
 export async function LoginUser(credentials) {
+  const token = localStorage.getItem("userToken");
   try {
-    const response = await fetch(baseUrl + "/users/login", {
+    const response = await fetch(baseUrl + "/auth/login", {
       method: "POST",
       headers: {
+        Authorization: "Bearer " + token,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(credentials),
+    });
+
+    return response;
+  } catch (error) {
+    console.error("API:Login user error", error);
+  }
+}
+
+export async function Logout() {
+  const token = localStorage.getItem("userToken");
+  try {
+    const response = await fetch(baseUrl + "/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
     });
 
     return response;

@@ -20,7 +20,7 @@ const HighscoreDisplay = () => {
     const activeRoundResponse = await GetActiveRound();
     if (activeRoundResponse.ok) {
       const data = await activeRoundResponse.json();
-      addRound(data);
+      addRound(data[0]);
     } else {
       console.error("Topplista: Kunde inte hämta aktiv runda");
     }
@@ -62,34 +62,34 @@ const HighscoreDisplay = () => {
             <div>Inget</div>
           )}
         </div> */}
-          {round.id !== null && (
-            <div className="table-layout">
-              <h1>Topplista total</h1>
-              <div>
-                <table>
-                  <thead>
-                    <tr>
-                      <th className="position-column">Placering</th>
-                      <th className="column">Poäng</th>
-                      <th className="column">Namn</th>
+        {round.id !== null && (
+          <div className="table-layout">
+            <h1>Topplista total</h1>
+
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th className="position-column">Placering</th>
+                    <th className="column">Poäng</th>
+                    <th className="column">Namn</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {round.users?.map((user) => (
+                    <tr key={user.userId}>
+                      <td className="position-column">{user.user_position}</td>
+                      <td className="column">{user.user_points || 0}</td>
+                      <td className="column">{user.username}</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {round.userDatas?.map((user) => (
-                      <tr key={user.id}>
-                        <td className="position-column">{user.position}</td>
-                        <td className="column">{user.points}</td>
-                        <td className="column">{user.firstname}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          )}
-        </div>
-      </article>
-    </>
+          </div>
+        )}
+      </div>
+    </article>
   );
 };
 

@@ -44,6 +44,7 @@ export default function Login() {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem("userToken", data.token);
+        localStorage.setItem("userId", data.user_id);
         addUserToken(data.token);
         navigate("/användare");
       } else {
