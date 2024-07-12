@@ -5,22 +5,21 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateFile from "../functions/CreateFile";
 import { GetActiveRound } from "../API/RoundsAPI";
+import { useUserStore, useRoundStore } from "../store/useStore";
 
 export default function Home() {
   const navigate = useNavigate();
-  const [token, setToken] = useState();
   const [activeBtn, setActiveBtn] = useState(null);
 
+  //Store
+  const { userRoles, clearUser } = useUserStore();
+  const { clearRound } = useRoundStore();
+
   useEffect(() => {
-    const adminToken = localStorage.getItem("adminToken");
-    if (adminToken) {
-      setToken(adminToken);
-    } else {
-      navigate("/login"); // You can also return a loading spinner or message here if needed
+    if (!userRoles.includes("admin")) {
+      navigate("/login");
     }
   }, [navigate]);
-
-  useEffect(() => {}, [token]);
 
   const handleFileCreation = async () => {
     const roundResponse = await GetActiveRound();
@@ -33,7 +32,7 @@ export default function Home() {
   };
 
   const logout = () => {
-    localStorage.removeItem("adminToken");
+    clearUser();
     navigate("/login");
   };
 
@@ -83,12 +82,7 @@ export default function Home() {
             </Link>
             <Link to="alla-omgångar">
               <button onClick={() => setActiveBtn(null)}>
-                Administrera omgångar
-              </button>
-            </Link>
-            <Link to="omgång-veckovis">
-              <button onClick={() => setActiveBtn(null)}>
-                Visa omgång veckovis
+                Visa alla omgångar
               </button>
             </Link>
             <Link onClick={() => setActiveBtn(null)}>
@@ -97,7 +91,12 @@ export default function Home() {
               </button>
             </Link>
             <Link to="skapa-ny-omgång">
-              <button onClick={() => setActiveBtn(null)}>
+              <button
+                onClick={() => {
+                  setActiveBtn(null);
+                  clearRound();
+                }}
+              >
                 Skapa ny omgång
               </button>
             </Link>

@@ -1,21 +1,19 @@
-// import { baseUrl } from "../config";
-const baseUrl = "https://tipsligan-api-twilight-glitter-4832.fly.dev";
+import { baseUrl } from "../config";
+import Cookies from "js-cookie";
 
-export async function CreateRound(data) {
+export async function CreateRound(data, weeks) {
+  const queryParam = new URLSearchParams({ weeks }).toString();
+  const url = `${baseUrl}/rounds?${queryParam}`;
   try {
-    const response = await fetch(baseUrl + "/rounds", {
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + Cookies.get("userToken"),
       },
       body: JSON.stringify(data),
     });
-    if (response.ok) {
-      const responseData = await response.json();
-      return responseData;
-    } else {
-      console.error("Failed to post data");
-    }
+    return response;
   } catch (error) {
     console.error("API:Create round error", error);
   }
@@ -38,13 +36,19 @@ export async function GetActiveRound() {
 
 export async function GetAllRounds() {
   try {
-    const response = await fetch(baseUrl + "/rounds/all-rounds");
+    const response = await fetch(baseUrl + "/rounds", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + Cookies.get("userToken"),
+      },
+    });
 
     if (response.ok) {
       const responseData = await response.json();
       return responseData;
     } else {
       console.error("Failed to get data");
+      return null;
     }
   } catch (error) {
     console.error("API:GetAllUsers error", error);
@@ -57,6 +61,7 @@ export async function UpdateRound(round) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + Cookies.get("userToken"),
       },
       body: JSON.stringify(round),
     });
@@ -76,6 +81,9 @@ export async function DeleteRound(roundId) {
   try {
     const response = await fetch(`${baseUrl}/rounds/${roundId}`, {
       method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + Cookies.get("userToken"),
+      },
     });
 
     if (response.ok) {
@@ -88,9 +96,17 @@ export async function DeleteRound(roundId) {
   }
 }
 
-export async function CorrectionRound() {
+export async function CorrectionRound(roundId) {
+  const url = `${baseUrl}/rounds/manual-coupon/${roundId}`;
+
   try {
-    const response = await fetch(baseUrl + "/Coupon");
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + Cookies.get("userToken"),
+      },
+    });
 
     if (response.ok) {
       return response;
@@ -103,14 +119,18 @@ export async function CorrectionRound() {
   }
 }
 
-export async function CorrectionRoundSemiAuto(coupon) {
+export async function CorrectionRoundSemiAuto(correctRow, roundId) {
+  const queryParam = new URLSearchParams({ correctRow }).toString();
+  const url = `${baseUrl}/rounds/manual-coupon/${roundId}?${queryParam}`;
+
   try {
-    const response = await fetch(baseUrl + "/rounds/with-coupon", {
+    const response = await fetch(url, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + Cookies.get("userToken"),
       },
-      body: JSON.stringify(coupon),
+      body: JSON.stringify(correctRow),
     });
 
     if (response.ok) {

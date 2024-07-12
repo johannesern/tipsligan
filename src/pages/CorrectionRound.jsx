@@ -130,9 +130,9 @@ export default function RoundToCorrect() {
 
   return (
     <main>
-      {round.correctedAt && (
+      {round.corrected_at && (
         <div className="corrected-date">
-          Rättades senast den {round.correctedAt}
+          Rättades senast den {round.corrected_at}
         </div>
       )}
 

@@ -37,6 +37,12 @@
   border: 2px solid #ab3f3f;
 }
 
+.login_align-login-buttons{
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 70px;
+}
+
 .login_align-login-btn {
   display: flex;
   justify-content: center;

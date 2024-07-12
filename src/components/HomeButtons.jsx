@@ -17,8 +17,8 @@ export default function HomeButtons({ passRoundToButtons }) {
     <>
       <div className="home-buttons">
         {passRoundToButtons != null &&
-        passRoundToButtons.isActive &&
-        passRoundToButtons.isOpen ? (
+        passRoundToButtons.is_active &&
+        passRoundToButtons.is_open ? (
           <Link to="registrera">
             <button>Registrera rad</button>
           </Link>

@@ -1,23 +1,51 @@
 import "./Userdisplay.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { DeleteUser } from "../API/UsersAPI";
 import { GetAllUsers } from "../API/UsersAPI";
 import { UpdateUser } from "../API/UsersAPI";
 import ExistingCoupon from "../components/ExistingCoupon";
+import { useUserStore } from "../store/useStore";
 
 const Userdisplay = () => {
   const [selectedUser, setSelectedUser] = useState("");
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
   const [user, setUser] = useState("");
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [updateStatus, setUpdateStatus] = useState("");
   const [existingCoupon, setExistingCoupon] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const modalRef = useRef(null);
+
+  //Store
+  const { allUsers, setAllUsers } = useUserStore();
 
   //First time loading
   useEffect(() => {
     getUsers();
   }, []);
+
+  const getUsers = async () => {
+    const data = await GetAllUsers();
+    if (data) {
+      setAllUsers(data);
+    } else {
+      console.error("Failed to get users");
+      setMessage("Kunde inte hämta användare");
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [user]);
 
   useEffect(() => {
     if (user) {
@@ -27,22 +55,15 @@ const Userdisplay = () => {
     }
   }, [user]);
 
-  const getUsers = async () => {
-    const data = await GetAllUsers();
-    setUsers(data);
-  };
-
-  useEffect(() => {}, [users]);
-
   const handleUserUpdate = async (e) => {
     e.preventDefault();
     const updatedUser = {
       ...user,
       coupon: existingCoupon,
     };
-    const response = await UpdateUser(updatedUser);
+    const isUpdate = await UpdateUser(updatedUser);
 
-    if (response.ok) {
+    if (isUpdate) {
       setUpdateStatus("Uppdatering lyckades");
     } else {
       setUpdateStatus("Uppdatering misslyckades");
@@ -83,11 +104,10 @@ const Userdisplay = () => {
     setEditMode(false);
   };
 
-  const isEditable = () => {
-    if (editMode) {
-      return true;
+  const handleClickOutside = (event) => {
+    if (modalRef.current && !modalRef.current.contains(event.target)) {
+      closeForm();
     }
-    return false;
   };
 
   return (
@@ -108,10 +128,7 @@ const Userdisplay = () => {
       {user && (
         <>
           <div className="userdisplay_form-overlay">
-            <div className="userdisplay_modal-content">
-              <button type="button" onClick={() => setEditMode(!editMode)}>
-                Ändra
-              </button>
+            <div className="userdisplay_modal-content" ref={modalRef}>
               <div
                 className="userdisplay_close"
                 type="button"
@@ -132,7 +149,6 @@ const Userdisplay = () => {
                           type="text"
                           name="firstname"
                           id="firstname"
-                          disabled={!isEditable()}
                           onChange={handleChange}
                         />
                       </td>
@@ -146,7 +162,6 @@ const Userdisplay = () => {
                           type="text"
                           name="lastname"
                           id="lastname"
-                          disabled={!isEditable()}
                           onChange={handleChange}
                         />
                       </td>
@@ -160,7 +175,6 @@ const Userdisplay = () => {
                           type="email"
                           name="email"
                           id="email"
-                          disabled={!isEditable()}
                           onChange={handleChange}
                         />
                       </td>
@@ -174,7 +188,6 @@ const Userdisplay = () => {
                           type="text"
                           name="phone"
                           id="phone"
-                          disabled={!isEditable()}
                           onChange={handleChange}
                         />
                       </td>
@@ -184,11 +197,10 @@ const Userdisplay = () => {
                       <td>
                         <input
                           className="userdisplay_user-input-field"
-                          value={user.group || ""}
+                          value={user.team || ""}
                           type="text"
-                          name="group"
+                          name="team"
                           id="text"
-                          disabled={!isEditable()}
                           onChange={handleChange}
                         />
                       </td>
@@ -198,10 +210,9 @@ const Userdisplay = () => {
                       <td>
                         <input
                           className="userdisplay_checkbox"
-                          checked={user.optIn}
+                          checked={user.opt_in}
                           type="checkbox"
-                          name="optIn"
-                          disabled={!isEditable()}
+                          name="opt_in"
                           onChange={handleCheckboxChange}
                         />
                       </td>
@@ -212,9 +223,8 @@ const Userdisplay = () => {
                   <ExistingCoupon
                     setExistingCouponSelections={setExistingCoupon}
                     coupon={existingCoupon ? existingCoupon : []}
-                    couponEditable={isEditable()}
+                    editMode={editMode}
                   />
-
                   <div className="userdisplay_align-submit-update-button">
                     <button onClick={handleUserUpdate} type="button">
                       Uppdatera
@@ -233,20 +243,19 @@ const Userdisplay = () => {
       )}
       <table className="userdisplay_table-content">
         <tbody>
-          {users != null ? (
-            users.map((user) => (
+          {allUsers != null ? (
+            allUsers.map((user) => (
               <tr
                 className="userdisplay_user-list-item"
-                onClick={() => setUser(user)}
+                onClick={() => {
+                  setUser(user);
+                }}
                 key={user.id}
               >
                 <td>
                   <h3>{user.firstname}</h3>
                 </td>
                 <td className="userdisplay_list-button">
-                  <button name="edit" onClick={() => setUser(user)}>
-                    Ändra
-                  </button>
                   <button
                     name="delete"
                     onClick={(e) => {
@@ -260,7 +269,7 @@ const Userdisplay = () => {
               </tr>
             ))
           ) : (
-            <tr>Loading...</tr>
+            <tr>{message}</tr>
           )}
         </tbody>
       </table>

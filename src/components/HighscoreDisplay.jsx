@@ -20,6 +20,7 @@ const HighscoreDisplay = () => {
     const activeRoundResponse = await GetActiveRound();
     if (activeRoundResponse.ok) {
       const data = await activeRoundResponse.json();
+      console.log("Data: ", data[0]);
       addRound(data[0]);
     } else {
       console.error("Topplista: Kunde inte hämta aktiv runda");
@@ -62,34 +63,37 @@ const HighscoreDisplay = () => {
             <div>Inget</div>
           )}
         </div> */}
-        {round.id !== null && (
-          <div className="table-layout">
-            <h1>Topplista total</h1>
+          {round.id !== null && (
+            <div className="table-layout">
+              <h1>Topplista total</h1>
 
-            <div>
-              <table>
-                <thead>
-                  <tr>
-                    <th className="position-column">Placering</th>
-                    <th className="column">Poäng</th>
-                    <th className="column">Namn</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {round.users?.map((user) => (
-                    <tr key={user.userId}>
-                      <td className="position-column">{user.user_position}</td>
-                      <td className="column">{user.user_points || 0}</td>
-                      <td className="column">{user.username}</td>
+              <div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th className="position-column">Placering</th>
+                      <th className="column">Poäng</th>
+                      <th className="column">Namn</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {round.users?.map((user) => (
+                      <tr key={user.userId}>
+                        <td className="position-column">
+                          {user.user_position}
+                        </td>
+                        <td className="column">{user.user_points || 0}</td>
+                        <td className="column">{user.username}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-    </article>
+          )}
+        </div>
+      </article>
+    </>
   );
 };
 

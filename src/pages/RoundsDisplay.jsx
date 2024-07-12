@@ -1,39 +1,49 @@
 import "./RoundsDisplay.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { RoundUpdateForm } from "../components/RoundUpdateForm";
 import useStore from "../store/useStore";
 import { DeleteRound } from "../API/RoundsAPI";
 import { GetAllRounds } from "../API/RoundsAPI";
-import { GetAllUsersAsDataModels } from "../API/UsersAPI";
 
 const DisplayAllRounds = () => {
-  const addUserDataModels = useStore((state) => state.addUserDataModels);
   const addRounds = useStore((state) => state.addRounds);
   const addRoundToUpdate = useStore((state) => state.addRoundToUpdate);
   const rounds = useStore((state) => state.roundsCollection);
   const [deleteThisRound, setDeleteThisRound] = useState("");
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
   const [round, setRound] = useState();
+  const formRef = useRef(null);
 
   useEffect(() => {
     getRounds();
-    getUserDataModels();
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        setRound(null);
+      }
+    };
+
+    if (round) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [round]);
 
   const refreshRounds = async () => {
     await getRounds();
-    await getUserDataModels();
   };
 
   const getRounds = async () => {
     const allRounds = await GetAllRounds();
     console.log(allRounds.length, "allRounds");
     addRounds(allRounds);
-  };
-
-  const getUserDataModels = async () => {
-    const dataModels = await GetAllUsersAsDataModels();
-    addUserDataModels(dataModels);
   };
 
   const handleToggleForm = (round) => {
@@ -78,10 +88,12 @@ const DisplayAllRounds = () => {
       {round && (
         <>
           <div className="roundsdisplay_form-overlay">
-            <RoundUpdateForm
-              closeForm={closeForm}
-              refreshRounds={refreshRounds}
-            />
+            <div ref={formRef}>
+              <RoundUpdateForm
+                closeForm={closeForm}
+                refreshRounds={refreshRounds}
+              />
+            </div>
           </div>
         </>
       )}
@@ -89,7 +101,7 @@ const DisplayAllRounds = () => {
         <tbody>
           {rounds.length > 0 ? (
             rounds
-              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
               .map((round) => (
                 <tr
                   onClick={() => handleToggleForm(round)}
@@ -98,7 +110,7 @@ const DisplayAllRounds = () => {
                 >
                   <td className="roundsdisplay_row-title">
                     <h3>{round.title}</h3>
-                    <h3>{round.isActive ? "<- aktiv" : ""}</h3>
+                    <h3>{round.is_active ? "<- aktiv" : ""}</h3>
                   </td>
                   <td className="roundsdisplay_list-button">
                     <button name="edit" onClick={() => handleToggleForm(round)}>

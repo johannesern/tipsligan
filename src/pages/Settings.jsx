@@ -1,15 +1,15 @@
 import "./Settings.css";
 import { useState, useEffect } from "react";
-import useStore from "../store/useStore";
+import { useAssociationStore } from "../store/useStore";
 import { GetSettings } from "../API/SettingsAPI";
 import { UpdateSettings } from "../API/SettingsAPI";
 
 export default function Settings() {
-  const [tmpSettings, setTmpSettings] = useState({});
   const [correctSum, setCorrectSum] = useState(true);
   const [message, setMessage] = useState("");
   //Store
-  const addSettings = useStore((state) => state.addSettings);
+  const { association, setAssociation, updateAssociation } =
+    useAssociationStore();
   const [playersExample, setPlayersExample] = useState(100);
 
   useEffect(() => {
@@ -18,36 +18,33 @@ export default function Settings() {
 
   const getSettings = async () => {
     const data = await GetSettings();
-    addSettings(data[0]);
-    setTmpSettings(data[0]);
+    setAssociation(data);
   };
 
   const handleChange = (e) => {
     let { name, value } = e.target;
     if (
-      name === "winnerShare" ||
-      name === "secondShare" ||
-      name === "thirdShare"
+      name === "association_share" ||
+      name === "winner_share" ||
+      name === "second_share" ||
+      name === "third_share" ||
+      name === "price_per_share"
     ) {
       value = parseInt(value);
     }
-    setTmpSettings((prevSettings) => ({ ...prevSettings, [name]: value }));
+    updateAssociation({ [name]: value });
   };
 
   useEffect(() => {
     calculatePlayerShare();
-  }, [tmpSettings]);
+  }, [association]);
 
   const calculatePlayerShare = () => {
-    return 100 - tmpSettings.associationShare;
+    return 100 - association.association_share;
   };
 
   const handleSave = async () => {
-    const newSettings = {
-      ...tmpSettings,
-      modifiedAt: new Date().toISOString(),
-    };
-    const response = await UpdateSettings(newSettings);
+    const response = await UpdateSettings(association);
     if (response.ok) {
       setMessage("Inställningarna sparade!");
       setTimeout(() => {
@@ -68,11 +65,13 @@ export default function Settings() {
   };
 
   const calcExampleSumShares = () => {
-    return parseInt(tmpSettings.pricePerShare) * parseInt(playersExample);
+    return (
+      parseInt(association.price_per_share || 0) * parseInt(playersExample)
+    );
   };
 
   const calcExampleAssociationShare = () => {
-    return calcExampleSumShares() * (tmpSettings.associationShare / 100);
+    return calcExampleSumShares() * (association.association_share / 100);
   };
 
   const calcExamplePlayerShare = () => {
@@ -81,9 +80,9 @@ export default function Settings() {
 
   const leftToDistribute = () => {
     const playersSum =
-      (parseInt(tmpSettings.winnerShare) || 0) +
-      (parseInt(tmpSettings.secondShare) || 0) +
-      (parseInt(tmpSettings.thirdShare) || 0);
+      (parseInt(association.winner_share) || 0) +
+      (parseInt(association.second_share) || 0) +
+      (parseInt(association.third_share) || 0);
 
     const remaining = calcExamplePlayerShare() - playersSum;
 
@@ -96,9 +95,9 @@ export default function Settings() {
         <section>
           <h2>Inställningar</h2>
           <br />
-          {tmpSettings ? (
+          {association ? (
             <div>
-              <h1>{tmpSettings.associationTitle}</h1>
+              <h1>{association.association_title}</h1>
               <div>
                 <table>
                   <tbody>
@@ -107,9 +106,9 @@ export default function Settings() {
                       <td>
                         <input
                           className="input-field"
-                          value={tmpSettings.associationShare || ""}
+                          value={association.association_share || ""}
                           type="text"
-                          name="associationShare"
+                          name="association_share"
                           onChange={handleChange}
                         />
                       </td>
@@ -122,7 +121,7 @@ export default function Settings() {
                           className="input-field"
                           value={calculatePlayerShare() || ""}
                           type="text"
-                          name="playerShare"
+                          name="player_share"
                           onChange={handleChange}
                           disabled
                         />
@@ -134,9 +133,9 @@ export default function Settings() {
                       <td>
                         <input
                           className="input-field"
-                          value={tmpSettings.pricePerShare || ""}
+                          value={association.price_per_share || ""}
                           type="text"
-                          name="pricePerShare"
+                          name="price_per_share"
                           onChange={handleChange}
                         />
                       </td>
@@ -147,9 +146,9 @@ export default function Settings() {
                       <td>
                         <input
                           className="input-field"
-                          value={tmpSettings.winnerShare || ""}
+                          value={association.winner_share || ""}
                           type="text"
-                          name="winnerShare"
+                          name="winner_share"
                           onChange={handleChange}
                         />
                       </td>
@@ -160,9 +159,9 @@ export default function Settings() {
                       <td>
                         <input
                           className="input-field"
-                          value={tmpSettings.secondShare || ""}
+                          value={association.second_share || ""}
                           type="text"
-                          name="secondShare"
+                          name="second_share"
                           onChange={handleChange}
                         />
                       </td>
@@ -173,9 +172,9 @@ export default function Settings() {
                       <td>
                         <input
                           className="input-field"
-                          value={tmpSettings.thirdShare || ""}
+                          value={association.third_share || ""}
                           type="text"
-                          name="thirdShare"
+                          name="third_share"
                           onChange={handleChange}
                         />
                       </td>
@@ -246,21 +245,21 @@ export default function Settings() {
                   <td>
                     <label>Till förstaplats:</label>
                   </td>
-                  <td>{tmpSettings.winnerShare}</td>
+                  <td>{association.winner_share}</td>
                   <td>kr</td>
                 </tr>
                 <tr>
                   <td>
                     <label>Till andraplats:</label>
                   </td>
-                  <td>{tmpSettings.secondShare}</td>
+                  <td>{association.second_share}</td>
                   <td>kr</td>
                 </tr>
                 <tr>
                   <td>
                     <label>Till tredjeplats:</label>
                   </td>
-                  <td>{tmpSettings.thirdShare}</td>
+                  <td>{association.third_share}</td>
                   <td>kr</td>
                 </tr>
                 <tr>

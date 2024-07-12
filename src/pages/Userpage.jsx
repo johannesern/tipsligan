@@ -2,83 +2,35 @@ import "./Userpage.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ExistingCoupon from "../components/ExistingCoupon";
-import useStore from "../store/useStore";
-import { UpdateUser } from "../API/UsersAPI";
-import { GetUserById } from "../API/UsersAPI";
-import { GetActiveRound } from "../API/RoundsAPI";
+import { useUserStore } from "../store/useStore";
+import { UpdateUser, GetUserById } from "../API/UsersAPI";
 import { Logout } from "../API/UsersAPI";
 
 export default function Home() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({});
-  const [message, setMessage] = useState("");
   const [existingCoupon, setExistingCoupon] = useState([]);
   const [updateStatus, setUpdateStatus] = useState({});
   const [editMode, setEditMode] = useState(false);
-  const [foundUser, setFoundUser] = useState(false);
-  const [foundUserMessage, setFoundUserMessage] = useState("");
 
   //Store
-  const adminTokenInStore = useStore((state) => state.adminToken);
-  const userTokenInStore = useStore((state) => state.userToken);
-  const addAdminToken = useStore((state) => state.addAdminToken);
-  const addUserToken = useStore((state) => state.addUserToken);
+  const { user, userRoles, updateUser, clearUser, clearAllUsers } =
+    useUserStore();
 
   useEffect(() => {
-    addAdminToken(localStorage.getItem("adminToken"));
-    addUserToken(localStorage.getItem("userToken"));
-  }, [adminTokenInStore, userTokenInStore]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const userId = localStorage.getItem("userId");
-      if (userId) {
-        await getUser(userId);
-      } else {
-        navigate("/login");
-      }
-    };
-
-    fetchData();
+    if (!user) {
+      navigate("/login");
+    } else {
+      fetchAndSetUser(user.id);
+      setExistingCoupon(user.coupon);
+    }
   }, [navigate]);
 
-  useEffect(() => {
-    if (userLoaded()) {
-      setExistingCoupon(user.coupon);
-    } else {
-      setExistingCoupon([]);
+  const fetchAndSetUser = async (userId) => {
+    const user = await GetUserById(userId);
+    if (user) {
+      const { setUser } = useUserStore.getState();
+      setUser(user);
     }
-  }, [user]);
-
-  const getActiveRound = async () => {
-    const response = await GetActiveRound();
-    if (response.ok) {
-      const data = await response.json();
-      console.log("DATA: ", data);
-      const foundUser = data[0].users.find(
-        (userdata) => userdata.id === user.id
-      );
-      if (foundUser) {
-        setFoundUser(true);
-      }
-    } else {
-      setMessage("Något gick fel vid inläsning, uppdatera sidan");
-    }
-  };
-
-  const getUser = async (userId) => {
-    const response = await GetUserById(userId);
-    if (response.ok) {
-      const data = await response.json();
-      setUser(data);
-    } else {
-      setMessage("Något gick fel vid inläsning, uppdatera sidan");
-    }
-  };
-
-  const userLoaded = () => {
-    const test = Object.keys(user).length > 0;
-    return test;
   };
 
   const handleUserUpdate = async (e) => {
@@ -87,71 +39,63 @@ export default function Home() {
       ...user,
       coupon: existingCoupon,
     };
-    console.log("Updated user: ", updatedUser);
-    const response = await UpdateUser(updatedUser);
-
-    if (response.ok)
+    const isUpdated = await UpdateUser(updatedUser);
+    if (isUpdated) {
       setUpdateStatus({
+        success: true,
         message: "Uppdatering lyckades",
-        success: response.ok,
       });
-    else
+      fetchAndSetUser(user.id);
+      cleanup();
+    } else {
       setUpdateStatus({
+        success: false,
         message: "Uppdatering misslyckades",
-        success: response.ok,
       });
-    getUser(localStorage.getItem("userId"));
+    }
     cleanup();
   };
 
-  const handleChange = (e) => {
+  const handleUserChange = (e) => {
     const { name, value } = e.target;
-    setUser((prevState) => ({ ...prevState, [name]: value }));
+    updateUser({ [name]: value });
   };
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
-    setUser((prevState) => ({ ...prevState, [name]: checked }));
+    updateUser({ [name]: checked });
   };
 
-  useEffect(() => {}, [user, editMode]);
-
-  const changeMode = async () => {
-    if (!foundUser) {
-      await getActiveRound();
-    }
+  const changeMode = () => {
     setEditMode(!editMode);
   };
 
   const cleanup = () => {
     setTimeout(() => {
+      setUpdateStatus({});
       changeMode();
-    }, 5000);
+    }, 3000);
   };
 
   const logout = () => {
     console.log("Logging out");
-    Logout(localStorage.getItem("userToken"));
-    localStorage.removeItem("userToken");
-    navigate("/login");
-  };
-
-  const isEditable = () => {
-    if (editMode && !foundUser) {
-      return true;
+    if (userRoles.includes("admin")) {
+      clearAllUsers();
     }
-    return false;
+    Logout(user.id);
+    clearUser();
+    navigate("/login");
   };
 
   return (
     <section>
       <article>
-        {message ? <p>{message}</p> : <h2>Välkommen {user?.firstname}</h2>}
+        {user && <h2>Välkommen {user?.firstname}</h2>}
         <button onClick={logout} type="button">
           Logga ut
         </button>
         <div className="userpage_player-content">
-          {userLoaded() && (
+          {user && (
             <>
               <div className="userpage_player-content--header">
                 <h3>Mina uppgifter</h3>
@@ -174,7 +118,7 @@ export default function Home() {
                             type="text"
                             name="firstname"
                             id="firstname"
-                            onChange={handleChange}
+                            onChange={handleUserChange}
                           />
                         </td>
                       )}
@@ -191,7 +135,7 @@ export default function Home() {
                             type="text"
                             name="lastname"
                             id="lastname"
-                            onChange={handleChange}
+                            onChange={handleUserChange}
                           />
                         </td>
                       )}
@@ -208,7 +152,7 @@ export default function Home() {
                             type="email"
                             name="email"
                             id="email"
-                            onChange={handleChange}
+                            onChange={handleUserChange}
                           />
                         </td>
                       )}
@@ -225,7 +169,7 @@ export default function Home() {
                             type="text"
                             name="phone"
                             id="phone"
-                            onChange={handleChange}
+                            onChange={handleUserChange}
                           />
                         </td>
                       )}
@@ -233,16 +177,16 @@ export default function Home() {
                     <tr>
                       <td>Grupp:</td>
                       {!editMode ? (
-                        <td>{user.group}</td>
+                        <td>{user.team}</td>
                       ) : (
                         <td>
                           <input
                             className="userpage_user-input-field"
-                            value={user.group || ""}
+                            value={user.team || ""}
                             type="text"
-                            name="group"
+                            name="team"
                             id="text"
-                            onChange={handleChange}
+                            onChange={handleUserChange}
                           />
                         </td>
                       )}
@@ -254,7 +198,7 @@ export default function Home() {
                           <input
                             className="userpage_checkbox"
                             type="checkbox"
-                            checked={user.optIn}
+                            checked={user.opt_in}
                             disabled
                           />
                         </td>
@@ -262,9 +206,9 @@ export default function Home() {
                         <td>
                           <input
                             className="userpage_checkbox"
-                            checked={user.optIn}
+                            checked={user.opt_in}
                             type="checkbox"
-                            name="optIn"
+                            name="opt_in"
                             onChange={handleCheckboxChange}
                           />
                         </td>
@@ -278,7 +222,7 @@ export default function Home() {
                 <ExistingCoupon
                   setExistingCouponSelections={setExistingCoupon}
                   coupon={existingCoupon ? existingCoupon : []}
-                  couponEditable={isEditable()}
+                  editMode={!editMode}
                 />
               </div>
               <br />

@@ -20,9 +20,9 @@ export default function HomeTopContent() {
           const round = await roundResponse.json();
           setRound(round);
           passRoundToButtons();
-          if (round.isOpen && round.isActive) {
+          if (round.is_open && round.is_active) {
             setTitle(round.title + " " + openForRegistration);
-          } else if (round.isOpen === false && round.isActive) {
+          } else if (round.is_open === false && round.is_active) {
             setTitle(round.title + " " + ongoingButLocked);
           }
         } else {

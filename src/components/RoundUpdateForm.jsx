@@ -3,30 +3,24 @@ import { useState } from "react";
 
 import "./RoundUpdateForm.css";
 
+import DatePicker from "react-datepicker";
+
+import "./Datepicker.css";
+import "react-datepicker/dist/react-datepicker.css";
+
 import UserManager from "./UserManager";
 import useStore from "../store/useStore";
-import EndDatepicker from "./EndDatePicker";
-import StartDatepicker from "./StartDatePicker";
 
 import { UpdateRound } from "../API/RoundsAPI";
 
 export function RoundUpdateForm({ refreshRounds, closeForm }) {
   const round = useStore((state) => state.roundToUpdate);
   const updateRound = useStore((state) => state.addRoundToUpdate);
-  // const allRounds = useStore((state) => state.roundsCollection);
   const [error, setError] = useState();
 
   const handleChange = (e) => {
     setError("");
     const { name, value } = e.target;
-    // if (name === "isOpen" || name === "isActive") {
-    //   const activeRound = allRounds.find(
-    //     (round) => round.isActive === true && round.isOpen === true
-    //   );
-    //   if (activeRound && activeRound.id !== round.id) {
-    //     setError("Du kan inte ha två aktiva rundor samtidigt");
-    //   }
-    // }
     const newRound = {
       ...round,
       [name]: value,
@@ -38,8 +32,8 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
     e.preventDefault();
     const newRound = {
       ...round,
-      startDate: round.startDate,
-      endDate: round.endDate,
+      start_date: round.start_date,
+      end_date: round.end_date,
     };
     const response = await UpdateRound(newRound);
     if (!response.ok) {
@@ -83,7 +77,13 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                     </label>
                   </td>
                   <td>
-                    <StartDatepicker />
+                    <DatePicker
+                      selected={new Date(round.start_date)}
+                      onChange={handleChange}
+                      dateFormat="yyyy-MM-dd"
+                      className="datepicker"
+                      name="start_date"
+                    />
                   </td>
                 </tr>
                 <tr>
@@ -93,7 +93,17 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                     </label>
                   </td>
                   <td>
-                    <EndDatepicker />
+                    <DatePicker
+                      selected={
+                        round.end_date
+                          ? new Date(round.end_date)
+                          : new Date(round.start_date)
+                      }
+                      onChange={handleChange}
+                      dateFormat="yyyy-MM-dd"
+                      className="datepicker"
+                      name="end_date"
+                    />
                   </td>
                 </tr>
                 <tr>
@@ -103,16 +113,16 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                     </label>
                   </td>
                   <td>
-                    {round.isOpen ? (
+                    {round.is_open ? (
                       <>
                         <button type="button">Ja</button>
                         <button
                           type="button"
-                          name="isOpen"
-                          value={!round.isOpen}
+                          name="is_open"
+                          value={!round.is_open}
                           onClick={() =>
                             handleChange({
-                              target: { name: "isOpen", value: false },
+                              target: { name: "is_open", value: false },
                             })
                           }
                           className="roundupdate_unfilled-button"
@@ -124,11 +134,11 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                       <>
                         <button
                           type="button"
-                          name="isOpen"
-                          value={!round.isOpen}
+                          name="is_open"
+                          value={!round.is_open}
                           onClick={() =>
                             handleChange({
-                              target: { name: "isOpen", value: true },
+                              target: { name: "is_open", value: true },
                             })
                           }
                           className="roundupdate_unfilled-button"
@@ -147,16 +157,16 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                     </label>
                   </td>
                   <td>
-                    {round.isActive ? (
+                    {round.is_active ? (
                       <>
                         <button type="button">Ja</button>
                         <button
                           type="button"
-                          name="isActive"
-                          value={!round.isActive}
+                          name="is_active"
+                          value={!round.is_active}
                           onClick={() =>
                             handleChange({
-                              target: { name: "isActive", value: false },
+                              target: { name: "is_active", value: false },
                             })
                           }
                           className="roundupdate_unfilled-button"
@@ -168,11 +178,11 @@ export function RoundUpdateForm({ refreshRounds, closeForm }) {
                       <>
                         <button
                           type="button"
-                          name="isActive"
-                          value={!round.isActive}
+                          name="is_active"
+                          value={!round.is_active}
                           onClick={() =>
                             handleChange({
-                              target: { name: "isActive", value: true },
+                              target: { name: "is_active", value: true },
                             })
                           }
                           className="roundupdate_unfilled-button"

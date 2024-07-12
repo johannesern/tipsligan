@@ -1,35 +1,45 @@
-import { useState } from "react";
-import StartDatepicker from "../components/StartDatePicker.jsx";
+import { useEffect, useState } from "react";
 import { CreateRound } from "../API/RoundsAPI";
 import "./RoundCreator.css";
 
+import DatePicker from "react-datepicker";
+
+import "./Datepicker.css";
+import "react-datepicker/dist/react-datepicker.css";
+
 export default function RoundCreator() {
-  const defaultStartDate = new Date().toISOString();
-  const defaultPeriodInWeeks = "10";
-  const [createdRound, setCreatedRound] = useState();
-  const [roundData, setRoundData] = useState({
+  const [round, setRound] = useState({
     title: "",
-    periodInWeeks: defaultPeriodInWeeks,
-    startDate: defaultStartDate,
-    isOpen: "true",
-    isActive: "true",
+    start_date: new Date().toISOString(),
+    periodInWeeks: "10",
+    is_open: "true",
+    is_active: "true",
   });
+  const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const activeRoundAlreadyExists =
-    "En aktiv runda finns redan. Avvaktivera befintlig runda innan ny runda aktiveras.";
-  const newRoundCreated = "Ny runda skapad!";
+  const defaultPeriodInWeeks = "10";
 
-  const getStartDate = (childStartDate) => {
-    setRoundData({
-      ...roundData,
-      startDate: childStartDate,
+  const fail = "Kunde inte skapa ny runda";
+  const success = "Ny runda skapad!";
+  const dateError = "start date must be in the future";
+  const titleError = "title is required";
+
+  const handleDateChange = (date) => {
+    setRound({
+      ...round,
+      start_date: date.toISOString(),
     });
   };
 
+  useEffect(() => {
+    console.log("round", round);
+  }, [round]);
+
   const handleChange = (e) => {
     const value = e.target.value;
-    setRoundData({
-      ...roundData,
+    setRound({
+      ...round,
       [e.target.name]: value,
     });
   };
@@ -41,30 +51,31 @@ export default function RoundCreator() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // js is stupid... needs to convert string to bool before POST because
-    // selects change a bool-value to string on the fly... stupid
-    const modifiedRoundData = {
-      ...roundData,
-      isActive:
-        roundData.isActive === "true"
-          ? true
-          : roundData.isActive === "false"
-          ? false
-          : null,
-      isOpen:
-        roundData.isOpen === "true"
-          ? true
-          : roundData.isOpen === "false"
-          ? false
-          : null,
+    const modifiedround = {
+      ...round,
+      is_active: round.is_active === "true",
+      is_open: round.is_open === "true",
     };
 
-    const createdRound = await CreateRound(modifiedRoundData);
-    displayRoundCreated(createdRound);
-  };
-
-  const displayRoundCreated = (round) => {
-    setCreatedRound(round);
+    const response = await CreateRound(
+      modifiedround,
+      modifiedround.periodInWeeks
+    );
+    if (response.ok) {
+      setMessage(success);
+      setIsSuccess(true);
+    } else {
+      const error = await response.json();
+      console.error("Failed to create round");
+      setMessage(fail);
+      setIsSuccess(false);
+      if (error.error === dateError) {
+        setMessage("Startdatum måste vara i framtiden");
+      }
+      if (error.error === titleError) {
+        setMessage("Titel är obligatoriskt");
+      }
+    }
   };
 
   return (
@@ -82,7 +93,7 @@ export default function RoundCreator() {
                 <td className="round-title">
                   <input
                     className="round-input-field"
-                    value={roundData.title}
+                    value={round.title}
                     type="text"
                     name="title"
                     onChange={handleChange}
@@ -94,7 +105,12 @@ export default function RoundCreator() {
                   <label className="input-label">Startdatum:</label>
                 </td>
                 <td>
-                  <StartDatepicker getStartDate={getStartDate} />
+                  <DatePicker
+                    selected={new Date(round.start_date)}
+                    onChange={handleDateChange}
+                    dateFormat="yyyy-MM-dd"
+                    className="datepicker"
+                  />
                 </td>
               </tr>
               <tr>
@@ -104,7 +120,7 @@ export default function RoundCreator() {
                 <td>
                   <select
                     onChange={handleChange}
-                    defaultValue={10}
+                    defaultValue={defaultPeriodInWeeks}
                     className="round-input-field"
                     name="periodInWeeks"
                   >
@@ -123,9 +139,9 @@ export default function RoundCreator() {
                 <td>
                   <select
                     className="round-input-field"
-                    name="isOpen"
+                    name="is_open"
                     onChange={handleChange}
-                    defaultValue={true}
+                    defaultValue="true"
                   >
                     <option value="true">Ja</option>
                     <option value="false">Nej</option>
@@ -139,9 +155,9 @@ export default function RoundCreator() {
                 <td>
                   <select
                     className="round-input-field"
-                    name="isActive"
+                    name="is_active"
                     onChange={handleChange}
-                    defaultValue={true}
+                    defaultValue="true"
                   >
                     <option value="true">Ja</option>
                     <option value="false">Nej</option>
@@ -152,16 +168,10 @@ export default function RoundCreator() {
           </table>
           <button type="submit">Skapa omgång</button>
         </form>
-        {createdRound ? (
+        {message && (
           <>
-            {createdRound.isActive != false ? (
-              <h3 className="">{newRoundCreated}</h3>
-            ) : (
-              <h3 className="">{activeRoundAlreadyExists}</h3>
-            )}
+            <h3 className={isSuccess ? "" : "roundcreator_error"}>{message}</h3>
           </>
-        ) : (
-          <></>
         )}
       </div>
     </>

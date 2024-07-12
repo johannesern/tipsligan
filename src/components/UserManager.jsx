@@ -18,10 +18,6 @@ export default function UserManager() {
     mainFilter();
   }, [round, filter, paymentFilter]);
 
-  useEffect(() => {
-    mainFilter();
-  }, []);
-
   const mainFilter = () => {
     const tmpfilteredRoundUser = round.userDatas?.filter((user) =>
       user.firstname.toLowerCase().includes(filter.toLowerCase())

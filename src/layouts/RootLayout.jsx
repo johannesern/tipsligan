@@ -1,14 +1,28 @@
-import useStore from "../store/useStore";
+import { useUserStore } from "../store/useStore";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 export function RootLayout() {
-  const adminTokenInStore = useStore((state) => state.adminToken);
-  const userTokenInStore = useStore((state) => state.userToken);
+  const { userRoles } = useUserStore();
 
   const determineLoggedIn = () => {
-    if (adminTokenInStore) return <NavLink to="/admin">Admin</NavLink>;
-    if (userTokenInStore) return <NavLink to="/användare">Min profil</NavLink>;
-    return <NavLink to="/login">Logga in</NavLink>;
+    if (Object.keys(userRoles).length === 0) {
+      return (
+        <>
+          <NavLink to="registrera-rad">Registrera mig</NavLink>
+          <NavLink to="/login">Logga in</NavLink>
+        </>
+      );
+    }
+    if (userRoles.includes("admin")) {
+      return (
+        <>
+          <NavLink to="/admin">Admin</NavLink>
+          <NavLink to="/användare">Min profil</NavLink>
+        </>
+      );
+    } else {
+      return <NavLink to="/användare">Min profil</NavLink>;
+    }
   };
 
   return (
@@ -19,7 +33,6 @@ export function RootLayout() {
             <Link to="/">Tipsligan</Link>
           </h1>
           <NavLink to="/">Hem</NavLink>
-          <NavLink to="registrera-rad">Registrera mig</NavLink>
           {determineLoggedIn()}
           <NavLink to="kontakta-oss">Kontakt</NavLink>
         </nav>

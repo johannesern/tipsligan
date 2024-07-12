@@ -1,5 +1,5 @@
-// import { baseUrl } from "../config";
-const baseUrl = "https://tipsligan-api-twilight-glitter-4832.fly.dev";
+import { baseUrl } from "../config";
+// const baseUrl = "https://tipsligan-api-twilight-glitter-4832.fly.dev";
 
 export default async function GetSiteInfo() {
   try {

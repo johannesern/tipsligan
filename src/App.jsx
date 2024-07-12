@@ -6,9 +6,13 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
+import { useEffect } from "react";
 
 //css
 import "./App.css";
+
+//Store
+import { useUserStore } from "./store/useStore";
 
 //pages
 import { RootLayout } from "./layouts/RootLayout";
@@ -44,10 +48,11 @@ const router = createBrowserRouter(
         <Route path="deltagare" element={<Userdisplay />} />
         <Route path="registrera" element={<UserRegistration />} />
         <Route path="skapa-ny-omgång" element={<RoundCreator />} />
-        <Route path="alla-omgångar" element={<RoundsDisplay />} />
+        <Route path="alla-omgångar" element={<RoundsDisplay />}>
+          <Route path="omgång-veckovis" element={<WeeklySnapshot />} />
+          <Route path="omgång-veckovis/:roundid" element={<RoundInfo />} />
+        </Route>
         <Route path="rätta-omgång" element={<CorrectionRound />} />
-        <Route path="omgång-veckovis" element={<WeeklySnapshot />} />
-        <Route path="omgång-veckovis/:roundid" element={<RoundInfo />} />
         <Route path="inställningar" element={<Settings />} />
         <Route path="vinstfördelning" element={<PrizeBreakdown />} />
       </Route>
@@ -56,6 +61,15 @@ const router = createBrowserRouter(
 );
 
 function App() {
+  const { setUser } = useUserStore();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, [setUser]);
+
   return <RouterProvider router={router} />;
 }
 
